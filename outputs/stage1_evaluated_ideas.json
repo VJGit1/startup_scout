@@ -1,0 +1,626 @@
+{
+  "total_posts_analyzed": 5,
+  "top_3_ideas": [
+    {
+      "idea_id": "idea-1-certping",
+      "idea_title": "CertPing AI — Automated Subcontractor COI Compliance Tracker",
+      "one_line_pitch": "Zero-bloat PDF Certificate of Insurance parser and automated SMS/email expiry chaser for small contractors.",
+      "core_problem": "Small general contractors and property managers waste 5-6 hours/week chasing subcontractors for expiring Certificates of Insurance (COIs) because enterprise tools like Procore cost $600+/mo.",
+      "target_customer": "Independent general contractors, property managers, and construction SMBs (5-50 employees)",
+      "source_subreddit": "r/smallbusiness",
+      "source_reddit_title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
+      "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
+      "research": {
+        "competitors": [
+          {
+            "name": "Procore Compliance",
+            "pricing": "$600+/mo (Annual Enterprise Contract)",
+            "weakness_or_gap": "Massive ERP overkill for 5-50 person contractors who just need COI expiry tracking."
+          },
+          {
+            "name": "myCOI / Jones",
+            "pricing": "$350-$500+/mo",
+            "weakness_or_gap": "Long onboarding, enterprise sales calls, no self-serve $49/mo SMB tier."
+          },
+          {
+            "name": "Excel + Calendar Reminders",
+            "pricing": "Free (6 hrs/wk manual labor)",
+            "weakness_or_gap": "Subcontractors ignore manual emails; high liability risk when a lapsed policy is missed."
+          }
+        ],
+        "competitive_wedge": "Self-serve $49/mo AI PDF parser + automated SMS/email vendor chaser with zero ERP migration.",
+        "estimated_startup_cost_usd": 180.0,
+        "startup_cost_breakdown": "$12/yr domain + $20/mo cloud hosting + $30/mo Gemini Vision PDF OCR API + $18/mo Twilio SMS + $100 initial outreach tooling.",
+        "tam": {
+          "target_buyer_segment": "US/UK/CA small general contractors & property managers (5-50 employees)",
+          "estimated_target_users": 140000,
+          "monthly_price_usd": 49.0,
+          "annual_price_usd": 588.0,
+          "bottom_up_tam_usd": 82320000.0,
+          "customers_for_10k_mrr": 205,
+          "tam_formula_explanation": "140,000 small GCs/property managers × $588/yr ($49/mo) = $82.32M/yr Bottom-Up TAM (Only 205 customers needed for $10k MRR)."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 9.4,
+        "fit_verdict": "Strong Fit",
+        "strengths": [
+          "Directly leverages founder's Python, FastAPI, LLM document parsing, and n8n workflow automation stack.",
+          "Buildable as a functional MVP in <14 days for under $200.",
+          "High-margin B2B prosumer/SMB audience where saving 5 hrs/week or recovering 1 change order pays for a full year of subscription."
+        ],
+        "blind_spots": [
+          "Requires targeted outreach in contractor/agency communities to land first 15 design partners."
+        ],
+        "fit_rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile."
+      },
+      "scores": {
+        "pain_severity_score": 9.5,
+        "low_startup_cost_score": 9.4,
+        "competition_gap_score": 9.2,
+        "tam_sweet_spot_score": 9.0,
+        "founder_fit_score": 9.4,
+        "weighted_total_score": 93.2
+      },
+      "evaluator_verdict": "Rank #1 Winner: High-urgency B2B compliance pain (6 hrs/wk wasted + legal liability risk), massive price gap under $500/mo incumbents, $180 startup cost, and $82M niche TAM.",
+      "rank": 1,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    },
+    {
+      "idea_id": "idea-2-scopeguard",
+      "idea_title": "ScopeGuard — 1-Click Slack/Email to Micro-Change-Order Bot",
+      "one_line_pitch": "Turn client 'quick asks' in Slack and email into polite, SOW-backed micro-change orders with 1-click Stripe approval.",
+      "core_problem": "Freelancers and boutique agencies lose 15-20% of project revenue to unbilled scope creep buried in Slack and email threads.",
+      "target_customer": "Boutique digital agencies, web dev shops, and B2B freelancers",
+      "source_subreddit": "r/freelance",
+      "source_reddit_title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
+      "source_reddit_url": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
+      "research": {
+        "competitors": [
+          {
+            "name": "Bonsai / HoneyBook",
+            "pricing": "$39-$79/mo",
+            "weakness_or_gap": "Requires moving entire invoicing/CRM; doesn't detect scope creep inside Slack/email threads."
+          },
+          {
+            "name": "Scoro / Kantata",
+            "pricing": "$200-$500+/mo",
+            "weakness_or_gap": "Bloated agency PSA software hated by small 2-15 person studios."
+          }
+        ],
+        "competitive_wedge": "Lightweight Slack bot & email forwarder that compares client requests to the SOW PDF and generates a 1-click $250+ Stripe change-order link.",
+        "estimated_startup_cost_usd": 150.0,
+        "startup_cost_breakdown": "$12/yr domain + $20/mo hosting + $25/mo Gemini API + $0 Stripe Connect + $93 launch assets.",
+        "tam": {
+          "target_buyer_segment": "Boutique digital agencies, dev studios, and full-time B2B freelancers",
+          "estimated_target_users": 180000,
+          "monthly_price_usd": 39.0,
+          "annual_price_usd": 468.0,
+          "bottom_up_tam_usd": 84240000.0,
+          "customers_for_10k_mrr": 257,
+          "tam_formula_explanation": "180,000 boutique agencies/freelancers × $468/yr ($39/mo) = $84.24M/yr Bottom-Up TAM (257 customers needed for $10k MRR)."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 9.4,
+        "fit_verdict": "Strong Fit",
+        "strengths": [
+          "Directly leverages founder's Python, FastAPI, LLM document parsing, and n8n workflow automation stack.",
+          "Buildable as a functional MVP in <14 days for under $200.",
+          "High-margin B2B prosumer/SMB audience where saving 5 hrs/week or recovering 1 change order pays for a full year of subscription."
+        ],
+        "blind_spots": [
+          "Requires targeted outreach in contractor/agency communities to land first 15 design partners."
+        ],
+        "fit_rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile."
+      },
+      "scores": {
+        "pain_severity_score": 9.2,
+        "low_startup_cost_score": 9.5,
+        "competition_gap_score": 8.8,
+        "tam_sweet_spot_score": 8.9,
+        "founder_fit_score": 9.4,
+        "weighted_total_score": 91.8
+      },
+      "evaluator_verdict": "Rank #2 Winner: Directly generates revenue for users on Day 1 (1 recovered change order = 10x monthly fee), $150 startup cost, and strong viral distribution among agencies.",
+      "rank": 2,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    },
+    {
+      "idea_id": "idea-3-pausesave",
+      "idea_title": "PauseSave — Indie Stripe Dunning + WhatsApp/SMS & 1-Click Pause Flow",
+      "one_line_pitch": "Plug-and-play failed-payment recovery and subscription pause widget built specifically for $2k-$30k MRR micro-SaaS.",
+      "core_problem": "Indie SaaS founders lose up to 30% of involuntary churn because default Stripe emails go to spam and enterprise retention tools cost $250-$1,000+/mo.",
+      "target_customer": "Bootstrapped micro-SaaS founders and subscription digital product creators",
+      "source_subreddit": "r/SaaS",
+      "source_reddit_title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
+      "source_reddit_url": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
+      "research": {
+        "competitors": [
+          {
+            "name": "Churnkey / ProfitWell Retain",
+            "pricing": "$250-$1,000+/mo",
+            "weakness_or_gap": "Priced for funded scale-ups; way too expensive for indie SaaS under $25k MRR."
+          },
+          {
+            "name": "Stripe Default Smart Retries",
+            "pricing": "Included in Stripe Billing (0.5%-0.8% of volume)",
+            "weakness_or_gap": "Generic plain-text emails land in spam; no SMS/WhatsApp nudge or 1-click pause modal."
+          }
+        ],
+        "competitive_wedge": "Flat $29/mo indie-friendly Stripe webhook app with branded pause-instead-of-cancel modal and SMS card-update links.",
+        "estimated_startup_cost_usd": 120.0,
+        "startup_cost_breakdown": "$12 domain + $20/mo hosting + $38/mo SMS/email API credits + $50 Stripe test environment.",
+        "tam": {
+          "target_buyer_segment": "Bootstrapped SaaS & subscription businesses ($2k-$30k MRR)",
+          "estimated_target_users": 75000,
+          "monthly_price_usd": 29.0,
+          "annual_price_usd": 348.0,
+          "bottom_up_tam_usd": 26100000.0,
+          "customers_for_10k_mrr": 345,
+          "tam_formula_explanation": "75,000 indie Stripe SaaS businesses × $348/yr ($29/mo) = $26.1M/yr Bottom-Up TAM (345 customers needed for $10k MRR)."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 8.8,
+        "fit_verdict": "Strong Fit",
+        "strengths": [
+          "Founders deeply understand indie SaaS tooling, APIs, and webhook automation.",
+          "Near-zero support burden once Stripe webhooks are connected."
+        ],
+        "blind_spots": [
+          "Requires Stripe App Marketplace review and high trust around billing permissions."
+        ],
+        "fit_rationale": "Strong Fit (8.8/10): Easy to build and market organically on r/SaaS and IndieHackers within a 20 hr/wk lifestyle schedule."
+      },
+      "scores": {
+        "pain_severity_score": 8.6,
+        "low_startup_cost_score": 9.5,
+        "competition_gap_score": 8.2,
+        "tam_sweet_spot_score": 8.4,
+        "founder_fit_score": 8.8,
+        "weighted_total_score": 87.4
+      },
+      "evaluator_verdict": "Rank #3 Winner: Ultra-lean micro-SaaS ($120 startup cost) with clear ROI for indie founders priced out of $250+/mo retention tools.",
+      "rank": 3,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    }
+  ],
+  "all_evaluated_ideas": [
+    {
+      "idea_id": "idea-1-certping",
+      "idea_title": "CertPing AI — Automated Subcontractor COI Compliance Tracker",
+      "one_line_pitch": "Zero-bloat PDF Certificate of Insurance parser and automated SMS/email expiry chaser for small contractors.",
+      "core_problem": "Small general contractors and property managers waste 5-6 hours/week chasing subcontractors for expiring Certificates of Insurance (COIs) because enterprise tools like Procore cost $600+/mo.",
+      "target_customer": "Independent general contractors, property managers, and construction SMBs (5-50 employees)",
+      "source_subreddit": "r/smallbusiness",
+      "source_reddit_title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
+      "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
+      "research": {
+        "competitors": [
+          {
+            "name": "Procore Compliance",
+            "pricing": "$600+/mo (Annual Enterprise Contract)",
+            "weakness_or_gap": "Massive ERP overkill for 5-50 person contractors who just need COI expiry tracking."
+          },
+          {
+            "name": "myCOI / Jones",
+            "pricing": "$350-$500+/mo",
+            "weakness_or_gap": "Long onboarding, enterprise sales calls, no self-serve $49/mo SMB tier."
+          },
+          {
+            "name": "Excel + Calendar Reminders",
+            "pricing": "Free (6 hrs/wk manual labor)",
+            "weakness_or_gap": "Subcontractors ignore manual emails; high liability risk when a lapsed policy is missed."
+          }
+        ],
+        "competitive_wedge": "Self-serve $49/mo AI PDF parser + automated SMS/email vendor chaser with zero ERP migration.",
+        "estimated_startup_cost_usd": 180.0,
+        "startup_cost_breakdown": "$12/yr domain + $20/mo cloud hosting + $30/mo Gemini Vision PDF OCR API + $18/mo Twilio SMS + $100 initial outreach tooling.",
+        "tam": {
+          "target_buyer_segment": "US/UK/CA small general contractors & property managers (5-50 employees)",
+          "estimated_target_users": 140000,
+          "monthly_price_usd": 49.0,
+          "annual_price_usd": 588.0,
+          "bottom_up_tam_usd": 82320000.0,
+          "customers_for_10k_mrr": 205,
+          "tam_formula_explanation": "140,000 small GCs/property managers × $588/yr ($49/mo) = $82.32M/yr Bottom-Up TAM (Only 205 customers needed for $10k MRR)."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 9.4,
+        "fit_verdict": "Strong Fit",
+        "strengths": [
+          "Directly leverages founder's Python, FastAPI, LLM document parsing, and n8n workflow automation stack.",
+          "Buildable as a functional MVP in <14 days for under $200.",
+          "High-margin B2B prosumer/SMB audience where saving 5 hrs/week or recovering 1 change order pays for a full year of subscription."
+        ],
+        "blind_spots": [
+          "Requires targeted outreach in contractor/agency communities to land first 15 design partners."
+        ],
+        "fit_rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile."
+      },
+      "scores": {
+        "pain_severity_score": 9.5,
+        "low_startup_cost_score": 9.4,
+        "competition_gap_score": 9.2,
+        "tam_sweet_spot_score": 9.0,
+        "founder_fit_score": 9.4,
+        "weighted_total_score": 93.2
+      },
+      "evaluator_verdict": "Rank #1 Winner: High-urgency B2B compliance pain (6 hrs/wk wasted + legal liability risk), massive price gap under $500/mo incumbents, $180 startup cost, and $82M niche TAM.",
+      "rank": 1,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    },
+    {
+      "idea_id": "idea-2-scopeguard",
+      "idea_title": "ScopeGuard — 1-Click Slack/Email to Micro-Change-Order Bot",
+      "one_line_pitch": "Turn client 'quick asks' in Slack and email into polite, SOW-backed micro-change orders with 1-click Stripe approval.",
+      "core_problem": "Freelancers and boutique agencies lose 15-20% of project revenue to unbilled scope creep buried in Slack and email threads.",
+      "target_customer": "Boutique digital agencies, web dev shops, and B2B freelancers",
+      "source_subreddit": "r/freelance",
+      "source_reddit_title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
+      "source_reddit_url": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
+      "research": {
+        "competitors": [
+          {
+            "name": "Bonsai / HoneyBook",
+            "pricing": "$39-$79/mo",
+            "weakness_or_gap": "Requires moving entire invoicing/CRM; doesn't detect scope creep inside Slack/email threads."
+          },
+          {
+            "name": "Scoro / Kantata",
+            "pricing": "$200-$500+/mo",
+            "weakness_or_gap": "Bloated agency PSA software hated by small 2-15 person studios."
+          }
+        ],
+        "competitive_wedge": "Lightweight Slack bot & email forwarder that compares client requests to the SOW PDF and generates a 1-click $250+ Stripe change-order link.",
+        "estimated_startup_cost_usd": 150.0,
+        "startup_cost_breakdown": "$12/yr domain + $20/mo hosting + $25/mo Gemini API + $0 Stripe Connect + $93 launch assets.",
+        "tam": {
+          "target_buyer_segment": "Boutique digital agencies, dev studios, and full-time B2B freelancers",
+          "estimated_target_users": 180000,
+          "monthly_price_usd": 39.0,
+          "annual_price_usd": 468.0,
+          "bottom_up_tam_usd": 84240000.0,
+          "customers_for_10k_mrr": 257,
+          "tam_formula_explanation": "180,000 boutique agencies/freelancers × $468/yr ($39/mo) = $84.24M/yr Bottom-Up TAM (257 customers needed for $10k MRR)."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 9.4,
+        "fit_verdict": "Strong Fit",
+        "strengths": [
+          "Directly leverages founder's Python, FastAPI, LLM document parsing, and n8n workflow automation stack.",
+          "Buildable as a functional MVP in <14 days for under $200.",
+          "High-margin B2B prosumer/SMB audience where saving 5 hrs/week or recovering 1 change order pays for a full year of subscription."
+        ],
+        "blind_spots": [
+          "Requires targeted outreach in contractor/agency communities to land first 15 design partners."
+        ],
+        "fit_rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile."
+      },
+      "scores": {
+        "pain_severity_score": 9.2,
+        "low_startup_cost_score": 9.5,
+        "competition_gap_score": 8.8,
+        "tam_sweet_spot_score": 8.9,
+        "founder_fit_score": 9.4,
+        "weighted_total_score": 91.8
+      },
+      "evaluator_verdict": "Rank #2 Winner: Directly generates revenue for users on Day 1 (1 recovered change order = 10x monthly fee), $150 startup cost, and strong viral distribution among agencies.",
+      "rank": 2,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    },
+    {
+      "idea_id": "idea-3-pausesave",
+      "idea_title": "PauseSave — Indie Stripe Dunning + WhatsApp/SMS & 1-Click Pause Flow",
+      "one_line_pitch": "Plug-and-play failed-payment recovery and subscription pause widget built specifically for $2k-$30k MRR micro-SaaS.",
+      "core_problem": "Indie SaaS founders lose up to 30% of involuntary churn because default Stripe emails go to spam and enterprise retention tools cost $250-$1,000+/mo.",
+      "target_customer": "Bootstrapped micro-SaaS founders and subscription digital product creators",
+      "source_subreddit": "r/SaaS",
+      "source_reddit_title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
+      "source_reddit_url": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
+      "research": {
+        "competitors": [
+          {
+            "name": "Churnkey / ProfitWell Retain",
+            "pricing": "$250-$1,000+/mo",
+            "weakness_or_gap": "Priced for funded scale-ups; way too expensive for indie SaaS under $25k MRR."
+          },
+          {
+            "name": "Stripe Default Smart Retries",
+            "pricing": "Included in Stripe Billing (0.5%-0.8% of volume)",
+            "weakness_or_gap": "Generic plain-text emails land in spam; no SMS/WhatsApp nudge or 1-click pause modal."
+          }
+        ],
+        "competitive_wedge": "Flat $29/mo indie-friendly Stripe webhook app with branded pause-instead-of-cancel modal and SMS card-update links.",
+        "estimated_startup_cost_usd": 120.0,
+        "startup_cost_breakdown": "$12 domain + $20/mo hosting + $38/mo SMS/email API credits + $50 Stripe test environment.",
+        "tam": {
+          "target_buyer_segment": "Bootstrapped SaaS & subscription businesses ($2k-$30k MRR)",
+          "estimated_target_users": 75000,
+          "monthly_price_usd": 29.0,
+          "annual_price_usd": 348.0,
+          "bottom_up_tam_usd": 26100000.0,
+          "customers_for_10k_mrr": 345,
+          "tam_formula_explanation": "75,000 indie Stripe SaaS businesses × $348/yr ($29/mo) = $26.1M/yr Bottom-Up TAM (345 customers needed for $10k MRR)."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 8.8,
+        "fit_verdict": "Strong Fit",
+        "strengths": [
+          "Founders deeply understand indie SaaS tooling, APIs, and webhook automation.",
+          "Near-zero support burden once Stripe webhooks are connected."
+        ],
+        "blind_spots": [
+          "Requires Stripe App Marketplace review and high trust around billing permissions."
+        ],
+        "fit_rationale": "Strong Fit (8.8/10): Easy to build and market organically on r/SaaS and IndieHackers within a 20 hr/wk lifestyle schedule."
+      },
+      "scores": {
+        "pain_severity_score": 8.6,
+        "low_startup_cost_score": 9.5,
+        "competition_gap_score": 8.2,
+        "tam_sweet_spot_score": 8.4,
+        "founder_fit_score": 8.8,
+        "weighted_total_score": 87.4
+      },
+      "evaluator_verdict": "Rank #3 Winner: Ultra-lean micro-SaaS ($120 startup cost) with clear ROI for indie founders priced out of $250+/mo retention tools.",
+      "rank": 3,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    },
+    {
+      "idea_id": "idea-4-nightbook",
+      "idea_title": "NightBook AI — After-Hours IG/Google Maps DM Concierge for Clinics",
+      "one_line_pitch": "Menu-grounded after-hours DM responder and consult booker for local MedSpas and dental practices.",
+      "core_problem": "Local MedSpas and dental clinics spend $3k+/mo on ads but lose overnight IG/Google Maps inquiries because tools like Podium cost $500+/mo.",
+      "target_customer": "Independent MedSpas, cosmetic dental clinics, and boutique wellness studios",
+      "source_subreddit": "r/entrepreneur",
+      "source_reddit_title": "Local MedSpas and dental clinics are terrible at replying to Instagram/Google Maps DMs after 5pm",
+      "source_reddit_url": "https://www.reddit.com/r/entrepreneur/comments/medspa_after_hours_dm_booking",
+      "research": {
+        "competitors": [
+          {
+            "name": "Podium / Weave",
+            "pricing": "$400-$650/mo (12-month lock-in)",
+            "weakness_or_gap": "Predatory annual contracts and high pricing frustrate single-location clinics."
+          },
+          {
+            "name": "Generic ManyChat Templates",
+            "pricing": "$15-$45/mo",
+            "weakness_or_gap": "Brittle decision trees that fail when patients ask specific treatment pricing or contraindictions."
+          }
+        ],
+        "competitive_wedge": "No-contract $79/mo after-hours AI receptionist grounded strictly in the clinic's exact service menu PDF.",
+        "estimated_startup_cost_usd": 250.0,
+        "startup_cost_breakdown": "$12 domain + $30/mo hosting + $50/mo Meta/Google API + LLM tokens + $158 local clinic demo setup.",
+        "tam": {
+          "target_buyer_segment": "Independent US/CA/UK MedSpas, cosmetic dentists, and aesthetic clinics",
+          "estimated_target_users": 65000,
+          "monthly_price_usd": 79.0,
+          "annual_price_usd": 948.0,
+          "bottom_up_tam_usd": 61620000.0,
+          "customers_for_10k_mrr": 127,
+          "tam_formula_explanation": "65,000 aesthetic/dental clinics × $948/yr ($79/mo) = $61.62M/yr Bottom-Up TAM (127 clinics needed for $10k MRR)."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 7.6,
+        "fit_verdict": "Moderate Fit",
+        "strengths": [
+          "Strong technical fit for building the RAG/menu-grounded AI responder."
+        ],
+        "blind_spots": [
+          "Selling to local brick-and-mortar clinics requires more outbound calls/demos than pure self-serve SaaS."
+        ],
+        "fit_rationale": "Moderate-to-Strong Fit (7.6/10): Technically straightforward (<$250 startup cost), though local clinic GTM is slightly more sales-heavy."
+      },
+      "scores": {
+        "pain_severity_score": 8.5,
+        "low_startup_cost_score": 8.6,
+        "competition_gap_score": 7.8,
+        "tam_sweet_spot_score": 8.5,
+        "founder_fit_score": 7.6,
+        "weighted_total_score": 82.5
+      },
+      "evaluator_verdict": "Rank #4 Runner-Up: Great unit economics ($79/mo) and clear pain, but slightly below Top 3 due to local clinic sales friction and Meta API approval steps.",
+      "rank": 4,
+      "is_top_3": false,
+      "approval_status": "Backlog"
+    },
+    {
+      "idea_id": "idea-5-custom",
+      "idea_title": "Reddit Solution: I want to start a new nationwide airline with $500 budg",
+      "one_line_pitch": "Dedicated solution addressing: I want to start a new nationwide airline with $500 budget because flights are to",
+      "core_problem": "Why doesn't someone just lease 10 Boeing 737 jets and make all seats first class for $99 tickets? Seems like an easy startup idea.",
+      "target_customer": "Users in r/smallbusiness",
+      "source_subreddit": "r/smallbusiness",
+      "source_reddit_title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
+      "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/airline_hardware_idea",
+      "research": {
+        "competitors": [
+          {
+            "name": "Legacy Incumbents",
+            "pricing": "$10,000+/mo",
+            "weakness_or_gap": "Capital-intensive industry requiring millions in regulatory and hardware investment."
+          }
+        ],
+        "competitive_wedge": "None compatible with a bootstrapped lifestyle business.",
+        "estimated_startup_cost_usd": 5000000.0,
+        "startup_cost_breakdown": "Requires FAA certification, aircraft leasing, and millions in capital.",
+        "tam": {
+          "target_buyer_segment": "Mass market airline passengers",
+          "estimated_target_users": 1000000,
+          "monthly_price_usd": 99.0,
+          "annual_price_usd": 200.0,
+          "bottom_up_tam_usd": 200000000.0,
+          "customers_for_10k_mrr": 500,
+          "tam_formula_explanation": "Capital-intensive physical operation; incompatible with bootstrapped software lifestyle model."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 1.5,
+        "fit_verdict": "Poor Fit",
+        "strengths": [
+          "None — violates bootstrapped lifestyle budget constraint."
+        ],
+        "blind_spots": [
+          "Requires multi-million dollar capital and regulatory licensing."
+        ],
+        "fit_rationale": "Disqualified: Exceeds the founder's $2,500 max startup cost and violates the software lifestyle scope."
+      },
+      "scores": {
+        "pain_severity_score": 3.0,
+        "low_startup_cost_score": 1.0,
+        "competition_gap_score": 2.0,
+        "tam_sweet_spot_score": 4.0,
+        "founder_fit_score": 1.5,
+        "weighted_total_score": 22.2
+      },
+      "evaluator_verdict": "Disqualified: Violates lifestyle business budget and asset-light constraints.",
+      "rank": 5,
+      "is_top_3": false,
+      "approval_status": "Disqualified (Over Budget/Scope)"
+    }
+  ],
+  "google_sheets_rows": [
+    {
+      "Rank": 1,
+      "Is_Top_3": "YES (Top 3)",
+      "Approval_Status": "Pending Review (Top 3)",
+      "Idea_ID": "idea-1-certping",
+      "Idea_Title": "CertPing AI — Automated Subcontractor COI Compliance Tracker",
+      "One_Line_Pitch": "Zero-bloat PDF Certificate of Insurance parser and automated SMS/email expiry chaser for small contractors.",
+      "Core_Problem": "Small general contractors and property managers waste 5-6 hours/week chasing subcontractors for expiring Certificates of Insurance (COIs) because enterprise tools like Procore cost $600+/mo.",
+      "Target_Customer": "Independent general contractors, property managers, and construction SMBs (5-50 employees)",
+      "Total_Score_100": 93.2,
+      "Bottom_Up_TAM_USD": "$82,320,000/yr",
+      "TAM_Formula": "140,000 small GCs/property managers × $588/yr ($49/mo) = $82.32M/yr Bottom-Up TAM (Only 205 customers needed for $10k MRR).",
+      "Customers_For_10k_MRR": 205,
+      "Startup_Cost_USD": "$180",
+      "Startup_Cost_Breakdown": "$12/yr domain + $20/mo cloud hosting + $30/mo Gemini Vision PDF OCR API + $18/mo Twilio SMS + $100 initial outreach tooling.",
+      "Competitors": "Procore Compliance ($600+/mo (Annual Enterprise Contract)), myCOI / Jones ($350-$500+/mo), Excel + Calendar Reminders (Free (6 hrs/wk manual labor))",
+      "Competitive_Wedge": "Self-serve $49/mo AI PDF parser + automated SMS/email vendor chaser with zero ERP migration.",
+      "Founder_Fit_Score_10": 9.4,
+      "Founder_Fit_Verdict": "Strong Fit",
+      "Founder_Fit_Rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile.",
+      "Evaluator_Verdict": "Rank #1 Winner: High-urgency B2B compliance pain (6 hrs/wk wasted + legal liability risk), massive price gap under $500/mo incumbents, $180 startup cost, and $82M niche TAM.",
+      "Source_Subreddit": "r/smallbusiness",
+      "Source_Reddit_Title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
+      "Source_Reddit_URL": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
+      "Google_Doc_PRD_URL": ""
+    },
+    {
+      "Rank": 2,
+      "Is_Top_3": "YES (Top 3)",
+      "Approval_Status": "Pending Review (Top 3)",
+      "Idea_ID": "idea-2-scopeguard",
+      "Idea_Title": "ScopeGuard — 1-Click Slack/Email to Micro-Change-Order Bot",
+      "One_Line_Pitch": "Turn client 'quick asks' in Slack and email into polite, SOW-backed micro-change orders with 1-click Stripe approval.",
+      "Core_Problem": "Freelancers and boutique agencies lose 15-20% of project revenue to unbilled scope creep buried in Slack and email threads.",
+      "Target_Customer": "Boutique digital agencies, web dev shops, and B2B freelancers",
+      "Total_Score_100": 91.8,
+      "Bottom_Up_TAM_USD": "$84,240,000/yr",
+      "TAM_Formula": "180,000 boutique agencies/freelancers × $468/yr ($39/mo) = $84.24M/yr Bottom-Up TAM (257 customers needed for $10k MRR).",
+      "Customers_For_10k_MRR": 257,
+      "Startup_Cost_USD": "$150",
+      "Startup_Cost_Breakdown": "$12/yr domain + $20/mo hosting + $25/mo Gemini API + $0 Stripe Connect + $93 launch assets.",
+      "Competitors": "Bonsai / HoneyBook ($39-$79/mo), Scoro / Kantata ($200-$500+/mo)",
+      "Competitive_Wedge": "Lightweight Slack bot & email forwarder that compares client requests to the SOW PDF and generates a 1-click $250+ Stripe change-order link.",
+      "Founder_Fit_Score_10": 9.4,
+      "Founder_Fit_Verdict": "Strong Fit",
+      "Founder_Fit_Rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile.",
+      "Evaluator_Verdict": "Rank #2 Winner: Directly generates revenue for users on Day 1 (1 recovered change order = 10x monthly fee), $150 startup cost, and strong viral distribution among agencies.",
+      "Source_Subreddit": "r/freelance",
+      "Source_Reddit_Title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
+      "Source_Reddit_URL": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
+      "Google_Doc_PRD_URL": ""
+    },
+    {
+      "Rank": 3,
+      "Is_Top_3": "YES (Top 3)",
+      "Approval_Status": "Pending Review (Top 3)",
+      "Idea_ID": "idea-3-pausesave",
+      "Idea_Title": "PauseSave — Indie Stripe Dunning + WhatsApp/SMS & 1-Click Pause Flow",
+      "One_Line_Pitch": "Plug-and-play failed-payment recovery and subscription pause widget built specifically for $2k-$30k MRR micro-SaaS.",
+      "Core_Problem": "Indie SaaS founders lose up to 30% of involuntary churn because default Stripe emails go to spam and enterprise retention tools cost $250-$1,000+/mo.",
+      "Target_Customer": "Bootstrapped micro-SaaS founders and subscription digital product creators",
+      "Total_Score_100": 87.4,
+      "Bottom_Up_TAM_USD": "$26,100,000/yr",
+      "TAM_Formula": "75,000 indie Stripe SaaS businesses × $348/yr ($29/mo) = $26.1M/yr Bottom-Up TAM (345 customers needed for $10k MRR).",
+      "Customers_For_10k_MRR": 345,
+      "Startup_Cost_USD": "$120",
+      "Startup_Cost_Breakdown": "$12 domain + $20/mo hosting + $38/mo SMS/email API credits + $50 Stripe test environment.",
+      "Competitors": "Churnkey / ProfitWell Retain ($250-$1,000+/mo), Stripe Default Smart Retries (Included in Stripe Billing (0.5%-0.8% of volume))",
+      "Competitive_Wedge": "Flat $29/mo indie-friendly Stripe webhook app with branded pause-instead-of-cancel modal and SMS card-update links.",
+      "Founder_Fit_Score_10": 8.8,
+      "Founder_Fit_Verdict": "Strong Fit",
+      "Founder_Fit_Rationale": "Strong Fit (8.8/10): Easy to build and market organically on r/SaaS and IndieHackers within a 20 hr/wk lifestyle schedule.",
+      "Evaluator_Verdict": "Rank #3 Winner: Ultra-lean micro-SaaS ($120 startup cost) with clear ROI for indie founders priced out of $250+/mo retention tools.",
+      "Source_Subreddit": "r/SaaS",
+      "Source_Reddit_Title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
+      "Source_Reddit_URL": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
+      "Google_Doc_PRD_URL": ""
+    },
+    {
+      "Rank": 4,
+      "Is_Top_3": "No",
+      "Approval_Status": "Backlog",
+      "Idea_ID": "idea-4-nightbook",
+      "Idea_Title": "NightBook AI — After-Hours IG/Google Maps DM Concierge for Clinics",
+      "One_Line_Pitch": "Menu-grounded after-hours DM responder and consult booker for local MedSpas and dental practices.",
+      "Core_Problem": "Local MedSpas and dental clinics spend $3k+/mo on ads but lose overnight IG/Google Maps inquiries because tools like Podium cost $500+/mo.",
+      "Target_Customer": "Independent MedSpas, cosmetic dental clinics, and boutique wellness studios",
+      "Total_Score_100": 82.5,
+      "Bottom_Up_TAM_USD": "$61,620,000/yr",
+      "TAM_Formula": "65,000 aesthetic/dental clinics × $948/yr ($79/mo) = $61.62M/yr Bottom-Up TAM (127 clinics needed for $10k MRR).",
+      "Customers_For_10k_MRR": 127,
+      "Startup_Cost_USD": "$250",
+      "Startup_Cost_Breakdown": "$12 domain + $30/mo hosting + $50/mo Meta/Google API + LLM tokens + $158 local clinic demo setup.",
+      "Competitors": "Podium / Weave ($400-$650/mo (12-month lock-in)), Generic ManyChat Templates ($15-$45/mo)",
+      "Competitive_Wedge": "No-contract $79/mo after-hours AI receptionist grounded strictly in the clinic's exact service menu PDF.",
+      "Founder_Fit_Score_10": 7.6,
+      "Founder_Fit_Verdict": "Moderate Fit",
+      "Founder_Fit_Rationale": "Moderate-to-Strong Fit (7.6/10): Technically straightforward (<$250 startup cost), though local clinic GTM is slightly more sales-heavy.",
+      "Evaluator_Verdict": "Rank #4 Runner-Up: Great unit economics ($79/mo) and clear pain, but slightly below Top 3 due to local clinic sales friction and Meta API approval steps.",
+      "Source_Subreddit": "r/entrepreneur",
+      "Source_Reddit_Title": "Local MedSpas and dental clinics are terrible at replying to Instagram/Google Maps DMs after 5pm",
+      "Source_Reddit_URL": "https://www.reddit.com/r/entrepreneur/comments/medspa_after_hours_dm_booking",
+      "Google_Doc_PRD_URL": ""
+    },
+    {
+      "Rank": 5,
+      "Is_Top_3": "No",
+      "Approval_Status": "Disqualified (Over Budget/Scope)",
+      "Idea_ID": "idea-5-custom",
+      "Idea_Title": "Reddit Solution: I want to start a new nationwide airline with $500 budg",
+      "One_Line_Pitch": "Dedicated solution addressing: I want to start a new nationwide airline with $500 budget because flights are to",
+      "Core_Problem": "Why doesn't someone just lease 10 Boeing 737 jets and make all seats first class for $99 tickets? Seems like an easy startup idea.",
+      "Target_Customer": "Users in r/smallbusiness",
+      "Total_Score_100": 22.2,
+      "Bottom_Up_TAM_USD": "$200,000,000/yr",
+      "TAM_Formula": "Capital-intensive physical operation; incompatible with bootstrapped software lifestyle model.",
+      "Customers_For_10k_MRR": 500,
+      "Startup_Cost_USD": "$5,000,000",
+      "Startup_Cost_Breakdown": "Requires FAA certification, aircraft leasing, and millions in capital.",
+      "Competitors": "Legacy Incumbents ($10,000+/mo)",
+      "Competitive_Wedge": "None compatible with a bootstrapped lifestyle business.",
+      "Founder_Fit_Score_10": 1.5,
+      "Founder_Fit_Verdict": "Poor Fit",
+      "Founder_Fit_Rationale": "Disqualified: Exceeds the founder's $2,500 max startup cost and violates the software lifestyle scope.",
+      "Evaluator_Verdict": "Disqualified: Violates lifestyle business budget and asset-light constraints.",
+      "Source_Subreddit": "r/smallbusiness",
+      "Source_Reddit_Title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
+      "Source_Reddit_URL": "https://www.reddit.com/r/smallbusiness/comments/airline_hardware_idea",
+      "Google_Doc_PRD_URL": ""
+    }
+  ]
+}

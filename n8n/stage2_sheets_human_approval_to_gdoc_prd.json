@@ -1,0 +1,222 @@
+{
+  "name": "Stage 2: Google Sheets Approval (Human-in-the-Loop) -> Multi-Agent PRD -> Google Docs",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Evaluated_Ideas",
+          "mode": "name"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "id": "sheets-approval-trigger",
+      "name": "Watch Google Sheet for Approved Idea",
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "id": "check-approved-status",
+              "leftValue": "={{ $json.Approval_Status }}",
+              "rightValue": "Approved",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "check-no-existing-doc",
+              "leftValue": "={{ $json.Google_Doc_PRD_URL || '' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "filter-approved-rows",
+      "name": "Only Rows Marked 'Approved'",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/v1/stage2/generate-prd",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  idea_id: $json.Idea_ID,\n  idea_title: $json.Idea_Title,\n  one_line_pitch: $json.One_Line_Pitch,\n  core_problem: $json.Core_Problem,\n  target_customer: $json.Target_Customer,\n  source_subreddit: $json.Source_Subreddit,\n  source_reddit_title: $json.Source_Reddit_Title,\n  source_reddit_url: $json.Source_Reddit_URL,\n  bottom_up_tam_summary: $json.TAM_Formula,\n  startup_cost_summary: $json.Startup_Cost_Breakdown,\n  competitors_summary: $json.Competitors,\n  competitive_wedge: $json.Competitive_Wedge,\n  founder_fit_summary: $json.Founder_Fit_Rationale\n}) }}",
+        "options": {
+          "timeout": 180000
+        }
+      },
+      "id": "call-langgraph-stage2",
+      "name": "Call LangGraph Supervisor (Research + PM Kano + Risk Agents)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        760,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "folderId": "default",
+        "title": "={{ $json.document_title }}"
+      },
+      "id": "create-google-doc",
+      "name": "Create Google Doc PRD",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('Call LangGraph Supervisor (Research + PM Kano + Risk Agents)').item.json.google_doc_markdown }}"
+            }
+          ]
+        }
+      },
+      "id": "write-prd-content",
+      "name": "Insert PRD Content into Google Doc",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Evaluated_Ideas",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Idea_ID": "={{ $('Only Rows Marked \\'Approved\\'').item.json.Idea_ID }}",
+            "Approval_Status": "PRD Generated",
+            "Google_Doc_PRD_URL": "={{ 'https://docs.google.com/document/d/' + $('Create Google Doc PRD').item.json.id + '/edit' }}"
+          },
+          "matchingColumns": [
+            "Idea_ID"
+          ]
+        },
+        "options": {}
+      },
+      "id": "update-sheet-doc-url",
+      "name": "Write Google Doc URL Back to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1560,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Watch Google Sheet for Approved Idea": {
+      "main": [
+        [
+          {
+            "node": "Only Rows Marked 'Approved'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only Rows Marked 'Approved'": {
+      "main": [
+        [
+          {
+            "node": "Call LangGraph Supervisor (Research + PM Kano + Risk Agents)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call LangGraph Supervisor (Research + PM Kano + Risk Agents)": {
+      "main": [
+        [
+          {
+            "node": "Create Google Doc PRD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Google Doc PRD": {
+      "main": [
+        [
+          {
+            "node": "Insert PRD Content into Google Doc",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert PRD Content into Google Doc": {
+      "main": [
+        [
+          {
+            "node": "Write Google Doc URL Back to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
