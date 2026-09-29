@@ -1,0 +1,42 @@
+# Configurable Founder Profile for the Founder-Market Fit & Startup Evaluator Agents
+# Edit this file to match a specific person (e.g., Jev, Rita, VJ) or your co-founding team.
+
+founder:
+  name: "Rita, VJ & Jev (Configurable Founder Profile)"
+  role_summary: "Product-minded builders and AI/automation engineers seeking a high-margin, bootstrapped lifestyle business."
+  
+  # Core constraints for a Lifestyle Business
+  constraints:
+    business_model_scope: "Lifestyle Business (Bootstrapped Micro-SaaS, B2B/B2C workflow tools, or digital products)"
+    max_initial_startup_cost_usd: 2500
+    target_mvp_build_time_days: 30
+    weekly_time_commitment_hours: 20
+    target_gross_margin_percent: 80
+    avoid_models:
+      - "Heavy hardware manufacturing or physical inventory"
+      - "Two-sided marketplaces requiring massive cold-start capital"
+      - "Regulated enterprise healthcare/banking requiring $50k+ compliance before launch"
+      - "Low-margin human-intensive service agencies"
+
+  # Skills & technical capabilities
+  skills:
+    technical:
+      - "Python, FastAPI, TypeScript, modern web stacks"
+      - "AI Agents, LLMs (Gemini, LangGraph), n8n workflow automation"
+      - "API integrations, web scraping, data pipelines"
+      - "Rapid MVP prototyping and no-code/low-code tooling"
+    product_and_business:
+      - "Product management (PRD authoring, Kano prioritization, user research)"
+      - "Organic community growth (Reddit, indie hacker communities, SEO, content)"
+      - "B2B/prosumer workflow optimization"
+
+  # Domain interests & unfair advantages
+  unfair_advantages:
+    - "Deep familiarity with AI agent orchestration and workflow automation"
+    - "Ability to ship functional MVPs in days rather than months using AI-assisted coding"
+    - "Understanding of small business, creator, and knowledge-worker productivity bottlenecks"
+  
+  preferred_customer_segments:
+    - "Small business owners & solopreneurs"
+    - "Prosumers & freelancers willing to pay $15-$99/mo for time-saving tools"
+    - "Niche B2B teams frustrated with bloated enterprise software"
