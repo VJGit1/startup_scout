@@ -73,7 +73,16 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:8000/api/v1/stage2/generate-prd",
+        "url": "={{ $env.PIPELINE_BASE_URL + '/api/v1/stage2/generate-prd' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.API_AUTH_KEY }}"
+            }
+          ]
+        },
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  idea_id: $json.Idea_ID,\n  idea_title: $json.Idea_Title,\n  one_line_pitch: $json.One_Line_Pitch,\n  core_problem: $json.Core_Problem,\n  target_customer: $json.Target_Customer,\n  source_subreddit: $json.Source_Subreddit,\n  source_reddit_title: $json.Source_Reddit_Title,\n  source_reddit_url: $json.Source_Reddit_URL,\n  bottom_up_tam_summary: $json.TAM_Formula,\n  startup_cost_summary: $json.Startup_Cost_Breakdown,\n  competitors_summary: $json.Competitors,\n  competitive_wedge: $json.Competitive_Wedge,\n  founder_fit_summary: $json.Founder_Fit_Rationale\n}) }}",

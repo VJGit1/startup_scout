@@ -10,14 +10,20 @@ from pydantic import BaseModel, Field
 
 
 class RedditPostInput(BaseModel):
-    """Input representation of a scraped Reddit post from n8n or direct scraper."""
-    post_id: Optional[str] = Field(default=None, description="Reddit post ID")
-    subreddit: str = Field(default="r/smallbusiness", description="Subreddit name")
-    title: str = Field(..., description="Title of the Reddit post")
-    selftext: str = Field(default="", description="Body text of the Reddit post")
-    url: str = Field(default="", description="Permalink URL to the Reddit post")
-    upvotes: int = Field(default=10, description="Number of upvotes")
+    """Input representation of a scraped pain-point post from Hacker News, Reddit, or n8n."""
+    post_id: Optional[str] = Field(default=None, description="Post/Comment ID")
+    source_platform: str = Field(default="unknown", description="Source platform: Hacker News, Reddit RSS, curated, etc.")
+    subreddit: str = Field(default="Ask HN", description="Subreddit, forum category, or HN story name")
+    title: str = Field(..., description="Title of the discussion or story")
+    selftext: str = Field(default="", description="Body text or comment content")
+    url: str = Field(default="", description="Permalink URL to the discussion")
+    upvotes: int = Field(default=10, description="Upvotes or HN points")
     num_comments: int = Field(default=5, description="Number of comments")
+
+
+# Alias for multi-source clarity
+PainPointPostInput = RedditPostInput
+
 
 
 class BottomUpTAM(BaseModel):
@@ -73,6 +79,7 @@ class EvaluatedStartupIdea(BaseModel):
     one_line_pitch: str = Field(..., description="Concise 1-sentence value pitch")
     core_problem: str = Field(..., description="Core pain point extracted from Reddit")
     target_customer: str = Field(..., description="Specific buyer persona")
+    source_platform: str = Field(default="unknown", description="Platform that produced the source post")
     source_subreddit: str = Field(..., description="Source subreddit")
     source_reddit_title: str = Field(..., description="Original Reddit thread title")
     source_reddit_url: str = Field(..., description="Original Reddit thread URL")
@@ -111,6 +118,7 @@ class EvaluatedStartupIdea(BaseModel):
             "Founder_Fit_Verdict": self.founder_fit.fit_verdict,
             "Founder_Fit_Rationale": self.founder_fit.fit_rationale,
             "Evaluator_Verdict": self.evaluator_verdict,
+            "Source_Platform": self.source_platform,
             "Source_Subreddit": self.source_subreddit,
             "Source_Reddit_Title": self.source_reddit_title,
             "Source_Reddit_URL": self.source_reddit_url,
@@ -122,15 +130,23 @@ class Stage1EvaluateRequest(BaseModel):
     """Request payload sent from n8n Stage 1 workflow (or CLI)."""
     posts: List[RedditPostInput] = Field(
         default_factory=list,
-        description="Scraped Reddit posts from n8n. If empty and fetch_live_reddit=True, backend scrapes Reddit.",
+        description="Scraped pain-point posts from n8n. If empty, backend fetches live from source.",
+    )
+    source: Literal["hn", "reddit_rss", "curated", "all"] = Field(
+        default="hn",
+        description="Zero-cost pain-point source: 'hn' (Hacker News Algolia API, 100% free), 'reddit_rss', or 'curated'.",
+    )
+    fetch_live: bool = Field(
+        default=True,
+        description="If true and posts list is empty, automatically fetch live pain-point threads.",
     )
     fetch_live_reddit: bool = Field(
         default=False,
-        description="If true and posts is empty, automatically scrape Reddit pain-point threads.",
+        description="Backwards compatibility alias for fetch_live.",
     )
     subreddits: List[str] = Field(
         default_factory=lambda: ["smallbusiness", "entrepreneur", "SaaS", "freelance"],
-        description="Subreddits to query when fetch_live_reddit=True",
+        description="Subreddits to query when source='reddit_rss'",
     )
     founder_profile_override: Optional[Dict[str, Any]] = Field(
         default=None,
@@ -144,6 +160,9 @@ class Stage1EvaluateResponse(BaseModel):
     top_3_ideas: List[EvaluatedStartupIdea]
     all_evaluated_ideas: List[EvaluatedStartupIdea]
     google_sheets_rows: List[Dict[str, Any]]
+    agent_mode: Literal["gemini", "fallback"] = "fallback"
+    source_used: str = "unknown"
+    node_errors: List[str] = Field(default_factory=list)
 
 
 # ============================================================================
@@ -216,3 +235,6 @@ class Stage2PRDResponse(BaseModel):
         ...,
         description="Complete formatted PRD document ready to write into a Google Doc",
     )
+    agent_mode: Literal["gemini", "fallback"] = "fallback"
+    source_used: str = "approved_idea"
+    node_errors: List[str] = Field(default_factory=list)

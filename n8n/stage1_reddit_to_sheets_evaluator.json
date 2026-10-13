@@ -1,5 +1,5 @@
 {
-  "name": "Stage 1: Reddit Pain Points -> Multi-Agent Evaluator (Top 3) -> Google Sheets",
+  "name": "Stage 1: Hacker News Pain Points -> Multi-Agent Evaluator (Top 3) -> Google Sheets",
   "nodes": [
     {
       "parameters": {
@@ -23,81 +23,20 @@
     },
     {
       "parameters": {
-        "operation": "search",
-        "subreddit": "smallbusiness",
-        "keyword": "\"wish there was\" OR \"tired of manually\" OR \"paying too much for\" OR \"why is there no tool\"",
-        "limit": 15,
-        "additionalFields": {
-          "sort": "top"
-        }
-      },
-      "id": "reddit-search-node",
-      "name": "Search Reddit Pain Points",
-      "type": "n8n-nodes-base.reddit",
-      "typeVersion": 1,
-      "position": [
-        460,
-        300
-      ]
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": false
-          },
-          "conditions": [
-            {
-              "id": "upvote-threshold",
-              "leftValue": "={{ $json.ups }}",
-              "rightValue": 5,
-              "operator": {
-                "type": "number",
-                "operation": "gte"
-              }
-            },
-            {
-              "id": "body-length-check",
-              "leftValue": "={{ ($json.selftext || '').length }}",
-              "rightValue": 50,
-              "operator": {
-                "type": "number",
-                "operation": "gte"
-              }
-            }
-          ],
-          "combinator": "and"
-        }
-      },
-      "id": "filter-quality-posts",
-      "name": "Filter High-Signal Posts",
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2,
-      "position": [
-        700,
-        300
-      ]
-    },
-    {
-      "parameters": {
-        "jsCode": "const posts = $input.all().map(item => ({\n  post_id: item.json.id,\n  subreddit: item.json.subreddit_name_prefixed || 'r/smallbusiness',\n  title: item.json.title,\n  selftext: item.json.selftext || '',\n  url: 'https://www.reddit.com' + (item.json.permalink || ''),\n  upvotes: item.json.ups || 10,\n  num_comments: item.json.num_comments || 5\n}));\n\nreturn [{ json: { posts, fetch_live_reddit: false } }];"
-      },
-      "id": "bundle-posts-payload",
-      "name": "Bundle Posts for Supervisor Agent",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        940,
-        300
-      ]
-    },
-    {
-      "parameters": {
         "method": "POST",
-        "url": "http://localhost:8000/api/v1/stage1/evaluate",
+        "url": "={{ $env.PIPELINE_BASE_URL + '/api/v1/stage1/evaluate' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.API_AUTH_KEY }}"
+            }
+          ]
+        },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify($json) }}",
+        "jsonBody": "={{ JSON.stringify({ posts: [], source: 'hn', fetch_live: true }) }}",
         "options": {
           "timeout": 120000
         }
@@ -107,7 +46,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1200,
+        520,
         300
       ]
     },
@@ -121,7 +60,7 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        1460,
+        820,
         300
       ]
     },
@@ -151,46 +90,13 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1720,
+        1120,
         300
       ]
     }
   ],
   "connections": {
     "Daily or Manual Trigger": {
-      "main": [
-        [
-          {
-            "node": "Search Reddit Pain Points",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Search Reddit Pain Points": {
-      "main": [
-        [
-          {
-            "node": "Filter High-Signal Posts",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Filter High-Signal Posts": {
-      "main": [
-        [
-          {
-            "node": "Bundle Posts for Supervisor Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Bundle Posts for Supervisor Agent": {
       "main": [
         [
           {

@@ -1,0 +1,13 @@
+.env
+.venv
+venv
+env
+outputs
+.git
+.pytest_cache
+__pycache__
+**/__pycache__
+*.pyc
+.idea
+.vscode
+n8n

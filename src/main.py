@@ -13,6 +13,7 @@ import os
 from typing import Any, Dict, List
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 
 from src.graph.stage1_graph import run_stage1_pipeline
 from src.graph.stage2_graph import run_stage2_pipeline
@@ -36,6 +37,17 @@ app = FastAPI(
     ),
     version="1.0.0",
 )
+
+
+@app.middleware("http")
+async def require_api_key(request, call_next):
+    """Protect /api/* when API_AUTH_KEY is set. /health stays open for platform probes."""
+    expected = os.getenv("API_AUTH_KEY", "").strip()
+    if expected and request.url.path.startswith("/api/"):
+        provided = request.headers.get("x-api-key", "")
+        if provided != expected:
+            return JSONResponse(status_code=401, content={"detail": "Invalid or missing API key"})
+    return await call_next(request)
 
 
 @app.get("/health")

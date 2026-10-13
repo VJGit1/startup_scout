@@ -6,21 +6,37 @@ Stage 2 (Approved Top Idea -> Research + PM Kano + Risk Agents -> Google Doc PRD
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
+import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
 from src.graph.stage1_graph import run_stage1_pipeline
 from src.graph.stage2_graph import run_stage2_pipeline
-from src.models import Stage1EvaluateRequest, Stage2PRDRequest
+from src.models import RedditPostInput, Stage1EvaluateRequest, Stage2PRDRequest
 from src.skill_loader import load_all_skills
-from src.tools.search import get_sample_reddit_posts
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "outputs"
+SOURCES = ("curated", "hn", "reddit_rss", "all")
 
 
-def main() -> None:
+def _build_stage1_request(source: str, posts_file: Path | None) -> Stage1EvaluateRequest:
+    if posts_file is not None:
+        raw = json.loads(posts_file.read_text(encoding="utf-8"))
+        posts = [RedditPostInput.model_validate(item) for item in raw]
+        return Stage1EvaluateRequest(posts=posts, source=source, fetch_live=False)
+    return Stage1EvaluateRequest(posts=[], source=source, fetch_live=source != "curated")
+
+
+def main(argv: list[str] | None = None) -> None:
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+    parser = argparse.ArgumentParser(description="Run the lifestyle startup discovery pipeline.")
+    parser.add_argument("--source", choices=SOURCES, default="curated")
+    parser.add_argument("--posts-file", type=Path, default=None, help="JSON list of pain-point posts.")
+    args = parser.parse_args(argv)
+
     load_dotenv()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -31,10 +47,10 @@ def main() -> None:
     print(f"Loaded {len(skills)} agentskills.io SKILL.md modules: {', '.join(skills.keys())}\n")
 
     # -------------------------------------------------------------------------
-    # STAGE 1: Evaluate Reddit Pain Points -> Pick Top 3 -> Export Google Sheet
+    # STAGE 1: Evaluate pain points -> Pick Top 3 -> Export Google Sheet preview
     # -------------------------------------------------------------------------
     print("[Stage 1] Running Supervisor -> Competitive/TAM Researcher -> Founder Fit -> Evaluator...")
-    stage1_req = Stage1EvaluateRequest(posts=get_sample_reddit_posts())
+    stage1_req = _build_stage1_request(args.source, args.posts_file)
     stage1_res = run_stage1_pipeline(stage1_req)
 
     # Save Stage 1 JSON & Google Sheets CSV preview
@@ -49,7 +65,12 @@ def main() -> None:
             writer.writeheader()
             writer.writerows(stage1_res.google_sheets_rows)
 
-    print(f"  -> Analyzed {stage1_res.total_posts_analyzed} Reddit posts.")
+    print(
+        f"  -> Analyzed {stage1_res.total_posts_analyzed} posts "
+        f"(source={stage1_res.source_used}, agent_mode={stage1_res.agent_mode})."
+    )
+    if stage1_res.node_errors:
+        print(f"  -> Node notes: {len(stage1_res.node_errors)}")
     print("  -> Top 3 Lifestyle Startup Ideas selected by Startup Evaluator Agent:")
     for idea in stage1_res.top_3_ideas:
         print(
@@ -59,6 +80,11 @@ def main() -> None:
             f"Founder Fit: {idea.founder_fit.founder_fit_score}/10"
         )
     print(f"  -> Saved Google Sheets rows preview to: {csv_path}\n")
+
+    if not stage1_res.top_3_ideas:
+        print("Stage 2 skipped: Top 3 is empty. No idea qualified under the founder budget.")
+        print(f"  -> Stage 1 results remain at: {stage1_json_path}")
+        return
 
     # -------------------------------------------------------------------------
     # STAGE 2: Simulate Human Approval of #1 Idea in Google Sheets -> Build PRD
@@ -84,7 +110,10 @@ def main() -> None:
 
     prd_md_path = OUTPUT_DIR / "google_doc_prd_top1.md"
     prd_md_path.write_text(stage2_res.google_doc_markdown, encoding="utf-8")
-    print(f"  -> Generated full Google Doc PRD at: {prd_md_path}")
+    print(
+        f"  -> Generated full Google Doc PRD at: {prd_md_path} "
+        f"(agent_mode={stage2_res.agent_mode})"
+    )
     print("=" * 78)
 
 
