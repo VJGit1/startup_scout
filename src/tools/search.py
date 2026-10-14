@@ -6,14 +6,18 @@ and structured LLM generation via Google Gemini.
 
 from __future__ import annotations
 
+import logging
 import os
-from typing import Any, Dict, List, Type, TypeVar
+import re
+from typing import Any, List, Type, TypeVar
+from urllib.parse import urlencode
 import httpx
 from pydantic import BaseModel
 
 from src.models import RedditPostInput
 
 T = TypeVar("T", bound=BaseModel)
+logger = logging.getLogger(__name__)
 
 PAIN_POINT_QUERIES = [
     '"wish there was a tool" OR "why is there no app" OR "tired of manually"',
@@ -26,6 +30,7 @@ def get_sample_reddit_posts() -> List[RedditPostInput]:
     return [
         RedditPostInput(
             post_id="r_smb_01",
+            source_platform="curated",
             subreddit="r/smallbusiness",
             title="Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
             selftext=(
@@ -41,6 +46,7 @@ def get_sample_reddit_posts() -> List[RedditPostInput]:
         ),
         RedditPostInput(
             post_id="r_freelance_02",
+            source_platform="curated",
             subreddit="r/freelance",
             title="Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
             selftext=(
@@ -55,6 +61,7 @@ def get_sample_reddit_posts() -> List[RedditPostInput]:
         ),
         RedditPostInput(
             post_id="r_saas_03",
+            source_platform="curated",
             subreddit="r/SaaS",
             title="We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
             selftext=(
@@ -68,6 +75,7 @@ def get_sample_reddit_posts() -> List[RedditPostInput]:
         ),
         RedditPostInput(
             post_id="r_ent_04",
+            source_platform="curated",
             subreddit="r/entrepreneur",
             title="Local MedSpas and dental clinics are terrible at replying to Instagram/Google Maps DMs after 5pm",
             selftext=(
@@ -82,6 +90,7 @@ def get_sample_reddit_posts() -> List[RedditPostInput]:
         ),
         RedditPostInput(
             post_id="r_smb_05",
+            source_platform="curated",
             subreddit="r/smallbusiness",
             title="I want to start a new nationwide airline with $500 budget because flights are too cramped",
             selftext=(
@@ -95,51 +104,213 @@ def get_sample_reddit_posts() -> List[RedditPostInput]:
     ]
 
 
-def fetch_reddit_pain_points(
-    subreddits: List[str] | None = None,
-    limit_per_sub: int = 5,
+def clean_html(raw_html: str) -> str:
+    """Strip basic HTML tags and unescape common HTML entities from HN comments."""
+    if not raw_html:
+        return ""
+    import html as html_lib
+    text = re.sub(r"<[^>]+>", " ", raw_html)
+    text = html_lib.unescape(text)
+    return " ".join(text.split())
+
+
+def _optional_count(value: Any) -> int:
+    """Use a real engagement count when the source provides one."""
+    if value is None or value == "":
+        return 0
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _reddit_post_id(link: str) -> str:
+    match = re.search(r"/comments/([^/]+)/", link or "")
+    if match:
+        return match.group(1)
+    return "rss_item"
+
+
+def _log_fetch_error(operation: str, exc: Exception) -> None:
+    logger.warning("%s: %s: %s", operation, type(exc).__name__, exc)
+
+
+def fetch_hacker_news_pain_points(
+    queries: List[str] | None = None,
+    limit_per_query: int = 4,
+    http_client: httpx.Client | None = None,
 ) -> List[RedditPostInput]:
     """
-    Fetch real pain-point posts from Reddit's public JSON search endpoint.
-    Falls back gracefully to curated Reddit pain-point posts if rate-limited or offline.
+    Fetch high-signal B2B and prosumer pain points from Hacker News via the official Algolia API.
+    Returns an empty list when the API is unreachable. Callers decide whether to use curated samples.
     """
-    subs = subreddits or ["smallbusiness", "entrepreneur", "SaaS", "freelance"]
+    search_queries = queries or [
+        "Ask HN tool you wish existed",
+        "Ask HN tedious workflow",
+        "wish there was a tool",
+        "tired of manually",
+    ]
     collected: List[RedditPostInput] = []
-    headers = {"User-Agent": "LifestyleStartupDiscoveryAgent/1.0"}
+    seen_ids: set[str] = set()
+
+    def _collect(client: httpx.Client) -> None:
+        for query in search_queries:
+            try:
+                resp = client.get(
+                    "https://hn.algolia.com/api/v1/search",
+                    params={"query": query, "tags": "story", "hitsPerPage": limit_per_query},
+                )
+                resp.raise_for_status()
+            except Exception as exc:
+                _log_fetch_error("fetch_hacker_news_pain_points", exc)
+                continue
+            for hit in resp.json().get("hits", []):
+                object_id = str(hit.get("objectID", ""))
+                if not object_id or object_id in seen_ids:
+                    continue
+                seen_ids.add(object_id)
+                title = (hit.get("title") or "").strip()
+                if not title:
+                    continue
+                body = clean_html(hit.get("story_text") or "")
+                collected.append(
+                    RedditPostInput(
+                        post_id=f"hn_story_{object_id}",
+                        source_platform="Hacker News",
+                        subreddit="Ask HN",
+                        title=title,
+                        selftext=body[:1500] if body else f"Hacker News discussion: {title}",
+                        url=f"https://news.ycombinator.com/item?id={object_id}",
+                        upvotes=_optional_count(hit.get("points")),
+                        num_comments=_optional_count(hit.get("num_comments")),
+                    )
+                )
+        try:
+            comment_resp = client.get(
+                "https://hn.algolia.com/api/v1/search",
+                params={"query": "wish there was a tool", "tags": "comment", "hitsPerPage": 5},
+            )
+            comment_resp.raise_for_status()
+        except Exception as exc:
+            _log_fetch_error("fetch_hacker_news_pain_points", exc)
+            return
+        for comment in comment_resp.json().get("hits", []):
+            comment_id = str(comment.get("objectID", ""))
+            if not comment_id or comment_id in seen_ids:
+                continue
+            seen_ids.add(comment_id)
+            comment_text = clean_html(comment.get("comment_text") or "")
+            if len(comment_text) <= 40:
+                continue
+            parent_title = comment.get("story_title") or "HN Discussion"
+            collected.append(
+                RedditPostInput(
+                    post_id=f"hn_comment_{comment_id}",
+                    source_platform="Hacker News",
+                    subreddit=f"HN Comment ({parent_title[:30]})",
+                    title=f"User Need: {comment_text[:90]}...",
+                    selftext=comment_text[:1500],
+                    url=f"https://news.ycombinator.com/item?id={comment_id}",
+                    upvotes=_optional_count(comment.get("points")),
+                    num_comments=0,
+                )
+            )
 
     try:
-        with httpx.Client(timeout=8.0, headers=headers, follow_redirects=True) as client:
-            for sub in subs[:3]:
-                url = (
-                    f"https://www.reddit.com/r/{sub}/search.json"
-                    f"?q=wish+there+was+OR+manual+OR+expensive+tool&restrict_sr=on&sort=top&t=month&limit={limit_per_sub}"
-                )
-                resp = client.get(url)
-                if resp.status_code != 200:
-                    continue
-                children = resp.json().get("data", {}).get("children", [])
-                for child in children:
-                    data = child.get("data", {})
-                    title = data.get("title", "").strip()
-                    selftext = data.get("selftext", "").strip()
-                    if title and len(selftext) > 60:
-                        collected.append(
-                            RedditPostInput(
-                                post_id=data.get("id", ""),
-                                subreddit=f"r/{sub}",
-                                title=title,
-                                selftext=selftext[:1500],
-                                url=f"https://www.reddit.com{data.get('permalink', '')}",
-                                upvotes=int(data.get("ups", 10)),
-                                num_comments=int(data.get("num_comments", 5)),
-                            )
-                        )
-    except Exception:
-        pass
-
-    if len(collected) < 3:
-        return get_sample_reddit_posts()
+        if http_client is not None:
+            _collect(http_client)
+        else:
+            with httpx.Client(timeout=9.0, headers={"User-Agent": "LifestyleStartupScout/1.0"}) as client:
+                _collect(client)
+    except Exception as exc:
+        _log_fetch_error("fetch_hacker_news_pain_points", exc)
     return collected
+
+
+def fetch_reddit_rss_pain_points(
+    subreddits: List[str] | None = None,
+    query: str = "manual OR software",
+    limit_per_sub: int = 4,
+    http_client: httpx.Client | None = None,
+) -> List[RedditPostInput]:
+    """
+    Fetch posts via public Reddit Atom feeds.
+    Best-effort only: a failed subreddit is logged and skipped. Upvotes are left at 0
+    because the feed does not include them.
+    """
+    import xml.etree.ElementTree as ET
+
+    subs = subreddits or ["smallbusiness", "freelance", "SaaS", "entrepreneur"]
+    collected: List[RedditPostInput] = []
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    query_string = urlencode({"q": query, "restrict_sr": "on", "sort": "top", "t": "month"})
+
+    def _collect(client: httpx.Client) -> None:
+        ns = {"atom": "http://www.w3.org/2005/Atom"}
+        for sub in subs:
+            url = f"https://www.reddit.com/r/{sub}/search.rss?{query_string}"
+            try:
+                resp = client.get(url)
+                resp.raise_for_status()
+                root = ET.fromstring(resp.text)
+            except Exception as exc:
+                _log_fetch_error(f"fetch_reddit_rss_pain_points r/{sub}", exc)
+                continue
+            entries = root.findall("atom:entry", ns)[:limit_per_sub]
+            for entry in entries:
+                title_elem = entry.find("atom:title", ns)
+                link_elem = entry.find("atom:link", ns)
+                content_elem = entry.find("atom:content", ns)
+                title = title_elem.text.strip() if title_elem is not None and title_elem.text else ""
+                link = link_elem.attrib.get("href", "") if link_elem is not None else ""
+                raw_content = content_elem.text if content_elem is not None and content_elem.text else ""
+                if not title:
+                    continue
+                collected.append(
+                    RedditPostInput(
+                        post_id=_reddit_post_id(link),
+                        source_platform="Reddit RSS",
+                        subreddit=f"r/{sub}",
+                        title=title,
+                        selftext=clean_html(raw_content)[:1500],
+                        url=link,
+                        upvotes=0,
+                        num_comments=0,
+                    )
+                )
+
+    try:
+        if http_client is not None:
+            _collect(http_client)
+        else:
+            with httpx.Client(timeout=8.0, headers=headers, follow_redirects=True) as client:
+                _collect(client)
+    except Exception as exc:
+        _log_fetch_error("fetch_reddit_rss_pain_points", exc)
+    return collected
+
+
+def fetch_pain_points(
+    source: str = "hn",
+    subreddits: List[str] | None = None,
+) -> List[RedditPostInput]:
+    """
+    Unified zero-cost pain-point fetcher.
+    Source options:
+      - 'hn': Hacker News Algolia API
+      - 'reddit_rss': Reddit public XML feeds (best effort)
+      - 'all': Hacker News plus Reddit RSS
+      - 'curated': Curated high-signal sample dataset
+    Returns an empty list when a live source yields nothing. The pipeline records that
+    and substitutes curated samples.
+    """
+    if source == "curated":
+        return get_sample_reddit_posts()
+    if source == "reddit_rss":
+        return fetch_reddit_rss_pain_points(subreddits=subreddits)
+    if source == "all":
+        return fetch_hacker_news_pain_points() + fetch_reddit_rss_pain_points(subreddits=subreddits)
+    return fetch_hacker_news_pain_points()
 
 
 def live_web_search(query: str, max_results: int = 4) -> str:
@@ -161,7 +332,8 @@ def live_web_search(query: str, max_results: int = 4) -> str:
             )
         return "\n".join(formatted)
     except Exception as exc:
-        return f"Web search fallback mode ({exc})"
+        _log_fetch_error("live_web_search", exc)
+        return f"Web search fallback mode ({type(exc).__name__}: {exc})"
 
 
 def has_live_gemini_key() -> bool:
@@ -198,4 +370,15 @@ def invoke_structured_llm(
             HumanMessage(content=user_prompt),
         ]
     )
-    return result  # type: ignore[return-value]
+    return coerce_structured_result(result, schema)
+
+
+def coerce_structured_result(result: Any, schema: Type[T]) -> T:
+    """Validate a Gemini structured result into the requested Pydantic model."""
+    if isinstance(result, schema):
+        return result
+    if isinstance(result, dict):
+        return schema.model_validate(result)
+    if result is None:
+        raise ValueError(f"LLM returned None for {schema.__name__}")
+    raise TypeError(f"LLM returned {type(result).__name__}, expected {schema.__name__}")

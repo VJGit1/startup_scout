@@ -6,6 +6,7 @@ so that LangGraph nodes dynamically use the portable Agent Skills definitions.
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -91,7 +92,11 @@ def get_skill_prompt(skill_name: str, include_references: bool = True) -> str:
 
 def load_founder_profile(profile_path: Path | str | None = None) -> Dict[str, Any]:
     """Load the configurable Founder Profile YAML used by the Founder-Market Fit Agent."""
-    target = Path(profile_path) if profile_path else DEFAULT_FOUNDER_PROFILE
+    if profile_path is None:
+        env_path = os.getenv("FOUNDER_PROFILE_PATH", "").strip()
+        target = Path(env_path) if env_path else DEFAULT_FOUNDER_PROFILE
+    else:
+        target = Path(profile_path)
     if not target.is_absolute():
         target = PROJECT_ROOT / target
     if not target.exists():

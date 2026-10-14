@@ -7,6 +7,7 @@
       "one_line_pitch": "Zero-bloat PDF Certificate of Insurance parser and automated SMS/email expiry chaser for small contractors.",
       "core_problem": "Small general contractors and property managers waste 5-6 hours/week chasing subcontractors for expiring Certificates of Insurance (COIs) because enterprise tools like Procore cost $600+/mo.",
       "target_customer": "Independent general contractors, property managers, and construction SMBs (5-50 employees)",
+      "source_platform": "curated",
       "source_subreddit": "r/smallbusiness",
       "source_reddit_title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
       "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
@@ -73,6 +74,7 @@
       "one_line_pitch": "Turn client 'quick asks' in Slack and email into polite, SOW-backed micro-change orders with 1-click Stripe approval.",
       "core_problem": "Freelancers and boutique agencies lose 15-20% of project revenue to unbilled scope creep buried in Slack and email threads.",
       "target_customer": "Boutique digital agencies, web dev shops, and B2B freelancers",
+      "source_platform": "curated",
       "source_subreddit": "r/freelance",
       "source_reddit_title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
       "source_reddit_url": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
@@ -134,6 +136,7 @@
       "one_line_pitch": "Plug-and-play failed-payment recovery and subscription pause widget built specifically for $2k-$30k MRR micro-SaaS.",
       "core_problem": "Indie SaaS founders lose up to 30% of involuntary churn because default Stripe emails go to spam and enterprise retention tools cost $250-$1,000+/mo.",
       "target_customer": "Bootstrapped micro-SaaS founders and subscription digital product creators",
+      "source_platform": "curated",
       "source_subreddit": "r/SaaS",
       "source_reddit_title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
       "source_reddit_url": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
@@ -196,6 +199,7 @@
       "one_line_pitch": "Zero-bloat PDF Certificate of Insurance parser and automated SMS/email expiry chaser for small contractors.",
       "core_problem": "Small general contractors and property managers waste 5-6 hours/week chasing subcontractors for expiring Certificates of Insurance (COIs) because enterprise tools like Procore cost $600+/mo.",
       "target_customer": "Independent general contractors, property managers, and construction SMBs (5-50 employees)",
+      "source_platform": "curated",
       "source_subreddit": "r/smallbusiness",
       "source_reddit_title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
       "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
@@ -262,6 +266,7 @@
       "one_line_pitch": "Turn client 'quick asks' in Slack and email into polite, SOW-backed micro-change orders with 1-click Stripe approval.",
       "core_problem": "Freelancers and boutique agencies lose 15-20% of project revenue to unbilled scope creep buried in Slack and email threads.",
       "target_customer": "Boutique digital agencies, web dev shops, and B2B freelancers",
+      "source_platform": "curated",
       "source_subreddit": "r/freelance",
       "source_reddit_title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
       "source_reddit_url": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
@@ -323,6 +328,7 @@
       "one_line_pitch": "Plug-and-play failed-payment recovery and subscription pause widget built specifically for $2k-$30k MRR micro-SaaS.",
       "core_problem": "Indie SaaS founders lose up to 30% of involuntary churn because default Stripe emails go to spam and enterprise retention tools cost $250-$1,000+/mo.",
       "target_customer": "Bootstrapped micro-SaaS founders and subscription digital product creators",
+      "source_platform": "curated",
       "source_subreddit": "r/SaaS",
       "source_reddit_title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
       "source_reddit_url": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
@@ -383,6 +389,7 @@
       "one_line_pitch": "Menu-grounded after-hours DM responder and consult booker for local MedSpas and dental practices.",
       "core_problem": "Local MedSpas and dental clinics spend $3k+/mo on ads but lose overnight IG/Google Maps inquiries because tools like Podium cost $500+/mo.",
       "target_customer": "Independent MedSpas, cosmetic dental clinics, and boutique wellness studios",
+      "source_platform": "curated",
       "source_subreddit": "r/entrepreneur",
       "source_reddit_title": "Local MedSpas and dental clinics are terrible at replying to Instagram/Google Maps DMs after 5pm",
       "source_reddit_url": "https://www.reddit.com/r/entrepreneur/comments/medspa_after_hours_dm_booking",
@@ -416,12 +423,12 @@
         "founder_fit_score": 7.6,
         "fit_verdict": "Moderate Fit",
         "strengths": [
-          "Strong technical fit for building the RAG/menu-grounded AI responder."
+          "Strong technical fit for building the menu-grounded AI responder."
         ],
         "blind_spots": [
           "Selling to local brick-and-mortar clinics requires more outbound calls/demos than pure self-serve SaaS."
         ],
-        "fit_rationale": "Moderate-to-Strong Fit (7.6/10): Technically straightforward (<$250 startup cost), though local clinic GTM is slightly more sales-heavy."
+        "fit_rationale": "Moderate-to-Strong Fit (7.6/10): Technically straightforward, though local clinic GTM is slightly more sales-heavy."
       },
       "scores": {
         "pain_severity_score": 8.5,
@@ -437,11 +444,12 @@
       "approval_status": "Backlog"
     },
     {
-      "idea_id": "idea-5-custom",
-      "idea_title": "Reddit Solution: I want to start a new nationwide airline with $500 budg",
-      "one_line_pitch": "Dedicated solution addressing: I want to start a new nationwide airline with $500 budget because flights are to",
+      "idea_id": "idea-5-airline",
+      "idea_title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
+      "one_line_pitch": "Capital-intensive airline concept that cannot be a bootstrapped software lifestyle business.",
       "core_problem": "Why doesn't someone just lease 10 Boeing 737 jets and make all seats first class for $99 tickets? Seems like an easy startup idea.",
-      "target_customer": "Users in r/smallbusiness",
+      "target_customer": "Mass-market airline passengers",
+      "source_platform": "curated",
       "source_subreddit": "r/smallbusiness",
       "source_reddit_title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
       "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/airline_hardware_idea",
@@ -460,9 +468,9 @@
           "target_buyer_segment": "Mass market airline passengers",
           "estimated_target_users": 1000000,
           "monthly_price_usd": 99.0,
-          "annual_price_usd": 200.0,
-          "bottom_up_tam_usd": 200000000.0,
-          "customers_for_10k_mrr": 500,
+          "annual_price_usd": 1188.0,
+          "bottom_up_tam_usd": 1188000000.0,
+          "customers_for_10k_mrr": 102,
           "tam_formula_explanation": "Capital-intensive physical operation; incompatible with bootstrapped software lifestyle model."
         }
       },
@@ -470,12 +478,12 @@
         "founder_fit_score": 1.5,
         "fit_verdict": "Poor Fit",
         "strengths": [
-          "None — violates bootstrapped lifestyle budget constraint."
+          "None — violates the configured lifestyle budget constraint."
         ],
         "blind_spots": [
-          "Requires multi-million dollar capital and regulatory licensing."
+          "Requires capital or operating scope beyond this founder profile."
         ],
-        "fit_rationale": "Disqualified: Exceeds the founder's $2,500 max startup cost and violates the software lifestyle scope."
+        "fit_rationale": "Disqualified: startup cost $5,000,000 exceeds the founder's $2,500 max startup cost."
       },
       "scores": {
         "pain_severity_score": 3.0,
@@ -513,6 +521,7 @@
       "Founder_Fit_Verdict": "Strong Fit",
       "Founder_Fit_Rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile.",
       "Evaluator_Verdict": "Rank #1 Winner: High-urgency B2B compliance pain (6 hrs/wk wasted + legal liability risk), massive price gap under $500/mo incumbents, $180 startup cost, and $82M niche TAM.",
+      "Source_Platform": "curated",
       "Source_Subreddit": "r/smallbusiness",
       "Source_Reddit_Title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
       "Source_Reddit_URL": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
@@ -539,6 +548,7 @@
       "Founder_Fit_Verdict": "Strong Fit",
       "Founder_Fit_Rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile.",
       "Evaluator_Verdict": "Rank #2 Winner: Directly generates revenue for users on Day 1 (1 recovered change order = 10x monthly fee), $150 startup cost, and strong viral distribution among agencies.",
+      "Source_Platform": "curated",
       "Source_Subreddit": "r/freelance",
       "Source_Reddit_Title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
       "Source_Reddit_URL": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
@@ -565,6 +575,7 @@
       "Founder_Fit_Verdict": "Strong Fit",
       "Founder_Fit_Rationale": "Strong Fit (8.8/10): Easy to build and market organically on r/SaaS and IndieHackers within a 20 hr/wk lifestyle schedule.",
       "Evaluator_Verdict": "Rank #3 Winner: Ultra-lean micro-SaaS ($120 startup cost) with clear ROI for indie founders priced out of $250+/mo retention tools.",
+      "Source_Platform": "curated",
       "Source_Subreddit": "r/SaaS",
       "Source_Reddit_Title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
       "Source_Reddit_URL": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
@@ -589,8 +600,9 @@
       "Competitive_Wedge": "No-contract $79/mo after-hours AI receptionist grounded strictly in the clinic's exact service menu PDF.",
       "Founder_Fit_Score_10": 7.6,
       "Founder_Fit_Verdict": "Moderate Fit",
-      "Founder_Fit_Rationale": "Moderate-to-Strong Fit (7.6/10): Technically straightforward (<$250 startup cost), though local clinic GTM is slightly more sales-heavy.",
+      "Founder_Fit_Rationale": "Moderate-to-Strong Fit (7.6/10): Technically straightforward, though local clinic GTM is slightly more sales-heavy.",
       "Evaluator_Verdict": "Rank #4 Runner-Up: Great unit economics ($79/mo) and clear pain, but slightly below Top 3 due to local clinic sales friction and Meta API approval steps.",
+      "Source_Platform": "curated",
       "Source_Subreddit": "r/entrepreneur",
       "Source_Reddit_Title": "Local MedSpas and dental clinics are terrible at replying to Instagram/Google Maps DMs after 5pm",
       "Source_Reddit_URL": "https://www.reddit.com/r/entrepreneur/comments/medspa_after_hours_dm_booking",
@@ -600,27 +612,53 @@
       "Rank": 5,
       "Is_Top_3": "No",
       "Approval_Status": "Disqualified (Over Budget/Scope)",
-      "Idea_ID": "idea-5-custom",
-      "Idea_Title": "Reddit Solution: I want to start a new nationwide airline with $500 budg",
-      "One_Line_Pitch": "Dedicated solution addressing: I want to start a new nationwide airline with $500 budget because flights are to",
+      "Idea_ID": "idea-5-airline",
+      "Idea_Title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
+      "One_Line_Pitch": "Capital-intensive airline concept that cannot be a bootstrapped software lifestyle business.",
       "Core_Problem": "Why doesn't someone just lease 10 Boeing 737 jets and make all seats first class for $99 tickets? Seems like an easy startup idea.",
-      "Target_Customer": "Users in r/smallbusiness",
+      "Target_Customer": "Mass-market airline passengers",
       "Total_Score_100": 22.2,
-      "Bottom_Up_TAM_USD": "$200,000,000/yr",
+      "Bottom_Up_TAM_USD": "$1,188,000,000/yr",
       "TAM_Formula": "Capital-intensive physical operation; incompatible with bootstrapped software lifestyle model.",
-      "Customers_For_10k_MRR": 500,
+      "Customers_For_10k_MRR": 102,
       "Startup_Cost_USD": "$5,000,000",
       "Startup_Cost_Breakdown": "Requires FAA certification, aircraft leasing, and millions in capital.",
       "Competitors": "Legacy Incumbents ($10,000+/mo)",
       "Competitive_Wedge": "None compatible with a bootstrapped lifestyle business.",
       "Founder_Fit_Score_10": 1.5,
       "Founder_Fit_Verdict": "Poor Fit",
-      "Founder_Fit_Rationale": "Disqualified: Exceeds the founder's $2,500 max startup cost and violates the software lifestyle scope.",
+      "Founder_Fit_Rationale": "Disqualified: startup cost $5,000,000 exceeds the founder's $2,500 max startup cost.",
       "Evaluator_Verdict": "Disqualified: Violates lifestyle business budget and asset-light constraints.",
+      "Source_Platform": "curated",
       "Source_Subreddit": "r/smallbusiness",
       "Source_Reddit_Title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
       "Source_Reddit_URL": "https://www.reddit.com/r/smallbusiness/comments/airline_hardware_idea",
       "Google_Doc_PRD_URL": ""
     }
+  ],
+  "agent_mode": "fallback",
+  "source_used": "curated",
+  "node_errors": [
+    "extract_ideas: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
+    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
+    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
+    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
+    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
+    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
+    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback."
   ]
 }
