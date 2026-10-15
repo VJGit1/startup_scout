@@ -1,16 +1,31 @@
 # Lifestyle Startup Discovery
 
-This project turns public pain-point posts into ranked lifestyle-business ideas, then writes a product requirements document for the idea you approve.
+A two-stage agent pipeline that turns pain-point posts into ranked lifestyle-business ideas, then writes a product requirements document for the idea you approve.
 
-A lifestyle business here means a small software product: under the budget in [`config/founder_profile.yaml`](config/founder_profile.yaml) (default `$2,500`), a short MVP, and a small team. The sample data includes an "start an airline" post so you can see that idea get rejected.
+A lifestyle business here is a small software product: under the budget in [`config/founder_profile.yaml`](config/founder_profile.yaml) (default $2,500), shippable as a short MVP, and runnable by a small team. The sample set includes an "start an airline" post so you can see an idea rejected for cost and scope.
 
-You do not need a Reddit API key. Live posts come from the free [Hacker News Algolia API](https://hn.algolia.com/api). Gemini does the writing when `GEMINI_API_KEY` is set. Without that key, the same commands still finish using a built-in fallback.
+Live posts come from the [Hacker News Algolia API](https://hn.algolia.com/api). No Reddit API key is required.
 
----
+## Stack
 
-## Run it
+| Layer | Choice |
+| :--- | :--- |
+| API | Python, FastAPI, Uvicorn |
+| Agents | LangGraph, one node per specialist |
+| Model | Gemini (`gemini-2.5-flash` by default) via LangChain |
+| Contracts | Pydantic v2 |
+| Agent instructions | [Agent Skills](https://agentskills.io/home) files in `.agents/skills/` |
+| Founder constraints | `config/founder_profile.yaml` |
+| Pain points | Curated fixtures, Hacker News, optional Reddit RSS |
+| Competitor lookup | DuckDuckGo search |
+| Approval path | n8n, Google Sheets, and Google Docs |
+| Tests | pytest, offline by default |
 
-From the repo folder in PowerShell:
+The weighted score is recomputed in code from five subscores. The model can suggest the parts. It cannot invent the total.
+
+## Run the pipeline
+
+From the repository root in PowerShell:
 
 ```powershell
 python -m venv .venv
@@ -19,123 +34,136 @@ pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Open `.env` and set `GEMINI_API_KEY` to a key from [Google AI Studio](https://aistudio.google.com/apikey). Leave `API_AUTH_KEY` empty for local runs. Do not commit `.env`.
+Set `GEMINI_API_KEY` in `.env` from [Google AI Studio](https://aistudio.google.com/apikey). Leave `API_AUTH_KEY` empty on your machine. Do not commit `.env`.
 
-Optional: edit [`config/founder_profile.yaml`](config/founder_profile.yaml) so scores use your budget, skills, and weekly hours.
+Edit [`config/founder_profile.yaml`](config/founder_profile.yaml) if the scores should reflect a different budget, skill set, or weekly hour cap.
 
-### 1. Sample posts (start here)
+Then run both stages on the five sample posts:
 
 ```powershell
 python cli.py --source curated
 ```
 
-This runs both stages on five built-in posts. It is quiet while Gemini works, then prints a Top 3. It writes:
-
-| File | What it is |
-| :--- | :--- |
-| `outputs/stage1_evaluated_ideas.json` | Every idea, score, market size, and cost |
-| `outputs/google_sheets_evaluated_ideas.csv` | The same rows, in sheet-column form |
-| `outputs/google_doc_prd_top1.md` | The PRD for the winning idea |
-
-Success looks like `agent_mode=gemini` in the console. `fallback` means a step threw an error and the handwritten backup was used. The warning above that line is the reason.
-
-### 2. Live Hacker News posts
+The terminal stays quiet while Gemini works. When it finishes, look for `agent_mode=gemini`. Open the PRD:
 
 ```powershell
-python cli.py --source hn
+Get-Content outputs\google_doc_prd_top1.md -TotalCount 40
 ```
 
-Same output files, overwritten. Expect several minutes with no new lines. The command is not looping: it fetches about 15–20 stories, then calls Gemini three times per idea (research, founder fit, score) before Stage 2. Stop it with Ctrl+C if it sits for more than about 15 minutes with no output. DuckDuckGo competitor search has no timeout and can hang.
+| File | Contents |
+| :--- | :--- |
+| `outputs/google_doc_prd_top1.md` | PRD for the top idea |
+| `outputs/stage1_evaluated_ideas.json` | Every idea, score, market size, cost, and `agent_mode` |
+| `outputs/google_sheets_evaluated_ideas.csv` | The same rows, ready to paste into a sheet |
 
-Other inputs: `--source reddit_rss` (best effort, often blocked), `--source all`, or `--posts-file posts.json` for your own JSON list.
+`agent_mode=fallback` means at least one step failed and the built-in writeup was used. The warning above that line names the failure.
 
-### 3. API
+The free tier for `gemini-2.5-flash` is small (on the order of 20 requests per day). One curated run uses about 19 calls: one extraction, three calls per idea, then three calls for the PRD. Run it once. Check usage at [ai.dev/rate-limit](https://ai.dev/rate-limit). A `429 RESOURCE_EXHAUSTED` response will not succeed until the daily window resets. Stop that process with Ctrl+C. The last successful files in `outputs/` are still the result.
 
-Use a terminal that is not already running the CLI:
+### A shorter live run
+
+`python cli.py --source hn` fetches the full Hacker News set, often 15 to 20 stories, and will spend more than a free-tier day. To score five live stories instead, save a short list and pass it in:
+
+```powershell
+@'
+import json
+from dotenv import load_dotenv
+load_dotenv()
+from src.tools.search import fetch_hacker_news_pain_points
+posts = fetch_hacker_news_pain_points(queries=["Ask HN tool you wish existed"], limit_per_query=5)[:5]
+with open("posts.json", "w", encoding="utf-8") as f:
+    json.dump([p.model_dump() for p in posts], f, indent=2)
+print("Wrote", len(posts), "posts")
+'@ | Set-Content -Encoding utf8 fetch_top5.py
+
+python fetch_top5.py
+python cli.py --posts-file posts.json
+```
+
+`--posts-file` does not fetch again. The console should say `source=provided`.
+
+`--source reddit_rss` is best-effort. Reddit often blocks anonymous feeds.
+
+## API
+
+Start the server only when you want Swagger or n8n. The CLI does not need it. Use a terminal that is not already running `python -m src.main` — port 8000 can be held by only one process.
 
 ```powershell
 python -m src.main
 ```
 
-Leave that window open. Uvicorn listens on http://localhost:8000.
+Open [http://localhost:8000/docs](http://localhost:8000/docs).
 
-Open **http://localhost:8000/docs**. The site root (`/`) returns 404. A `GET /json/version` 404 is a browser probe, not a crashed server.
+The site root, [http://localhost:8000/](http://localhost:8000/), returns 404. That is expected. There is no homepage. A `GET /json/version` 404 is a browser probe, not a failed startup.
 
-- http://localhost:8000/health returns `"status": "ok"` and the loaded skills.
-- `POST /api/v1/stage1/evaluate` ranks posts. For a short first call, send `{"posts": [], "source": "curated", "fetch_live": false}`.
-- `POST /api/v1/stage2/generate-prd` writes a PRD. Required fields are `idea_title` and `core_problem`. Read `google_doc_markdown` in the response.
+| Call | Purpose |
+| :--- | :--- |
+| `GET /health` | Process is up, skills are loaded |
+| `POST /api/v1/stage1/evaluate` | Rank posts. Body for the sample set: `{"posts": [], "source": "curated", "fetch_live": false}` |
+| `POST /api/v1/stage2/generate-prd` | Write a PRD. `idea_title` and `core_problem` are required |
 
-`source: "hn"` with `"fetch_live": true` is the long Hacker News run. Swagger will look idle until it returns.
+Swagger shows the JSON in the browser. It does not write the `outputs/` files. Those files are written only by `cli.py`.
 
-### 4. Tests
+## n8n
+
+n8n is the human-approval path. It calls this API. It does not replace it, and it does not need a Reddit key or an n8n Cloud account. Gemini stays in `.env` on the Python process.
+
+1. Leave `python -m src.main` running.
+2. In another terminal, start n8n with `npx n8n`.
+3. Set n8n's `PIPELINE_BASE_URL` to `http://localhost:8000`.
+4. Import [`n8n/stage1_reddit_to_sheets_evaluator.json`](n8n/stage1_reddit_to_sheets_evaluator.json) and [`n8n/stage2_sheets_human_approval_to_gdoc_prd.json`](n8n/stage2_sheets_human_approval_to_gdoc_prd.json).
+5. Connect Google Sheets and Google Docs. Replace `YOUR_GOOGLE_SHEET_ID_HERE`. Create a tab named `Evaluated_Ideas` whose headers match `outputs/google_sheets_evaluated_ideas.csv`.
+6. Run Stage 1. Rows appear in the sheet. Set one Top 3 row's `Approval_Status` to `Approved`. Stage 2 creates a Google Doc and writes the URL into `Google_Doc_PRD_URL`.
+
+n8n results live in Google Sheets and Google Docs, not in `outputs/`.
+
+The Stage 1 HTTP node times out after 120 seconds. Raise that timeout before a Gemini run. The imported Stage 1 workflow requests every live Hacker News story. For a first sheet test, point that node at curated posts, or wait until the free-tier quota has reset.
+
+If you set `API_AUTH_KEY` on the server, set the same value in n8n. Leave it blank locally.
+
+## How a run moves
+
+```mermaid
+flowchart TD
+    posts["Posts: five samples, Hacker News, or a JSON file"] --> research["Competitors, startup cost, and bottom-up market size"]
+    research --> fit["Founder fit against the YAML profile"]
+    fit --> rank["Weighted score and Top 3"]
+    rank --> approve["You approve one idea"]
+    approve --> prd["PRD: problem, MVP, Kano table, go-to-market, risks"]
+```
+
+Stage 1 extracts one idea per post, estimates competitors and a bottom-up market (reachable buyers times annual price), scores founder fit, and keeps the best three ideas that stay inside the budget.
+
+Stage 2 writes the PRD for the approved idea: problem, value proposition, 30-day MVP, feature priority, go-to-market, risks, and 48-hour tests.
+
+Each step is a LangGraph node. Instructions are loaded from `.agents/skills/` by [`src/skill_loader.py`](src/skill_loader.py).
+
+| Skill | File | Job |
+| :--- | :--- | :--- |
+| Supervisor | [`.agents/skills/supervisor-orchestrator/SKILL.md`](.agents/skills/supervisor-orchestrator/SKILL.md) | Orders the two stages |
+| Market research | [`.agents/skills/competitive-market-researcher/SKILL.md`](.agents/skills/competitive-market-researcher/SKILL.md) | Competitors, market size, startup cost |
+| Founder fit | [`.agents/skills/founder-market-fit/SKILL.md`](.agents/skills/founder-market-fit/SKILL.md) | Compares the idea with the YAML profile |
+| Evaluator | [`.agents/skills/startup-evaluator/SKILL.md`](.agents/skills/startup-evaluator/SKILL.md) | Scores ideas and picks the Top 3 |
+| Product | [`.agents/skills/pm-strategist/SKILL.md`](.agents/skills/pm-strategist/SKILL.md) | Problem, MVP, Kano table, go-to-market |
+| Risk | [`.agents/skills/risk-analyst/SKILL.md`](.agents/skills/risk-analyst/SKILL.md) | Risks and 48-hour tests |
+
+`agent_mode` is `gemini` only when every agent step accepted a model result. `node_errors` lists the exceptions that sent a step to the fallback. This repository does not include a trace viewer or a model-quality eval harness. The evaluator scores business ideas. It does not score the model.
+
+## Tests
 
 ```powershell
 pytest
 ```
 
-The default run does not call Gemini or Hacker News. One live model test stays skipped unless `RUN_LIVE_GEMINI=1`.
+The default run does not call Gemini or Hacker News. The live model test stays skipped unless `GEMINI_API_KEY` is set and `RUN_LIVE_GEMINI=1`.
 
----
+## Hosting
 
-## n8n (optional)
+Host the API on [Cloud Run](https://cloud.google.com/run) and set the request timeout to at least 15 minutes. A full Gemini run is too slow for a short serverless limit, including Vercel. [Render](https://render.com)'s free web services sleep and often time out first. Build with the included `Dockerfile`. Set `GEMINI_API_KEY`, `API_AUTH_KEY`, and `PORT` on the host. Use `/health` as the health check. It does not require the API key.
 
-n8n does not replace the API. It calls the API. You do not need a Reddit key or an n8n cloud account.
+A public demo should show a saved run first. An open "run live Hacker News" button will spend the Gemini quota.
 
-1. Keep `python -m src.main` running.
-2. In another terminal, start n8n (`npx n8n`).
-3. Set n8n's `PIPELINE_BASE_URL` to `http://localhost:8000`.
-4. Import:
-   - [`n8n/stage1_reddit_to_sheets_evaluator.json`](n8n/stage1_reddit_to_sheets_evaluator.json)
-   - [`n8n/stage2_sheets_human_approval_to_gdoc_prd.json`](n8n/stage2_sheets_human_approval_to_gdoc_prd.json)
-5. Connect Google Sheets and Google Docs. Replace `YOUR_GOOGLE_SHEET_ID_HERE`. Create a tab named `Evaluated_Ideas` whose headers match `outputs/google_sheets_evaluated_ideas.csv`.
-6. Run Stage 1 once. Set one Top 3 row's `Approval_Status` to `Approved`. Stage 2 creates a Google Doc and writes the URL back.
-
-The Stage 1 HTTP node times out after 120 seconds. A full Hacker News plus Gemini run is often slower, so raise that timeout or send curated posts for the first sheet test.
-
-If `API_AUTH_KEY` is set on the server, set the same value in n8n. Local runs should leave it blank.
-
----
-
-## What the two stages do
-
-```mermaid
-flowchart TD
-    posts["Posts: curated samples, Hacker News, or a JSON file"] --> research["Competitor and market-size research"]
-    research --> fit["Founder fit against config/founder_profile.yaml"]
-    fit --> rank["Weighted score and Top 3"]
-    rank --> you["You approve one idea"]
-    you --> prd["PRD: problem, MVP, Kano table, go-to-market, risks"]
-```
-
-Stage 1 extracts one idea per post, estimates competitors and a bottom-up market size (reachable buyers times annual price), scores founder fit, and keeps the best three ideas whose startup cost is inside your budget.
-
-Stage 2 writes the PRD for the approved idea: problem, value proposition, 30-day MVP, feature priority, go-to-market, risks, and 48-hour tests.
-
-Each step is a LangGraph node. The instructions live in `.agents/skills/*/SKILL.md` and are loaded by [`src/skill_loader.py`](src/skill_loader.py). The 100-point total is recomputed in code from the five subscores.
-
-| Skill | File | Job |
-| :--- | :--- | :--- |
-| Supervisor | [`.agents/skills/supervisor-orchestrator/SKILL.md`](.agents/skills/supervisor-orchestrator/SKILL.md) | Orders Stage 1 and Stage 2 |
-| Market research | [`.agents/skills/competitive-market-researcher/SKILL.md`](.agents/skills/competitive-market-researcher/SKILL.md) | Competitors, bottom-up market size, startup cost |
-| Founder fit | [`.agents/skills/founder-market-fit/SKILL.md`](.agents/skills/founder-market-fit/SKILL.md) | Compares the idea with your YAML profile |
-| Evaluator | [`.agents/skills/startup-evaluator/SKILL.md`](.agents/skills/startup-evaluator/SKILL.md) | Scores ideas and picks the Top 3 |
-| PM | [`.agents/skills/pm-strategist/SKILL.md`](.agents/skills/pm-strategist/SKILL.md) | Problem, MVP, Kano table, go-to-market |
-| Risk | [`.agents/skills/risk-analyst/SKILL.md`](.agents/skills/risk-analyst/SKILL.md) | Risks and 48-hour validation tests |
-
-`agent_mode` on every API response is `gemini` only when every agent step accepted a model result. `node_errors` lists the exceptions that caused a fallback. There is no trace viewer in this repo.
-
----
-
-## Free hosting
-
-No Reddit key.
-
-1. **Gemini:** the same AI Studio key, as `GEMINI_API_KEY` on the host.
-2. **Posts:** Hacker News Algolia. No key.
-3. **API:** build the `Dockerfile` and deploy to [Cloud Run](https://cloud.google.com/run) (scale to zero) or a [Render](https://render.com) free web service (sleeps when idle). Set `GEMINI_API_KEY`, `API_AUTH_KEY`, and `PORT`. Use `/health` as the health check. It does not require the API key.
-4. **Approval:** a Google Sheet. A person sets `Approval_Status` to `Approved`.
-
-A daily GitHub Actions call, using repository secrets rather than a workflow committed to run on push:
+A daily call, stored as repository secrets and not committed as a push-triggered workflow:
 
 ```yaml
 name: Evaluate HN pain points
@@ -152,13 +180,13 @@ jobs:
           curl -fsS -X POST "$PIPELINE_BASE_URL/api/v1/stage1/evaluate" \
             -H "Content-Type: application/json" \
             -H "X-API-Key: $API_AUTH_KEY" \
-            -d '{"posts":[],"source":"hn","fetch_live":true}'
+            -d '{"posts":[],"source":"curated","fetch_live":false}'
         env:
           PIPELINE_BASE_URL: ${{ secrets.PIPELINE_BASE_URL }}
           API_AUTH_KEY: ${{ secrets.API_AUTH_KEY }}
 ```
 
-Stage 2 can be an Apps Script installable trigger on that sheet (`Extensions` → `Apps Script`). A simple `onEdit` trigger cannot call `UrlFetchApp`.
+Stage 2 can be an installable Apps Script trigger on the sheet (`Extensions` → `Apps Script`). A simple `onEdit` trigger cannot call `UrlFetchApp`. Store `PIPELINE_BASE_URL` and `API_AUTH_KEY` in the script properties.
 
 ```javascript
 function onEdit(e) {
@@ -186,13 +214,16 @@ function onEdit(e) {
     competitive_wedge: sheet.getRange(row, col("Competitive_Wedge")).getValue(),
     founder_fit_summary: sheet.getRange(row, col("Founder_Fit_Rationale")).getValue()
   };
-  var response = UrlFetchApp.fetch(PropertiesService.getScriptProperties().getProperty("PIPELINE_BASE_URL") + "/api/v1/stage2/generate-prd", {
-    method: "post",
-    contentType: "application/json",
-    headers: { "X-API-Key": PropertiesService.getScriptProperties().getProperty("API_AUTH_KEY") },
-    payload: JSON.stringify(payload),
-    muteHttpExceptions: true
-  });
+  var response = UrlFetchApp.fetch(
+    PropertiesService.getScriptProperties().getProperty("PIPELINE_BASE_URL") + "/api/v1/stage2/generate-prd",
+    {
+      method: "post",
+      contentType: "application/json",
+      headers: { "X-API-Key": PropertiesService.getScriptProperties().getProperty("API_AUTH_KEY") },
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    }
+  );
   var body = JSON.parse(response.getContentText());
   var doc = DocumentApp.create(body.document_title);
   doc.getBody().setText(body.google_doc_markdown);
@@ -200,5 +231,3 @@ function onEdit(e) {
   sheet.getRange(row, col("Approval_Status")).setValue("PRD Generated");
 }
 ```
-
-Store `PIPELINE_BASE_URL` and `API_AUTH_KEY` in the script properties.
