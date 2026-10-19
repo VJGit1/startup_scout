@@ -62,7 +62,7 @@ The free tier for `gemini-2.5-flash` is small (on the order of 20 requests per d
 
 ### A shorter live run
 
-`python cli.py --source hn` fetches the full Hacker News set, often 15 to 20 stories, and will spend more than a free-tier day. To score five live stories instead, save a short list and pass it in:
+`python cli.py --source hn` fetches at most 3 Hacker News posts so one free-tier day can score them. To score five live stories instead, save a short list and pass it in:
 
 ```powershell
 @'
@@ -70,7 +70,7 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 from src.tools.search import fetch_hacker_news_pain_points
-posts = fetch_hacker_news_pain_points(queries=["Ask HN tool you wish existed"], limit_per_query=5)[:5]
+posts = fetch_hacker_news_pain_points(queries=["Ask HN tool you wish existed"], limit_per_query=5, max_posts=5)[:5]
 with open("posts.json", "w", encoding="utf-8") as f:
     json.dump([p.model_dump() for p in posts], f, indent=2)
 print("Wrote", len(posts), "posts")
@@ -110,16 +110,13 @@ n8n is the human-approval path. It calls this API. It does not replace it, and i
 
 1. Leave `python -m src.main` running.
 2. In another terminal, start n8n with `npx n8n`.
-3. Set n8n's `PIPELINE_BASE_URL` to `http://localhost:8000`.
-4. Import [`n8n/stage1_reddit_to_sheets_evaluator.json`](n8n/stage1_reddit_to_sheets_evaluator.json) and [`n8n/stage2_sheets_human_approval_to_gdoc_prd.json`](n8n/stage2_sheets_human_approval_to_gdoc_prd.json).
-5. Connect Google Sheets and Google Docs. Replace `YOUR_GOOGLE_SHEET_ID_HERE`. Create a tab named `Evaluated_Ideas` whose headers match `outputs/google_sheets_evaluated_ideas.csv`.
-6. Run Stage 1. Rows appear in the sheet. Set one Top 3 row's `Approval_Status` to `Approved`. Stage 2 creates a Google Doc and writes the URL into `Google_Doc_PRD_URL`.
+3. Import [`n8n/stage1_reddit_to_sheets_evaluator.json`](n8n/stage1_reddit_to_sheets_evaluator.json) and [`n8n/stage2_sheets_human_approval_to_gdoc_prd.json`](n8n/stage2_sheets_human_approval_to_gdoc_prd.json).
+4. Connect Google Sheets and Google Docs. The workflows already point at spreadsheet `1GQzKsAm4kjbgDbD3Q13fgmqVZ5iiNnTZ37_LUeVTv0Q` and at `http://localhost:8000`. The tab must be named `Evaluated_Ideas`, with the header row from `outputs/google_sheets_evaluated_ideas.csv`.
+5. Run Stage 1. It fetches at most 3 Hacker News posts and waits up to 15 minutes. Rows appear in the sheet. Set one Top 3 row's `Approval_Status` to `Approved`. Stage 2 creates a Google Doc and writes the URL into `Google_Doc_PRD_URL`.
 
 n8n results live in Google Sheets and Google Docs, not in `outputs/`.
 
-The Stage 1 HTTP node times out after 120 seconds. Raise that timeout before a Gemini run. The imported Stage 1 workflow requests every live Hacker News story. For a first sheet test, point that node at curated posts, or wait until the free-tier quota has reset.
-
-If you set `API_AUTH_KEY` on the server, set the same value in n8n. Leave it blank locally.
+If you set `API_AUTH_KEY` on the server, add an `X-API-Key` header on both HTTP nodes. Leave it blank locally.
 
 ## How a run moves
 

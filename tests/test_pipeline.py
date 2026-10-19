@@ -126,6 +126,42 @@ def test_empty_posts_request_hacker_news_source(monkeypatch):
     assert response.total_posts_analyzed == 1
 
 
+def test_hacker_news_fetcher_stops_at_three_posts():
+    hits = [
+        {
+            "objectID": str(i),
+            "title": f"Wish there was a tool {i}",
+            "story_text": "Tired of doing this manually.",
+            "points": 1,
+            "num_comments": 0,
+        }
+        for i in range(6)
+    ]
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"hits": hits})
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        posts = fetch_hacker_news_pain_points(http_client=client)
+
+    assert len(posts) == 3
+    assert [post.post_id for post in posts] == ["hn_story_0", "hn_story_1", "hn_story_2"]
+
+
+def test_failed_live_fetch_does_not_substitute_fixture_posts(monkeypatch):
+    monkeypatch.setattr("src.graph.stage1_graph.fetch_pain_points", lambda **_kwargs: [])
+    response = run_stage1_pipeline(
+        Stage1EvaluateRequest(posts=[], source="hn", fetch_live=True)
+    )
+
+    assert response.source_used == "hn"
+    assert response.total_posts_analyzed == 0
+    assert response.top_3_ideas == []
+    assert response.google_sheets_rows == []
+    assert any("zero items" in error for error in response.node_errors)
+    assert not any("reddit.com" in error for error in response.node_errors)
+
+
 def test_stage2_fallback_describes_the_approved_idea():
     response = run_stage2_pipeline(
         Stage2PRDRequest(
