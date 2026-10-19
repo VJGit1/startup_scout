@@ -9,7 +9,8 @@ from __future__ import annotations
 import logging
 import os
 import re
-from typing import Any, List, Type, TypeVar
+import threading
+from typing import Any, Callable, List, Type, TypeVar
 from urllib.parse import urlencode
 import httpx
 from pydantic import BaseModel
@@ -26,7 +27,7 @@ PAIN_POINT_QUERIES = [
 
 
 def get_sample_reddit_posts() -> List[RedditPostInput]:
-    """Curated real-world Reddit pain-point posts for testing or fallback."""
+    """Offline fixture posts. The Reddit URLs are not real threads."""
     return [
         RedditPostInput(
             post_id="r_smb_01",
@@ -139,10 +140,12 @@ def fetch_hacker_news_pain_points(
     queries: List[str] | None = None,
     limit_per_query: int = 4,
     http_client: httpx.Client | None = None,
+    max_posts: int = 3,
 ) -> List[RedditPostInput]:
     """
     Fetch high-signal B2B and prosumer pain points from Hacker News via the official Algolia API.
-    Returns an empty list when the API is unreachable. Callers decide whether to use curated samples.
+    Stops at max_posts so one Gemini free-tier day can score the batch.
+    Returns an empty list when the API is unreachable.
     """
     search_queries = queries or [
         "Ask HN tool you wish existed",
@@ -185,6 +188,8 @@ def fetch_hacker_news_pain_points(
                         num_comments=_optional_count(hit.get("num_comments")),
                     )
                 )
+                if len(collected) >= max_posts:
+                    return
         try:
             comment_resp = client.get(
                 "https://hn.algolia.com/api/v1/search",
@@ -193,6 +198,8 @@ def fetch_hacker_news_pain_points(
             comment_resp.raise_for_status()
         except Exception as exc:
             _log_fetch_error("fetch_hacker_news_pain_points", exc)
+            return
+        if len(collected) >= max_posts:
             return
         for comment in comment_resp.json().get("hits", []):
             comment_id = str(comment.get("objectID", ""))
@@ -215,6 +222,8 @@ def fetch_hacker_news_pain_points(
                     num_comments=0,
                 )
             )
+            if len(collected) >= max_posts:
+                return
 
     try:
         if http_client is not None:
@@ -302,7 +311,7 @@ def fetch_pain_points(
       - 'all': Hacker News plus Reddit RSS
       - 'curated': Curated high-signal sample dataset
     Returns an empty list when a live source yields nothing. The pipeline records that
-    and substitutes curated samples.
+    and does not replace the miss with fixture posts.
     """
     if source == "curated":
         return get_sample_reddit_posts()
@@ -313,16 +322,43 @@ def fetch_pain_points(
     return fetch_hacker_news_pain_points()
 
 
+def _run_with_timeout(fn: Callable[[], Any], timeout_seconds: float) -> Any:
+    """Run fn on a daemon thread so a hung call cannot stall the pipeline."""
+    outcome: dict[str, Any] = {}
+
+    def target() -> None:
+        try:
+            outcome["value"] = fn()
+        except Exception as exc:
+            outcome["error"] = exc
+
+    worker = threading.Thread(target=target, daemon=True)
+    worker.start()
+    worker.join(timeout_seconds)
+    if worker.is_alive():
+        raise TimeoutError(f"timed out after {timeout_seconds}s")
+    if "error" in outcome:
+        raise outcome["error"]
+    return outcome.get("value")
+
+
 def live_web_search(query: str, max_results: int = 4) -> str:
     """
     Run a live web search using duckduckgo_search to gather real competitor names,
-    pricing tiers, and market size indicators.
+    pricing tiers, and market size indicators. Gives up after 15 seconds.
     """
-    try:
+    def _search() -> list:
         from duckduckgo_search import DDGS
 
-        with DDGS() as ddgs:
-            results = list(ddgs.text(query, max_results=max_results))
+        try:
+            client = DDGS(timeout=10)
+        except TypeError:
+            client = DDGS()
+        with client as ddgs:
+            return list(ddgs.text(query, max_results=max_results))
+
+    try:
+        results = _run_with_timeout(_search, 15)
         if not results:
             return f"No external web results returned for query: {query}"
         formatted = []

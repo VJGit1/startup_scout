@@ -24,21 +24,12 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $env.PIPELINE_BASE_URL + '/api/v1/stage1/evaluate' }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "X-API-Key",
-              "value": "={{ $env.API_AUTH_KEY }}"
-            }
-          ]
-        },
+        "url": "http://localhost:8000/api/v1/stage1/evaluate",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ posts: [], source: 'hn', fetch_live: true }) }}",
         "options": {
-          "timeout": 120000
+          "timeout": 900000
         }
       },
       "id": "call-langgraph-stage1",
@@ -69,7 +60,7 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "value": "1GQzKsAm4kjbgDbD3Q13fgmqVZ5iiNnTZ37_LUeVTv0Q",
           "mode": "id"
         },
         "sheetName": {

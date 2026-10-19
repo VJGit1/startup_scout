@@ -140,10 +140,10 @@ def resolve_stage1_posts(
         fetched = []
     if fetched:
         return fetched, source, errors
-    message = f"fetch_pain_points returned zero items for source={source}; using curated samples"
+    message = f"fetch_pain_points returned zero items for source={source}"
     logger.warning("%s", message)
     errors.append(message)
-    return get_sample_reddit_posts(), "curated", errors
+    return [], source, errors
 
 
 def _overlay_post_metadata(
@@ -168,7 +168,7 @@ def supervisor_init_node(state: Stage1GraphState) -> Dict[str, Any]:
     posts = list(state.get("posts") or [])
     errors = list(state.get("node_errors") or [])
     source_used = state.get("source_used") or ""
-    if not posts:
+    if not posts and not source_used:
         posts, source_used, fetch_errors = resolve_stage1_posts(
             [],
             state.get("source") or "hn",
@@ -195,6 +195,15 @@ def extract_ideas_node(state: Stage1GraphState) -> Dict[str, Any]:
     """Extract candidate startup ideas from Reddit posts."""
     posts = state["posts"]
     supervisor_skill = get_skill_prompt("supervisor-orchestrator")
+    if not posts:
+        logs = list(state.get("supervisor_log", []))
+        logs.append("No source posts. Skipping idea extraction.")
+        return {
+            "candidate_ideas": [],
+            "supervisor_log": logs,
+            "node_errors": list(state.get("node_errors") or []),
+            "fallback_used": bool(state.get("fallback_used")),
+        }
 
     try:
         posts_text = "\n\n".join(
