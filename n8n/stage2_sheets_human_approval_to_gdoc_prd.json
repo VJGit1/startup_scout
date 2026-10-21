@@ -76,7 +76,7 @@
         "url": "http://localhost:8000/api/v1/stage2/generate-prd",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({\n  idea_id: $json.Idea_ID,\n  idea_title: $json.Idea_Title,\n  one_line_pitch: $json.One_Line_Pitch,\n  core_problem: $json.Core_Problem,\n  target_customer: $json.Target_Customer,\n  source_subreddit: $json.Source_Subreddit,\n  source_reddit_title: $json.Source_Reddit_Title,\n  source_reddit_url: $json.Source_Reddit_URL,\n  bottom_up_tam_summary: $json.TAM_Formula,\n  startup_cost_summary: $json.Startup_Cost_Breakdown,\n  competitors_summary: $json.Competitors,\n  competitive_wedge: $json.Competitive_Wedge,\n  founder_fit_summary: $json.Founder_Fit_Rationale\n}) }}",
+        "jsonBody": "={{ JSON.stringify({\n  idea_id: $json.Idea_ID,\n  idea_title: $json.Idea_Title,\n  one_line_pitch: $json.One_Line_Pitch,\n  core_problem: $json.Core_Problem,\n  target_customer: $json.Target_Customer,\n  source_subreddit: $json.Source_Subreddit,\n  source_reddit_title: $json.Source_Reddit_Title,\n  source_reddit_url: $json.Source_Reddit_URL,\n  bottom_up_tam_summary: $json.TAM_Formula,\n  startup_cost_summary: $json.Startup_Cost_Breakdown,\n  competitors_summary: $json.Competitors,\n  competitive_wedge: $json.Competitive_Wedge,\n  founder_fit_summary: $json.Founder_Fit_Rationale,\n  total_score: $json.Total_Score_100,\n  founder_fit_score: $json.Founder_Fit_Score_10,\n  founder_fit_verdict: $json.Founder_Fit_Verdict,\n  bottom_up_tam_usd: $json.Bottom_Up_TAM_USD,\n  customers_for_10k_mrr: $json.Customers_For_10k_MRR,\n  startup_cost_usd: $json.Startup_Cost_USD\n}) }}",
         "options": {
           "timeout": 900000
         }

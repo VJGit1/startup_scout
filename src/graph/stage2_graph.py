@@ -248,6 +248,34 @@ def compile_prd_node(state: Stage2GraphState) -> Dict[str, Any]:
     return {"sections": sections, "google_doc_markdown": doc_md}
 
 
+def _shown(value: Any) -> str:
+    """Render a Stage 2 header value. Blank numbers stay n/a."""
+    if value is None:
+        return "n/a"
+    if isinstance(value, str):
+        return value.strip() or "n/a"
+    if isinstance(value, bool):
+        return str(value)
+    if isinstance(value, float):
+        if value.is_integer():
+            return f"{int(value):,}"
+        return f"{value:,.1f}"
+    if isinstance(value, int):
+        return f"{value:,}"
+    return str(value)
+
+
+def _money(value: Any) -> str:
+    """Format a numeric amount. A sheet string such as '$200' is kept as written."""
+    if value is None or (isinstance(value, str) and not value.strip()):
+        return "n/a"
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        if isinstance(value, float) and not value.is_integer():
+            return f"${value:,.2f}"
+        return f"${int(value):,}"
+    return str(value)
+
+
 def _render_prd_template(
     req: Stage2PRDRequest,
     founder_profile: Dict[str, Any],
@@ -264,7 +292,6 @@ def _render_prd_template(
         source_threads = f"[{source_label}]({req.source_reddit_url}) ({req.source_subreddit})"
     else:
         source_threads = f"{source_label} ({req.source_subreddit})"
-    tam_summary = req.bottom_up_tam_summary or "n/a"
     cost_summary = req.startup_cost_summary or "n/a"
     fit_summary = req.founder_fit_summary or "n/a"
     replacements = {
@@ -272,18 +299,18 @@ def _render_prd_template(
         "one_line_pitch": req.one_line_pitch or req.idea_title,
         "source_threads": source_threads,
         "target_customer": req.target_customer,
-        "total_score": "n/a",
-        "founder_fit_score": "n/a",
+        "total_score": _shown(req.total_score),
+        "founder_fit_score": _shown(req.founder_fit_score),
         "problem_statement": sections.problem_statement,
         "reddit_pain_evidence": req.core_problem,
-        "target_buyer_count": tam_summary,
-        "annual_price_point": tam_summary,
-        "bottom_up_tam_usd": tam_summary,
-        "ten_k_mrr_customers": tam_summary,
+        "target_buyer_count": _shown(req.target_buyer_count),
+        "annual_price_point": _money(req.annual_price_usd),
+        "bottom_up_tam_usd": _money(req.bottom_up_tam_usd),
+        "ten_k_mrr_customers": _shown(req.customers_for_10k_mrr),
         "competitive_analysis": sections.competition_and_tam_analysis,
-        "startup_cost_usd": cost_summary,
+        "startup_cost_usd": _money(req.startup_cost_usd),
         "startup_cost_breakdown": cost_summary,
-        "founder_fit_verdict": fit_summary,
+        "founder_fit_verdict": (req.founder_fit_verdict or "").strip() or "n/a",
         "founder_fit_rationale": fit_summary,
         "value_proposition": sections.value_proposition,
         "mvp_scope": sections.mvp_scope_and_architecture,
