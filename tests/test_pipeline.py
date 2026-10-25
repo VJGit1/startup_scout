@@ -17,6 +17,7 @@ from src.tools.search import (
     fetch_reddit_rss_pain_points,
     get_sample_reddit_posts,
     has_live_gemini_key,
+    live_web_search,
 )
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -100,6 +101,20 @@ def test_unknown_post_is_not_scored_as_airline():
     assert idea.source_platform == "Hacker News"
 
 
+def test_slack_post_is_not_mapped_to_scopeguard():
+    post = RedditPostInput(
+        post_id="hn_story_999",
+        title="Ask HN: Slack is a mess for incident handoff",
+        selftext="We still copy Slack threads into a doc every night.",
+        source_platform="Hacker News",
+        url="https://news.ycombinator.com/item?id=999",
+    )
+    response = run_stage1_pipeline(Stage1EvaluateRequest(posts=[post], fetch_live=False))
+    idea = response.all_evaluated_ideas[0]
+    assert "scopeguard" not in idea.idea_id.lower()
+    assert "software" in idea.idea_id
+
+
 def test_empty_posts_request_hacker_news_source(monkeypatch):
     calls: dict[str, object] = {}
 
@@ -181,8 +196,63 @@ def test_stage2_fallback_describes_the_approved_idea():
     assert "Certificate of Insurance" not in markdown
     assert "Founder Profile:" in markdown
     assert "{{" not in markdown
+    assert "`n/a/100`" in markdown
+    assert "**Target Buyer Segment ($N$):** `n/a`" in markdown
     assert response.agent_mode == "fallback"
     assert response.source_used == "approved_idea"
+
+
+def test_stage2_prd_renders_numeric_header_fields():
+    response = run_stage2_pipeline(
+        Stage2PRDRequest(
+            idea_id="idea-payout",
+            idea_title="PayoutReconcile",
+            one_line_pitch="Match Stripe payouts to the bank.",
+            core_problem="Hours lost reconciling payouts in a spreadsheet.",
+            target_customer="Indie SaaS founders",
+            total_score=93.1,
+            founder_fit_score=9.4,
+            founder_fit_verdict="Strong Fit",
+            target_buyer_count=350000,
+            annual_price_usd=348,
+            bottom_up_tam_usd=121_800_000,
+            customers_for_10k_mrr=345,
+            startup_cost_usd=200,
+            founder_fit_summary="Fits the configured founder.",
+        )
+    )
+    markdown = response.google_doc_markdown
+    assert "{{" not in markdown
+    assert "`93.1/100`" in markdown
+    assert "`9.4/10`" in markdown
+    assert "**Fit Verdict:** `Strong Fit`" in markdown
+    assert "**Target Buyer Segment ($N$):** `350,000`" in markdown
+    assert "**Annual Price Point ($P$):** `$348`" in markdown
+    assert "**Bottom-Up TAM ($N \\times P$):** `$121,800,000`" in markdown
+    assert "**Lifestyle Target ($10k MRR Goal):** `345`" in markdown
+    assert "**Estimated Cost to Launch MVP:** `$200`" in markdown
+
+
+def test_web_search_failure_is_reused(monkeypatch):
+    import src.tools.search as search
+
+    search._web_search_failure = None
+    calls = {"n": 0}
+
+    def fail_once(_fn, _timeout):
+        calls["n"] += 1
+        raise TimeoutError("timed out after 15s")
+
+    monkeypatch.setattr(search, "_run_with_timeout", fail_once)
+    try:
+        first = live_web_search("invoice tool competitors")
+        second = live_web_search("another query")
+    finally:
+        search._web_search_failure = None
+
+    assert calls["n"] == 1
+    assert first == second
+    assert first.startswith("Web search fallback mode (TimeoutError:")
 
 
 @pytest.mark.skipif(

@@ -342,11 +342,19 @@ def _run_with_timeout(fn: Callable[[], Any], timeout_seconds: float) -> Any:
     return outcome.get("value")
 
 
+_web_search_failure: str | None = None
+
+
 def live_web_search(query: str, max_results: int = 4) -> str:
     """
     Run a live web search using duckduckgo_search to gather real competitor names,
     pricing tiers, and market size indicators. Gives up after 15 seconds.
+    The first failure is reused for the rest of the process.
     """
+    global _web_search_failure
+    if _web_search_failure is not None:
+        return _web_search_failure
+
     def _search() -> list:
         from duckduckgo_search import DDGS
 
@@ -369,7 +377,8 @@ def live_web_search(query: str, max_results: int = 4) -> str:
         return "\n".join(formatted)
     except Exception as exc:
         _log_fetch_error("live_web_search", exc)
-        return f"Web search fallback mode ({type(exc).__name__}: {exc})"
+        _web_search_failure = f"Web search fallback mode ({type(exc).__name__}: {exc})"
+        return _web_search_failure
 
 
 def has_live_gemini_key() -> bool:
@@ -398,6 +407,7 @@ def invoke_structured_llm(
         model=model_name,
         google_api_key=os.getenv("GEMINI_API_KEY"),
         temperature=0.2,
+        max_retries=0,
     )
     structured_llm = llm.with_structured_output(schema)
     result = structured_llm.invoke(

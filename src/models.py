@@ -17,8 +17,8 @@ class RedditPostInput(BaseModel):
     title: str = Field(..., description="Title of the discussion or story")
     selftext: str = Field(default="", description="Body text or comment content")
     url: str = Field(default="", description="Permalink URL to the discussion")
-    upvotes: int = Field(default=10, description="Upvotes or HN points")
-    num_comments: int = Field(default=5, description="Number of comments")
+    upvotes: int = Field(default=0, description="Upvotes or HN points")
+    num_comments: int = Field(default=0, description="Number of comments")
 
 
 # Alias for multi-source clarity
@@ -211,6 +211,14 @@ class Stage2PRDRequest(BaseModel):
     competitors_summary: str = Field(default="")
     competitive_wedge: str = Field(default="")
     founder_fit_summary: str = Field(default="")
+    total_score: Optional[Any] = Field(default=None, description="Weighted lifestyle score out of 100")
+    founder_fit_score: Optional[Any] = Field(default=None, description="Founder-market fit score out of 10")
+    founder_fit_verdict: Optional[str] = Field(default="")
+    target_buyer_count: Optional[Any] = Field(default=None, description="Estimated reachable buyers")
+    annual_price_usd: Optional[Any] = Field(default=None, description="Annual price per customer")
+    bottom_up_tam_usd: Optional[Any] = Field(default=None, description="Bottom-up TAM in USD, or a preformatted sheet value")
+    customers_for_10k_mrr: Optional[Any] = Field(default=None)
+    startup_cost_usd: Optional[Any] = Field(default=None, description="MVP startup cost in USD, or a preformatted sheet value")
     founder_profile_override: Optional[Dict[str, Any]] = Field(default=None)
 
 

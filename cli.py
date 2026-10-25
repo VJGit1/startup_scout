@@ -105,6 +105,14 @@ def main(argv: list[str] | None = None) -> None:
         competitors_summary=", ".join(f"{c.name} ({c.pricing})" for c in winner.research.competitors),
         competitive_wedge=winner.research.competitive_wedge,
         founder_fit_summary=winner.founder_fit.fit_rationale,
+        total_score=winner.scores.weighted_total_score,
+        founder_fit_score=winner.founder_fit.founder_fit_score,
+        founder_fit_verdict=winner.founder_fit.fit_verdict,
+        target_buyer_count=winner.research.tam.estimated_target_users,
+        annual_price_usd=winner.research.tam.annual_price_usd,
+        bottom_up_tam_usd=winner.research.tam.bottom_up_tam_usd,
+        customers_for_10k_mrr=winner.research.tam.customers_for_10k_mrr,
+        startup_cost_usd=winner.research.estimated_startup_cost_usd,
     )
     stage2_res = run_stage2_pipeline(stage2_req)
 
