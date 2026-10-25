@@ -492,7 +492,7 @@ def _fallback_candidates(posts: List[RedditPostInput]) -> List[CandidateIdeaDraf
     for idx, post in enumerate(posts, 1):
         lower = f"{post.title} {post.selftext}".lower()
         shared = _post_fields(post)
-        if "coi" in lower or "insurance" in lower:
+        if post.post_id == "r_smb_01":
             candidates.append(
                 CandidateIdeaDraft(
                     idea_id=f"idea-{idx}-certping",
@@ -503,7 +503,7 @@ def _fallback_candidates(posts: List[RedditPostInput]) -> List[CandidateIdeaDraf
                     **shared,
                 )
             )
-        elif "scope" in lower or "change order" in lower or "slack" in lower:
+        elif post.post_id == "r_freelance_02":
             candidates.append(
                 CandidateIdeaDraft(
                     idea_id=f"idea-{idx}-scopeguard",
@@ -514,7 +514,7 @@ def _fallback_candidates(posts: List[RedditPostInput]) -> List[CandidateIdeaDraf
                     **shared,
                 )
             )
-        elif "stripe" in lower or "dunning" in lower or "failed-payment" in lower:
+        elif post.post_id == "r_saas_03":
             candidates.append(
                 CandidateIdeaDraft(
                     idea_id=f"idea-{idx}-pausesave",
@@ -525,7 +525,7 @@ def _fallback_candidates(posts: List[RedditPostInput]) -> List[CandidateIdeaDraf
                     **shared,
                 )
             )
-        elif "medspa" in lower or "clinic" in lower or "after 5pm" in lower:
+        elif post.post_id == "r_ent_04":
             candidates.append(
                 CandidateIdeaDraft(
                     idea_id=f"idea-{idx}-nightbook",

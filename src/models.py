@@ -17,8 +17,8 @@ class RedditPostInput(BaseModel):
     title: str = Field(..., description="Title of the discussion or story")
     selftext: str = Field(default="", description="Body text or comment content")
     url: str = Field(default="", description="Permalink URL to the discussion")
-    upvotes: int = Field(default=10, description="Upvotes or HN points")
-    num_comments: int = Field(default=5, description="Number of comments")
+    upvotes: int = Field(default=0, description="Upvotes or HN points")
+    num_comments: int = Field(default=0, description="Number of comments")
 
 
 # Alias for multi-source clarity

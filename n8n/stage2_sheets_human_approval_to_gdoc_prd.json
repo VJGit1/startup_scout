@@ -107,7 +107,7 @@
     {
       "parameters": {
         "operation": "update",
-        "documentURL": "={{ $json.id }}",
+        "documentURL": "={{ $json.documentId || $json.id }}",
         "actionsUi": {
           "actionFields": [
             {
@@ -144,7 +144,7 @@
           "value": {
             "Idea_ID": "={{ $('Only Rows Marked \\'Approved\\'').item.json.Idea_ID }}",
             "Approval_Status": "PRD Generated",
-            "Google_Doc_PRD_URL": "={{ 'https://docs.google.com/document/d/' + $('Create Google Doc PRD').item.json.id + '/edit' }}"
+            "Google_Doc_PRD_URL": "={{ 'https://docs.google.com/document/d/' + ($('Create Google Doc PRD').item.json.documentId || $('Create Google Doc PRD').item.json.id) + '/edit' }}"
           },
           "matchingColumns": [
             "Idea_ID"

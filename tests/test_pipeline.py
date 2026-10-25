@@ -101,6 +101,20 @@ def test_unknown_post_is_not_scored_as_airline():
     assert idea.source_platform == "Hacker News"
 
 
+def test_slack_post_is_not_mapped_to_scopeguard():
+    post = RedditPostInput(
+        post_id="hn_story_999",
+        title="Ask HN: Slack is a mess for incident handoff",
+        selftext="We still copy Slack threads into a doc every night.",
+        source_platform="Hacker News",
+        url="https://news.ycombinator.com/item?id=999",
+    )
+    response = run_stage1_pipeline(Stage1EvaluateRequest(posts=[post], fetch_live=False))
+    idea = response.all_evaluated_ideas[0]
+    assert "scopeguard" not in idea.idea_id.lower()
+    assert "software" in idea.idea_id
+
+
 def test_empty_posts_request_hacker_news_source(monkeypatch):
     calls: dict[str, object] = {}
 
