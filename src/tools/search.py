@@ -160,7 +160,7 @@ def fetch_hacker_news_pain_points(
         for query in search_queries:
             try:
                 resp = client.get(
-                    "https://hn.algolia.com/api/v1/search",
+                    "https://hn.algolia.com/api/v1/search_by_date",
                     params={"query": query, "tags": "story", "hitsPerPage": limit_per_query},
                 )
                 resp.raise_for_status()
@@ -176,6 +176,9 @@ def fetch_hacker_news_pain_points(
                 if not title:
                     continue
                 body = clean_html(hit.get("story_text") or "")
+                discussion = f"https://news.ycombinator.com/item?id={object_id}"
+                article = str(hit.get("url") or "").strip()
+                cited = article if article.startswith(("http://", "https://")) else discussion
                 collected.append(
                     RedditPostInput(
                         post_id=f"hn_story_{object_id}",
@@ -183,7 +186,8 @@ def fetch_hacker_news_pain_points(
                         subreddit="Ask HN",
                         title=title,
                         selftext=body[:1500] if body else f"Hacker News discussion: {title}",
-                        url=f"https://news.ycombinator.com/item?id={object_id}",
+                        url=cited,
+                        discussion_url=discussion,
                         upvotes=_optional_count(hit.get("points")),
                         num_comments=_optional_count(hit.get("num_comments")),
                     )
@@ -192,7 +196,7 @@ def fetch_hacker_news_pain_points(
                     return
         try:
             comment_resp = client.get(
-                "https://hn.algolia.com/api/v1/search",
+                "https://hn.algolia.com/api/v1/search_by_date",
                 params={"query": "wish there was a tool", "tags": "comment", "hitsPerPage": 5},
             )
             comment_resp.raise_for_status()
@@ -210,6 +214,12 @@ def fetch_hacker_news_pain_points(
             if len(comment_text) <= 40:
                 continue
             parent_title = comment.get("story_title") or "HN Discussion"
+            story_id = str(comment.get("story_id") or "")
+            discussion = (
+                f"https://news.ycombinator.com/item?id={story_id}"
+                if story_id
+                else f"https://news.ycombinator.com/item?id={comment_id}"
+            )
             collected.append(
                 RedditPostInput(
                     post_id=f"hn_comment_{comment_id}",
@@ -218,6 +228,7 @@ def fetch_hacker_news_pain_points(
                     title=f"User Need: {comment_text[:90]}...",
                     selftext=comment_text[:1500],
                     url=f"https://news.ycombinator.com/item?id={comment_id}",
+                    discussion_url=discussion,
                     upvotes=_optional_count(comment.get("points")),
                     num_comments=0,
                 )
