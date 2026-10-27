@@ -156,6 +156,13 @@ class Stage1EvaluateRequest(BaseModel):
     )
 
 
+class PipelineStepTrace(BaseModel):
+    """One Stage 1 step, saved with the run so the page can show who scored it."""
+    name: str
+    elapsed_ms: int = 0
+    mode: Literal["gemini", "fallback"] = "fallback"
+
+
 class Stage1EvaluateResponse(BaseModel):
     """Response returned to n8n Stage 1 workflow."""
     total_posts_analyzed: int
@@ -165,6 +172,7 @@ class Stage1EvaluateResponse(BaseModel):
     agent_mode: Literal["gemini", "fallback"] = "fallback"
     source_used: str = "unknown"
     node_errors: List[str] = Field(default_factory=list)
+    trace: List[PipelineStepTrace] = Field(default_factory=list)
 
 
 # ============================================================================
