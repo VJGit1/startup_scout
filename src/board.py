@@ -223,6 +223,46 @@ def is_live_article_url(url: str) -> bool:
     return True
 
 
+def score_gap_line(ideas: list[dict[str, Any]]) -> str:
+    """Name the score part where rank 1 leads rank 2 by the most."""
+    if len(ideas) < 2:
+        return ""
+    first = ideas[0].get("scores") or {}
+    second = ideas[1].get("scores") or {}
+    best_label = ""
+    best_gap: float | None = None
+    for key, label, _weight in SCORE_PARTS:
+        try:
+            gap = round(float(first.get(key) or 0) - float(second.get(key) or 0), 1)
+        except (TypeError, ValueError):
+            continue
+        if best_gap is None or gap > best_gap:
+            best_gap = gap
+            best_label = label
+    if best_gap is None:
+        return ""
+    if best_gap == 0:
+        return "Rank 1 and rank 2 match on every score part."
+    return f"Largest gap versus #2: {best_label} {best_gap:.1f}"
+
+
+def _trace_html(payload: dict[str, Any] | None) -> str:
+    steps = (payload or {}).get("trace") or []
+    if not steps:
+        return ""
+    items = []
+    for step in steps:
+        name = _esc(step.get("name") or "Step")
+        mode = _esc(step.get("mode") or "fallback")
+        elapsed = step.get("elapsed_ms")
+        try:
+            elapsed_text = f"{int(elapsed)} ms"
+        except (TypeError, ValueError):
+            elapsed_text = ""
+        items.append(f"<li>{name} · {mode} · {_esc(elapsed_text)}</li>")
+    return "<section class='trace'><h2>How this run was scored</h2><ol>" + "".join(items) + "</ol></section>"
+
+
 def source_html(idea: dict[str, Any]) -> str:
     url = idea.get("source_reddit_url") or ""
     title = idea.get("source_reddit_title") or url
@@ -259,6 +299,8 @@ def _idea_card(idea: dict[str, Any], plan: str | None, run_name: str) -> str:
     fit = idea.get("founder_fit") or {}
     total = scores.get("weighted_total_score", "n/a")
     source = source_html(idea)
+    gap = idea.get("_score_gap") or ""
+    gap_html = f"<p class='gap'>{_esc(gap)}</p>" if gap else ""
     plan_html = ""
     if plan:
         plan_html = f"<details open><summary>Product plan</summary><pre>{_esc(plan)}</pre></details>"
@@ -279,6 +321,7 @@ def _idea_card(idea: dict[str, Any], plan: str | None, run_name: str) -> str:
         <div><dt>Price</dt><dd>${_amount(tam.get("monthly_price_usd"))}/mo</dd></div>
         <div><dt>Source</dt><dd>{source}</dd></div>
       </dl>
+      {gap_html}
       <p class="why">{_esc(idea.get("evaluator_verdict"))}</p>
       <form class="approve" data-idea="{_esc(idea.get("idea_id"))}">
         {run_field}
@@ -295,18 +338,22 @@ def render_board(payload: dict[str, Any] | None, *, run_name: str = "", runs: li
     if payload:
         ideas = payload.get("top_3_ideas") or []
     directory = output_dir()
+    gap = score_gap_line(ideas)
     cards = []
     for idea in ideas:
         path = prd_path(directory, idea.get("idea_id") or "")
         # prd_path creates the folder; don't leave an empty requirement
         plan = path.read_text(encoding="utf-8") if path.is_file() and path.stat().st_size else None
-        cards.append(_idea_card(idea, plan, run_name))
+        card_idea = dict(idea)
+        if gap and idea.get("rank") == 1:
+            card_idea["_score_gap"] = gap
+        cards.append(_idea_card(card_idea, plan, run_name))
     if not cards:
         body = "<p class='empty'>No scored ideas yet. In the project folder run <code>python cli.py --source curated</code>, then refresh this page.</p>"
     else:
         source = _esc((payload or {}).get("source_used") or "")
         mode = _esc((payload or {}).get("agent_mode") or "")
-        body = f"<p class='meta'>Source {source} · model mode {mode}</p>" + "".join(cards)
+        body = f"<p class='meta'>Source {source} · model mode {mode}</p>" + _trace_html(payload) + "".join(cards)
     history = "".join(
         f"<li><a href='/?run={_esc(name)}'>{_esc(name[:-5])}</a></li>" for name in (runs or [])
     )
@@ -341,6 +388,8 @@ def render_board(payload: dict[str, Any] | None, *, run_name: str = "", runs: li
     button {{ background: var(--ink); color: white; border: 0; border-radius: 999px; padding: 10px 16px; cursor: pointer; }}
     pre {{ white-space: pre-wrap; background: #f6f1e7; padding: 12px; border-radius: 12px; }}
     .history {{ font-size: 14px; }}
+    .trace ol {{ margin-top: 0; }}
+    .gap {{ color: #6d645b; }}
     .notice {{ background: #fff4d6; border: 1px solid #e4d8c4; padding: 10px 12px; border-radius: 12px; }}
   </style>
 </head>
