@@ -12,6 +12,7 @@ Supervisor Agent orchestrates:
 from __future__ import annotations
 
 import logging
+import time
 from typing import Any, Dict, List, TypedDict
 from langgraph.graph import END, StateGraph
 from pydantic import BaseModel, Field
@@ -94,6 +95,19 @@ class Stage1GraphState(TypedDict, total=False):
     source_used: str
     node_errors: List[str]
     fallback_used: bool
+    trace: List[Dict[str, Any]]
+
+
+def _trace_step(state: Stage1GraphState, name: str, started: float, used_fallback: bool) -> List[Dict[str, Any]]:
+    trace = list(state.get("trace") or [])
+    trace.append(
+        {
+            "name": name,
+            "elapsed_ms": max(0, int((time.perf_counter() - started) * 1000)),
+            "mode": "fallback" if used_fallback else "gemini",
+        }
+    )
+    return trace
 
 
 def _record_node_error(state: Stage1GraphState, node: str, exc: Exception) -> List[str]:
@@ -210,7 +224,9 @@ def supervisor_init_node(state: Stage1GraphState) -> Dict[str, Any]:
 
 def extract_ideas_node(state: Stage1GraphState) -> Dict[str, Any]:
     """Extract candidate startup ideas from Reddit posts."""
+    started = time.perf_counter()
     posts = state["posts"]
+    step_fallback = not posts
     _progress(f"Extracting ideas from {len(posts)} posts.")
     supervisor_skill = get_skill_prompt("supervisor-orchestrator")
     if not posts:
@@ -221,6 +237,7 @@ def extract_ideas_node(state: Stage1GraphState) -> Dict[str, Any]:
             "supervisor_log": logs,
             "node_errors": list(state.get("node_errors") or []),
             "fallback_used": bool(state.get("fallback_used")),
+            "trace": _trace_step(state, "Extract", started, True),
         }
 
     try:
@@ -245,6 +262,7 @@ def extract_ideas_node(state: Stage1GraphState) -> Dict[str, Any]:
     except Exception as exc:
         errors = _record_node_error(state, "extract_ideas", exc)
         fallback_used = True
+        step_fallback = True
         candidates = _fallback_candidates(posts)
 
     logs = list(state.get("supervisor_log", []))
@@ -254,6 +272,7 @@ def extract_ideas_node(state: Stage1GraphState) -> Dict[str, Any]:
         "supervisor_log": logs,
         "node_errors": errors,
         "fallback_used": fallback_used,
+        "trace": _trace_step(state, "Extract", started, step_fallback),
     }
 
 
@@ -262,8 +281,10 @@ def competitive_and_tam_research_node(state: Stage1GraphState) -> Dict[str, Any]
     researcher_skill = get_skill_prompt("competitive-market-researcher")
     research_by_id: Dict[str, CompetitiveResearchSummary] = {}
 
+    started = time.perf_counter()
     errors = list(state.get("node_errors") or [])
     fallback_used = bool(state.get("fallback_used"))
+    step_fallback = not state.get("candidate_ideas")
     founder_profile = state.get("founder_profile") or {}
 
     ideas = list(state["candidate_ideas"])
@@ -288,6 +309,7 @@ def competitive_and_tam_research_node(state: Stage1GraphState) -> Dict[str, Any]
         except Exception as exc:
             errors = _record_node_error({**state, "node_errors": errors}, "competitive_and_tam_research", exc)
             fallback_used = True
+            step_fallback = True
             research_by_id[idea.idea_id] = _fallback_research_for_idea(idea, founder_profile)
 
     logs = list(state.get("supervisor_log", []))
@@ -297,6 +319,7 @@ def competitive_and_tam_research_node(state: Stage1GraphState) -> Dict[str, Any]
         "supervisor_log": logs,
         "node_errors": errors,
         "fallback_used": fallback_used,
+        "trace": _trace_step(state, "Research", started, step_fallback),
     }
 
 
@@ -306,8 +329,10 @@ def founder_market_fit_node(state: Stage1GraphState) -> Dict[str, Any]:
     founder_profile = state["founder_profile"]
     research_by_id = state["research_by_id"]
     founder_fit_by_id: Dict[str, FounderMarketFitResult] = {}
+    started = time.perf_counter()
     errors = list(state.get("node_errors") or [])
     fallback_used = bool(state.get("fallback_used"))
+    step_fallback = not state.get("candidate_ideas")
 
     ideas = list(state["candidate_ideas"])
     for index, idea in enumerate(ideas, 1):
@@ -329,6 +354,7 @@ def founder_market_fit_node(state: Stage1GraphState) -> Dict[str, Any]:
         except Exception as exc:
             errors = _record_node_error({**state, "node_errors": errors}, "founder_market_fit", exc)
             fallback_used = True
+            step_fallback = True
             founder_fit_by_id[idea.idea_id] = _fallback_founder_fit(idea, research, founder_profile)
 
     logs = list(state.get("supervisor_log", []))
@@ -338,6 +364,7 @@ def founder_market_fit_node(state: Stage1GraphState) -> Dict[str, Any]:
         "supervisor_log": logs,
         "node_errors": errors,
         "fallback_used": fallback_used,
+        "trace": _trace_step(state, "Founder fit", started, step_fallback),
     }
 
 
@@ -352,8 +379,10 @@ def startup_evaluator_node(state: Stage1GraphState) -> Dict[str, Any]:
     max_budget = _max_budget(founder_profile)
 
     evaluated: List[EvaluatedStartupIdea] = []
+    started = time.perf_counter()
     errors = list(state.get("node_errors") or [])
     fallback_used = bool(state.get("fallback_used"))
+    step_fallback = not state.get("candidate_ideas")
 
     ideas = list(state["candidate_ideas"])
     _progress(f"Ranking {len(ideas)} ideas.")
@@ -377,6 +406,7 @@ def startup_evaluator_node(state: Stage1GraphState) -> Dict[str, Any]:
         except Exception as exc:
             errors = _record_node_error({**state, "node_errors": errors}, "startup_evaluator", exc)
             fallback_used = True
+            step_fallback = True
             scores, verdict = _fallback_evaluator_scores(idea, research, fmf, founder_profile)
 
         # Recalculate exact weighted formula to guarantee mathematical precision
@@ -437,6 +467,7 @@ def startup_evaluator_node(state: Stage1GraphState) -> Dict[str, Any]:
         "supervisor_log": logs,
         "node_errors": errors,
         "fallback_used": fallback_used,
+        "trace": _trace_step(state, "Rank", started, step_fallback),
     }
 
 
@@ -496,6 +527,7 @@ def run_stage1_pipeline(request: Stage1EvaluateRequest) -> Stage1EvaluateRespons
         agent_mode=agent_mode,
         source_used=final_state.get("source_used") or source_used,
         node_errors=list(final_state.get("node_errors") or []),
+        trace=list(final_state.get("trace") or []),
     )
 
 
