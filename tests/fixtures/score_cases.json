@@ -1,0 +1,18 @@
+{
+  "expected_rank_order": ["certping", "scopeguard", "pausesave", "nightbook"],
+  "excluded_from_top3": ["airline"],
+  "weights": {
+    "pain_severity_score": 0.25,
+    "low_startup_cost_score": 0.25,
+    "competition_gap_score": 0.2,
+    "tam_sweet_spot_score": 0.15,
+    "founder_fit_score": 0.15
+  },
+  "url_pin": {
+    "post_id": "hn_story_50",
+    "title": "Show HN: Widget",
+    "article_url": "https://example.com/widget",
+    "discussion_url": "https://news.ycombinator.com/item?id=50",
+    "model_url": "https://not-a-real-article.example/missing"
+  }
+}
