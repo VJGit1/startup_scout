@@ -84,6 +84,6 @@ Each box is a LangGraph step. The instructions are the `SKILL.md` files in `.age
 pytest
 ```
 
-That run does not call Gemini or Hacker News.
+That run does not call Gemini or Hacker News. It checks that the sample ideas stay in order (CertPing, ScopeGuard, PauseSave, then Nightbook), the airline idea stays out of the top 3, each total matches the five-part formula, and a made-up article URL is replaced by the fetched one.
 
 To host the API, build the included `Dockerfile` and run it on [Cloud Run](https://cloud.google.com/run) with a request timeout of at least 15 minutes. Set `GEMINI_API_KEY` and `PORT`. Use `/health` as the health check.
