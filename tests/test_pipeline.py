@@ -34,6 +34,20 @@ RSS_FEED = """<?xml version="1.0" encoding="UTF-8"?>
 """
 
 
+def test_hacker_news_fetcher_requests_newest_stories():
+    requested: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requested.append(str(request.url))
+        return httpx.Response(200, json={"hits": []})
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        fetch_hacker_news_pain_points(http_client=client, max_posts=1)
+
+    assert requested
+    assert all("search_by_date" in url for url in requested)
+
+
 def test_hacker_news_fetcher_uses_fixture_counts():
     def handler(_request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json=HN_FIXTURE)
@@ -47,6 +61,59 @@ def test_hacker_news_fetcher_uses_fixture_counts():
     assert posts[0].upvotes == 42
     assert posts[0].num_comments == 11
     assert posts[0].url == "https://news.ycombinator.com/item?id=1001"
+    assert posts[0].discussion_url == "https://news.ycombinator.com/item?id=1001"
+
+
+def test_hacker_news_fetcher_cites_the_linked_article():
+    payload = {
+        "hits": [
+            {
+                "objectID": "50",
+                "title": "Show HN: Widget",
+                "url": "https://example.com/widget",
+                "story_text": "A widget.",
+                "points": 3,
+                "num_comments": 1,
+            }
+        ]
+    }
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json=payload)
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        posts = fetch_hacker_news_pain_points(http_client=client, max_posts=1)
+
+    assert posts[0].url == "https://example.com/widget"
+    assert posts[0].discussion_url == "https://news.ycombinator.com/item?id=50"
+
+
+def test_extracted_idea_keeps_the_fetched_article_url():
+    from src.graph.stage1_graph import CandidateIdeaDraft, _overlay_post_metadata
+    from src.models import RedditPostInput
+
+    post = RedditPostInput(
+        post_id="hn_story_50",
+        source_platform="Hacker News",
+        subreddit="Ask HN",
+        title="Show HN: Widget",
+        url="https://example.com/widget",
+        discussion_url="https://news.ycombinator.com/item?id=50",
+        upvotes=3,
+    )
+    draft = CandidateIdeaDraft(
+        idea_id="widget",
+        idea_title="Widget",
+        one_line_pitch="A widget.",
+        core_problem="Widgets are hard.",
+        target_customer="Builders",
+        source_subreddit="Ask HN",
+        source_reddit_title="Show HN: Widget",
+        source_reddit_url="https://not-a-real-article.example/missing",
+    )
+    fixed = _overlay_post_metadata([draft], [post])
+    assert fixed[0].source_reddit_url == "https://example.com/widget"
+    assert fixed[0].discussion_url == "https://news.ycombinator.com/item?id=50"
 
 
 def test_reddit_rss_encodes_query_and_does_not_invent_upvotes():
