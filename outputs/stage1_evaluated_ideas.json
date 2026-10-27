@@ -1,502 +1,295 @@
 {
-  "total_posts_analyzed": 5,
+  "total_posts_analyzed": 2,
   "top_3_ideas": [
     {
-      "idea_id": "idea-1-certping",
-      "idea_title": "CertPing AI — Automated Subcontractor COI Compliance Tracker",
-      "one_line_pitch": "Zero-bloat PDF Certificate of Insurance parser and automated SMS/email expiry chaser for small contractors.",
-      "core_problem": "Small general contractors and property managers waste 5-6 hours/week chasing subcontractors for expiring Certificates of Insurance (COIs) because enterprise tools like Procore cost $600+/mo.",
-      "target_customer": "Independent general contractors, property managers, and construction SMBs (5-50 employees)",
-      "source_platform": "curated",
-      "source_subreddit": "r/smallbusiness",
-      "source_reddit_title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
-      "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
+      "idea_id": "formstep-customer-info-requests",
+      "idea_title": "Formstep: Streamlined Customer Information Requests",
+      "one_line_pitch": "A tool to simplify requesting information, documents, and confirmations from customers, integrating with workflows and AI to eliminate back-and-forth communication.",
+      "core_problem": "Businesses face inefficiency and constant back-and-forth communication when collecting necessary information, documents, or corrections from customers, especially when forms are filled incorrectly or incompletely.",
+      "target_customer": "Businesses (e.g., in finance, legal, onboarding) that need to collect specific information and documents from their customers and want to automate and streamline this process.",
+      "source_platform": "Hacker News",
+      "source_subreddit": "Hacker News",
+      "source_reddit_title": "Show HN: Formstep, Request information from customers without the back-and-forth",
+      "source_reddit_url": "https://formstep.io",
       "research": {
         "competitors": [
           {
-            "name": "Procore Compliance",
-            "pricing": "$600+/mo (Annual Enterprise Contract)",
-            "weakness_or_gap": "Massive ERP overkill for 5-50 person contractors who just need COI expiry tracking."
+            "name": "Typeform/Jotform/Google Forms",
+            "pricing": "Free to $99+/month (Typeform Business)",
+            "weakness_or_gap": "Generic form builders lack specific features for automated follow-ups, intelligent validation, and AI-driven error correction, leading to continued manual back-and-forth for complex information requests."
           },
           {
-            "name": "myCOI / Jones",
-            "pricing": "$350-$500+/mo",
-            "weakness_or_gap": "Long onboarding, enterprise sales calls, no self-serve $49/mo SMB tier."
+            "name": "DocuSign/PandaDoc",
+            "pricing": "$10-$60+/user/month",
+            "weakness_or_gap": "Primarily focused on e-signatures and document generation/management, not on dynamically collecting and validating diverse customer information with AI to proactively reduce data entry errors and incomplete submissions."
           },
           {
-            "name": "Excel + Calendar Reminders",
-            "pricing": "Free (6 hrs/wk manual labor)",
-            "weakness_or_gap": "Subcontractors ignore manual emails; high liability risk when a lapsed policy is missed."
+            "name": "Custom Email/Spreadsheet Workflows",
+            "pricing": "Free (high time cost)",
+            "weakness_or_gap": "Extremely manual, prone to human error, difficult to track, and requires constant back-and-forth communication, consuming significant staff time and delaying processes."
           }
         ],
-        "competitive_wedge": "Self-serve $49/mo AI PDF parser + automated SMS/email vendor chaser with zero ERP migration.",
-        "estimated_startup_cost_usd": 180.0,
-        "startup_cost_breakdown": "$12/yr domain + $20/mo cloud hosting + $30/mo Gemini Vision PDF OCR API + $18/mo Twilio SMS + $100 initial outreach tooling.",
+        "competitive_wedge": "Formstep will differentiate by focusing specifically on 'streamlined customer information requests' with integrated AI for intelligent validation, pre-filling, and automated follow-ups. This eliminates the tedious back-and-forth common with generic forms and provides a more focused, intelligent solution than broad document management tools, targeting small to medium-sized professional services firms that value efficiency and accuracy in client intake.",
+        "estimated_startup_cost_usd": 350.0,
+        "startup_cost_breakdown": "Domain & Hosting: $15 (domain) + $75 (Vercel/Render/Supabase free tier with buffer for initial scaling, over 3 months) = $90. LLM / Third-Party API Costs: $150 (Gemini API for initial AI features, over 3 months) + $60 (SendGrid/Postmark for transactional emails, over 3 months) = $210. Legal / Stripe Incorporation: $0 (initial sole proprietorship setup, Stripe account is free). Initial GTM / Distribution Budget: $50 (for minor tooling or initial ad tests, primarily organic outreach). Total: $350 USD, comfortably within a <$500 bootstrapped budget.",
         "tam": {
-          "target_buyer_segment": "US/UK/CA small general contractors & property managers (5-50 employees)",
-          "estimated_target_users": 140000,
-          "monthly_price_usd": 49.0,
-          "annual_price_usd": 588.0,
-          "bottom_up_tam_usd": 82320000.0,
-          "customers_for_10k_mrr": 205,
-          "tam_formula_explanation": "140,000 small GCs/property managers × $588/yr ($49/mo) = $82.32M/yr Bottom-Up TAM (Only 205 customers needed for $10k MRR)."
+          "target_buyer_segment": "Small to medium-sized professional services firms (e.g., legal, financial advisory, consulting) in the US",
+          "estimated_target_users": 100000,
+          "monthly_price_usd": 79.0,
+          "annual_price_usd": 948.0,
+          "bottom_up_tam_usd": 94800000.0,
+          "customers_for_10k_mrr": 127,
+          "tam_formula_explanation": "Bottom-Up TAM is calculated as 100,000 estimated reachable small to medium-sized professional services firms in the US (a conservative estimate based on the number of small law firms, financial advisors, and consulting practices) multiplied by an annual price of $948 per customer ($79/month). To reach a lifestyle goal of $10,000 MRR, approximately 127 customers would be needed."
         }
       },
       "founder_fit": {
-        "founder_fit_score": 9.4,
+        "founder_fit_score": 8.7,
         "fit_verdict": "Strong Fit",
         "strengths": [
-          "Directly leverages founder's Python, FastAPI, LLM document parsing, and n8n workflow automation stack.",
-          "Buildable as a functional MVP in <14 days for under $200.",
-          "High-margin B2B prosumer/SMB audience where saving 5 hrs/week or recovering 1 change order pays for a full year of subscription."
+          "The founder's deep technical skills in modern web stacks, AI, and workflow automation are perfectly aligned to build a robust and intelligent solution for streamlining information requests.",
+          "Their understanding of B2B/prosumer productivity bottlenecks and organic growth strategies positions them well to reach and serve businesses needing this type of efficiency tool.",
+          "The project's estimated cost and maintenance align perfectly with the founder's lifestyle business constraints and time commitment."
         ],
         "blind_spots": [
-          "Requires targeted outreach in contractor/agency communities to land first 15 design partners."
+          "While the founder has organic growth skills, reaching specific regulated niches like finance or legal might require tailored distribution strategies beyond general indie hacker communities.",
+          "Ensuring compliance and data security for sensitive customer information, especially in finance/legal sectors, will be critical and might require specific expertise or careful platform choices."
         ],
-        "fit_rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile."
+        "fit_rationale": "This idea is a strong fit for the founder's profile, leveraging their technical prowess in AI and workflow automation to solve a clear B2B productivity bottleneck. The project aligns well with their lifestyle business constraints regarding cost, build time, and maintenance, while their organic growth skills are suitable for reaching the target customer segment."
       },
       "scores": {
-        "pain_severity_score": 9.5,
-        "low_startup_cost_score": 9.4,
-        "competition_gap_score": 9.2,
+        "pain_severity_score": 9.0,
+        "low_startup_cost_score": 9.5,
+        "competition_gap_score": 8.5,
         "tam_sweet_spot_score": 9.0,
-        "founder_fit_score": 9.4,
-        "weighted_total_score": 93.2
+        "founder_fit_score": 8.7,
+        "weighted_total_score": 89.8
       },
-      "evaluator_verdict": "Rank #1 Winner: High-urgency B2B compliance pain (6 hrs/wk wasted + legal liability risk), massive price gap under $500/mo incumbents, $180 startup cost, and $82M niche TAM.",
+      "evaluator_verdict": "Formstep presents a highly compelling lifestyle business opportunity. It addresses a clear, acute pain point for professional services firms struggling with inefficient customer information collection, offering a direct solution to save time and money. The low estimated startup cost ($350) and quick MVP feasibility are exceptional, aligning perfectly with the founder's budget and the lifestyle business model. The competitive wedge is strong, leveraging AI for intelligent validation and automated follow-ups to differentiate from generic form builders and broad document management tools. The bottom-up TAM of nearly $95M is in the sweet spot for a lifestyle business, large enough for significant MRR but small enough to avoid tech giants. Finally, the founder's technical skills in AI and workflow automation, coupled with their understanding of B2B productivity, provide a strong founder-market fit. This combination of factors makes Formstep a top-tier candidate.",
       "rank": 1,
       "is_top_3": true,
-      "approval_status": "Pending Review (Top 3)"
+      "approval_status": "Pending Review (Top 3)",
+      "discussion_url": "https://news.ycombinator.com/item?id=50261285"
     },
     {
-      "idea_id": "idea-2-scopeguard",
-      "idea_title": "ScopeGuard — 1-Click Slack/Email to Micro-Change-Order Bot",
-      "one_line_pitch": "Turn client 'quick asks' in Slack and email into polite, SOW-backed micro-change orders with 1-click Stripe approval.",
-      "core_problem": "Freelancers and boutique agencies lose 15-20% of project revenue to unbilled scope creep buried in Slack and email threads.",
-      "target_customer": "Boutique digital agencies, web dev shops, and B2B freelancers",
-      "source_platform": "curated",
-      "source_subreddit": "r/freelance",
-      "source_reddit_title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
-      "source_reddit_url": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
+      "idea_id": "instance-gamemaker-reimplementation",
+      "idea_title": "Instance: GameMaker 8.1 Reimplementation",
+      "one_line_pitch": "An open-source, clean-room reimplementation of GameMaker 8.1 in Rust, allowing old GMK/GM81 projects to run on modern platforms and in browsers.",
+      "core_problem": "Old GameMaker 8.1 projects are difficult to run on modern systems due to limitations of the original engine (interpreter efficiency, platform support, specific quirks).",
+      "target_customer": "Game developers and hobbyists who used GameMaker 8.1 and want to revive or continue working on old projects, or new users looking for a retro game development experience.",
+      "source_platform": "Hacker News",
+      "source_subreddit": "Hacker News",
+      "source_reddit_title": "Show HN: Instance \u2013 A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "source_reddit_url": "https://github.com/groverburger/instance",
       "research": {
         "competitors": [
           {
-            "name": "Bonsai / HoneyBook",
-            "pricing": "$39-$79/mo",
-            "weakness_or_gap": "Requires moving entire invoicing/CRM; doesn't detect scope creep inside Slack/email threads."
+            "name": "Original GameMaker 8.1 (YoYo Games)",
+            "pricing": "Discontinued, effectively free if owned",
+            "weakness_or_gap": "Unsupported, no modern platform compatibility (Windows 32-bit only), inefficient interpreter, specific quirks make it hard to run on modern OS."
           },
           {
-            "name": "Scoro / Kantata",
-            "pricing": "$200-$500+/mo",
-            "weakness_or_gap": "Bloated agency PSA software hated by small 2-15 person studios."
+            "name": "GameMaker Studio (YoYo Games)",
+            "pricing": "Free tier, Creator ($4.99/mo), Developer ($19.99/mo), Enterprise",
+            "weakness_or_gap": "Not directly compatible with GM8.1 projects, requires significant manual porting, different GML syntax/features, not focused on retro preservation or exact GM8.1 behavior."
+          },
+          {
+            "name": "Godot Engine / L\u00d6VE2D / Pygame",
+            "pricing": "Free, open-source",
+            "weakness_or_gap": "Requires complete project rewrite, steep learning curve for GM8.1 users, no direct import of GMK/GM81 assets or logic, different development philosophy."
+          },
+          {
+            "name": "Manual Porting / Emulation / Virtual Machines",
+            "pricing": "Free (time cost)",
+            "weakness_or_gap": "Extremely time-consuming, requires deep technical knowledge, often results in incomplete or buggy ports, emulation can be resource-intensive and unreliable for specific GM8.1 quirks."
           }
         ],
-        "competitive_wedge": "Lightweight Slack bot & email forwarder that compares client requests to the SOW PDF and generates a 1-click $250+ Stripe change-order link.",
-        "estimated_startup_cost_usd": 150.0,
-        "startup_cost_breakdown": "$12/yr domain + $20/mo hosting + $25/mo Gemini API + $0 Stripe Connect + $93 launch assets.",
+        "competitive_wedge": "Our wedge is hyper-focused on providing exact, clean-room GameMaker 8.1 compatibility and project preservation on modern platforms (desktop, web) through an open-source Rust reimplementation. This directly addresses the pain points of developers who want to revive old projects without manual porting or dealing with outdated environments, a niche not served by modern GameMaker Studio or generic open-source engines.",
+        "estimated_startup_cost_usd": 175.0,
+        "startup_cost_breakdown": "Domain & Hosting: ~$20/year for domain, $0-$25/month for Vercel/Render/Supabase for project website and web-based runtime demos (total ~$95 for 3 months). LLM / Third-Party API Costs: Minimal, ~$10/month for minor dev tools or CI/CD services (total ~$30 for 3 months). Legal / Stripe Incorporation: $0 for sole proprietorship initially. Initial GTM / Distribution Budget: $0 for organic outreach (Reddit, indie game forums, dev blogs), potentially $50 for minor community tools or targeted ads. Total estimated initial cost for MVP launch and 3-month runway is approximately $175.",
         "tam": {
-          "target_buyer_segment": "Boutique digital agencies, dev studios, and full-time B2B freelancers",
-          "estimated_target_users": 180000,
-          "monthly_price_usd": 39.0,
-          "annual_price_usd": 468.0,
-          "bottom_up_tam_usd": 84240000.0,
-          "customers_for_10k_mrr": 257,
-          "tam_formula_explanation": "180,000 boutique agencies/freelancers × $468/yr ($39/mo) = $84.24M/yr Bottom-Up TAM (257 customers needed for $10k MRR)."
+          "target_buyer_segment": "Nostalgic GameMaker 8.1 developers and hobbyists seeking to revive or preserve old projects on modern platforms.",
+          "estimated_target_users": 7500,
+          "monthly_price_usd": 19.0,
+          "annual_price_usd": 228.0,
+          "bottom_up_tam_usd": 1710000.0,
+          "customers_for_10k_mrr": 527,
+          "tam_formula_explanation": "Based on an estimated 7,500 highly dedicated GameMaker 8.1 users globally who would pay for a modern, compatible solution. This segment is a niche within the broader retro game development community. We assume an annual price of $228 ($19/month) for premium features like cloud hosting, advanced tooling, or priority support for the open-source project. Bottom-Up TAM = 7,500 target buyers * $228/year = $1,710,000. To reach $10,000 MRR, approximately 527 customers would be needed."
         }
       },
       "founder_fit": {
-        "founder_fit_score": 9.4,
-        "fit_verdict": "Strong Fit",
+        "founder_fit_score": 4.3,
+        "fit_verdict": "Poor Fit",
         "strengths": [
-          "Directly leverages founder's Python, FastAPI, LLM document parsing, and n8n workflow automation stack.",
-          "Buildable as a functional MVP in <14 days for under $200.",
-          "High-margin B2B prosumer/SMB audience where saving 5 hrs/week or recovering 1 change order pays for a full year of subscription."
+          "The estimated startup cost of $175 is well within the founder's budget limit of $2500.",
+          "The founders' skills in organic community growth (Reddit, indie hacker communities) could be effective for reaching the niche target audience of retro game developers.",
+          "As a digital tool, the product could potentially achieve the desired high gross margins."
         ],
         "blind_spots": [
-          "Requires targeted outreach in contractor/agency communities to land first 15 design partners."
+          "Reimplementing a game engine like GameMaker 8.1 requires specialized technical skills (e.g., low-level graphics, engine architecture) that are not aligned with the founders' stated expertise in Python, modern web stacks, AI agents, and workflow automation.",
+          "The ongoing maintenance, bug fixing, and community support for a game engine could significantly exceed the founders' target weekly time commitment of 20 hours, impacting their lifestyle business goals.",
+          "The founders' 'unfair advantages' in AI agent orchestration and business productivity offer no specific competitive edge in the niche of retro game engine development."
         ],
-        "fit_rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile."
+        "fit_rationale": "This idea presents a poor founder-market fit due to a significant mismatch in technical expertise; reimplementing a game engine is outside the founders' AI/web development stack. While the low startup cost and organic growth skills are positive, the core technical challenge and potential ongoing maintenance burden do not align with their strengths or lifestyle constraints. Their unique advantages offer no specific edge in this niche."
       },
       "scores": {
-        "pain_severity_score": 9.2,
-        "low_startup_cost_score": 9.5,
-        "competition_gap_score": 8.8,
-        "tam_sweet_spot_score": 8.9,
-        "founder_fit_score": 9.4,
-        "weighted_total_score": 91.8
+        "pain_severity_score": 8.5,
+        "low_startup_cost_score": 9.0,
+        "competition_gap_score": 8.5,
+        "tam_sweet_spot_score": 5.0,
+        "founder_fit_score": 4.3,
+        "weighted_total_score": 74.7
       },
-      "evaluator_verdict": "Rank #2 Winner: Directly generates revenue for users on Day 1 (1 recovered change order = 10x monthly fee), $150 startup cost, and strong viral distribution among agencies.",
+      "evaluator_verdict": "This idea presents a compelling solution to a specific, acute pain point for nostalgic GameMaker 8.1 developers, offering modern compatibility and project preservation. The estimated startup cost is exceptionally low, and the competitive wedge is clear, targeting an underserved niche. However, the founder-market fit is a significant concern; reimplementing a game engine requires specialized technical skills outside the founder's stated expertise in Python, modern web stacks, and AI agents. This mismatch in core technical capabilities and the potential for high ongoing maintenance could undermine the lifestyle business goals. The TAM is also on the lower end of the ideal range. While the pain, cost, and competition scores are strong, the founder fit significantly pulls down the overall viability for *this* founder.",
       "rank": 2,
       "is_top_3": true,
-      "approval_status": "Pending Review (Top 3)"
-    },
-    {
-      "idea_id": "idea-3-pausesave",
-      "idea_title": "PauseSave — Indie Stripe Dunning + WhatsApp/SMS & 1-Click Pause Flow",
-      "one_line_pitch": "Plug-and-play failed-payment recovery and subscription pause widget built specifically for $2k-$30k MRR micro-SaaS.",
-      "core_problem": "Indie SaaS founders lose up to 30% of involuntary churn because default Stripe emails go to spam and enterprise retention tools cost $250-$1,000+/mo.",
-      "target_customer": "Bootstrapped micro-SaaS founders and subscription digital product creators",
-      "source_platform": "curated",
-      "source_subreddit": "r/SaaS",
-      "source_reddit_title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
-      "source_reddit_url": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
-      "research": {
-        "competitors": [
-          {
-            "name": "Churnkey / ProfitWell Retain",
-            "pricing": "$250-$1,000+/mo",
-            "weakness_or_gap": "Priced for funded scale-ups; way too expensive for indie SaaS under $25k MRR."
-          },
-          {
-            "name": "Stripe Default Smart Retries",
-            "pricing": "Included in Stripe Billing (0.5%-0.8% of volume)",
-            "weakness_or_gap": "Generic plain-text emails land in spam; no SMS/WhatsApp nudge or 1-click pause modal."
-          }
-        ],
-        "competitive_wedge": "Flat $29/mo indie-friendly Stripe webhook app with branded pause-instead-of-cancel modal and SMS card-update links.",
-        "estimated_startup_cost_usd": 120.0,
-        "startup_cost_breakdown": "$12 domain + $20/mo hosting + $38/mo SMS/email API credits + $50 Stripe test environment.",
-        "tam": {
-          "target_buyer_segment": "Bootstrapped SaaS & subscription businesses ($2k-$30k MRR)",
-          "estimated_target_users": 75000,
-          "monthly_price_usd": 29.0,
-          "annual_price_usd": 348.0,
-          "bottom_up_tam_usd": 26100000.0,
-          "customers_for_10k_mrr": 345,
-          "tam_formula_explanation": "75,000 indie Stripe SaaS businesses × $348/yr ($29/mo) = $26.1M/yr Bottom-Up TAM (345 customers needed for $10k MRR)."
-        }
-      },
-      "founder_fit": {
-        "founder_fit_score": 8.8,
-        "fit_verdict": "Strong Fit",
-        "strengths": [
-          "Founders deeply understand indie SaaS tooling, APIs, and webhook automation.",
-          "Near-zero support burden once Stripe webhooks are connected."
-        ],
-        "blind_spots": [
-          "Requires Stripe App Marketplace review and high trust around billing permissions."
-        ],
-        "fit_rationale": "Strong Fit (8.8/10): Easy to build and market organically on r/SaaS and IndieHackers within a 20 hr/wk lifestyle schedule."
-      },
-      "scores": {
-        "pain_severity_score": 8.6,
-        "low_startup_cost_score": 9.5,
-        "competition_gap_score": 8.2,
-        "tam_sweet_spot_score": 8.4,
-        "founder_fit_score": 8.8,
-        "weighted_total_score": 87.4
-      },
-      "evaluator_verdict": "Rank #3 Winner: Ultra-lean micro-SaaS ($120 startup cost) with clear ROI for indie founders priced out of $250+/mo retention tools.",
-      "rank": 3,
-      "is_top_3": true,
-      "approval_status": "Pending Review (Top 3)"
+      "approval_status": "Pending Review (Top 3)",
+      "discussion_url": "https://news.ycombinator.com/item?id=50261794"
     }
   ],
   "all_evaluated_ideas": [
     {
-      "idea_id": "idea-1-certping",
-      "idea_title": "CertPing AI — Automated Subcontractor COI Compliance Tracker",
-      "one_line_pitch": "Zero-bloat PDF Certificate of Insurance parser and automated SMS/email expiry chaser for small contractors.",
-      "core_problem": "Small general contractors and property managers waste 5-6 hours/week chasing subcontractors for expiring Certificates of Insurance (COIs) because enterprise tools like Procore cost $600+/mo.",
-      "target_customer": "Independent general contractors, property managers, and construction SMBs (5-50 employees)",
-      "source_platform": "curated",
-      "source_subreddit": "r/smallbusiness",
-      "source_reddit_title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
-      "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
+      "idea_id": "formstep-customer-info-requests",
+      "idea_title": "Formstep: Streamlined Customer Information Requests",
+      "one_line_pitch": "A tool to simplify requesting information, documents, and confirmations from customers, integrating with workflows and AI to eliminate back-and-forth communication.",
+      "core_problem": "Businesses face inefficiency and constant back-and-forth communication when collecting necessary information, documents, or corrections from customers, especially when forms are filled incorrectly or incompletely.",
+      "target_customer": "Businesses (e.g., in finance, legal, onboarding) that need to collect specific information and documents from their customers and want to automate and streamline this process.",
+      "source_platform": "Hacker News",
+      "source_subreddit": "Hacker News",
+      "source_reddit_title": "Show HN: Formstep, Request information from customers without the back-and-forth",
+      "source_reddit_url": "https://formstep.io",
       "research": {
         "competitors": [
           {
-            "name": "Procore Compliance",
-            "pricing": "$600+/mo (Annual Enterprise Contract)",
-            "weakness_or_gap": "Massive ERP overkill for 5-50 person contractors who just need COI expiry tracking."
+            "name": "Typeform/Jotform/Google Forms",
+            "pricing": "Free to $99+/month (Typeform Business)",
+            "weakness_or_gap": "Generic form builders lack specific features for automated follow-ups, intelligent validation, and AI-driven error correction, leading to continued manual back-and-forth for complex information requests."
           },
           {
-            "name": "myCOI / Jones",
-            "pricing": "$350-$500+/mo",
-            "weakness_or_gap": "Long onboarding, enterprise sales calls, no self-serve $49/mo SMB tier."
+            "name": "DocuSign/PandaDoc",
+            "pricing": "$10-$60+/user/month",
+            "weakness_or_gap": "Primarily focused on e-signatures and document generation/management, not on dynamically collecting and validating diverse customer information with AI to proactively reduce data entry errors and incomplete submissions."
           },
           {
-            "name": "Excel + Calendar Reminders",
-            "pricing": "Free (6 hrs/wk manual labor)",
-            "weakness_or_gap": "Subcontractors ignore manual emails; high liability risk when a lapsed policy is missed."
+            "name": "Custom Email/Spreadsheet Workflows",
+            "pricing": "Free (high time cost)",
+            "weakness_or_gap": "Extremely manual, prone to human error, difficult to track, and requires constant back-and-forth communication, consuming significant staff time and delaying processes."
           }
         ],
-        "competitive_wedge": "Self-serve $49/mo AI PDF parser + automated SMS/email vendor chaser with zero ERP migration.",
-        "estimated_startup_cost_usd": 180.0,
-        "startup_cost_breakdown": "$12/yr domain + $20/mo cloud hosting + $30/mo Gemini Vision PDF OCR API + $18/mo Twilio SMS + $100 initial outreach tooling.",
+        "competitive_wedge": "Formstep will differentiate by focusing specifically on 'streamlined customer information requests' with integrated AI for intelligent validation, pre-filling, and automated follow-ups. This eliminates the tedious back-and-forth common with generic forms and provides a more focused, intelligent solution than broad document management tools, targeting small to medium-sized professional services firms that value efficiency and accuracy in client intake.",
+        "estimated_startup_cost_usd": 350.0,
+        "startup_cost_breakdown": "Domain & Hosting: $15 (domain) + $75 (Vercel/Render/Supabase free tier with buffer for initial scaling, over 3 months) = $90. LLM / Third-Party API Costs: $150 (Gemini API for initial AI features, over 3 months) + $60 (SendGrid/Postmark for transactional emails, over 3 months) = $210. Legal / Stripe Incorporation: $0 (initial sole proprietorship setup, Stripe account is free). Initial GTM / Distribution Budget: $50 (for minor tooling or initial ad tests, primarily organic outreach). Total: $350 USD, comfortably within a <$500 bootstrapped budget.",
         "tam": {
-          "target_buyer_segment": "US/UK/CA small general contractors & property managers (5-50 employees)",
-          "estimated_target_users": 140000,
-          "monthly_price_usd": 49.0,
-          "annual_price_usd": 588.0,
-          "bottom_up_tam_usd": 82320000.0,
-          "customers_for_10k_mrr": 205,
-          "tam_formula_explanation": "140,000 small GCs/property managers × $588/yr ($49/mo) = $82.32M/yr Bottom-Up TAM (Only 205 customers needed for $10k MRR)."
-        }
-      },
-      "founder_fit": {
-        "founder_fit_score": 9.4,
-        "fit_verdict": "Strong Fit",
-        "strengths": [
-          "Directly leverages founder's Python, FastAPI, LLM document parsing, and n8n workflow automation stack.",
-          "Buildable as a functional MVP in <14 days for under $200.",
-          "High-margin B2B prosumer/SMB audience where saving 5 hrs/week or recovering 1 change order pays for a full year of subscription."
-        ],
-        "blind_spots": [
-          "Requires targeted outreach in contractor/agency communities to land first 15 design partners."
-        ],
-        "fit_rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile."
-      },
-      "scores": {
-        "pain_severity_score": 9.5,
-        "low_startup_cost_score": 9.4,
-        "competition_gap_score": 9.2,
-        "tam_sweet_spot_score": 9.0,
-        "founder_fit_score": 9.4,
-        "weighted_total_score": 93.2
-      },
-      "evaluator_verdict": "Rank #1 Winner: High-urgency B2B compliance pain (6 hrs/wk wasted + legal liability risk), massive price gap under $500/mo incumbents, $180 startup cost, and $82M niche TAM.",
-      "rank": 1,
-      "is_top_3": true,
-      "approval_status": "Pending Review (Top 3)"
-    },
-    {
-      "idea_id": "idea-2-scopeguard",
-      "idea_title": "ScopeGuard — 1-Click Slack/Email to Micro-Change-Order Bot",
-      "one_line_pitch": "Turn client 'quick asks' in Slack and email into polite, SOW-backed micro-change orders with 1-click Stripe approval.",
-      "core_problem": "Freelancers and boutique agencies lose 15-20% of project revenue to unbilled scope creep buried in Slack and email threads.",
-      "target_customer": "Boutique digital agencies, web dev shops, and B2B freelancers",
-      "source_platform": "curated",
-      "source_subreddit": "r/freelance",
-      "source_reddit_title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
-      "source_reddit_url": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
-      "research": {
-        "competitors": [
-          {
-            "name": "Bonsai / HoneyBook",
-            "pricing": "$39-$79/mo",
-            "weakness_or_gap": "Requires moving entire invoicing/CRM; doesn't detect scope creep inside Slack/email threads."
-          },
-          {
-            "name": "Scoro / Kantata",
-            "pricing": "$200-$500+/mo",
-            "weakness_or_gap": "Bloated agency PSA software hated by small 2-15 person studios."
-          }
-        ],
-        "competitive_wedge": "Lightweight Slack bot & email forwarder that compares client requests to the SOW PDF and generates a 1-click $250+ Stripe change-order link.",
-        "estimated_startup_cost_usd": 150.0,
-        "startup_cost_breakdown": "$12/yr domain + $20/mo hosting + $25/mo Gemini API + $0 Stripe Connect + $93 launch assets.",
-        "tam": {
-          "target_buyer_segment": "Boutique digital agencies, dev studios, and full-time B2B freelancers",
-          "estimated_target_users": 180000,
-          "monthly_price_usd": 39.0,
-          "annual_price_usd": 468.0,
-          "bottom_up_tam_usd": 84240000.0,
-          "customers_for_10k_mrr": 257,
-          "tam_formula_explanation": "180,000 boutique agencies/freelancers × $468/yr ($39/mo) = $84.24M/yr Bottom-Up TAM (257 customers needed for $10k MRR)."
-        }
-      },
-      "founder_fit": {
-        "founder_fit_score": 9.4,
-        "fit_verdict": "Strong Fit",
-        "strengths": [
-          "Directly leverages founder's Python, FastAPI, LLM document parsing, and n8n workflow automation stack.",
-          "Buildable as a functional MVP in <14 days for under $200.",
-          "High-margin B2B prosumer/SMB audience where saving 5 hrs/week or recovering 1 change order pays for a full year of subscription."
-        ],
-        "blind_spots": [
-          "Requires targeted outreach in contractor/agency communities to land first 15 design partners."
-        ],
-        "fit_rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile."
-      },
-      "scores": {
-        "pain_severity_score": 9.2,
-        "low_startup_cost_score": 9.5,
-        "competition_gap_score": 8.8,
-        "tam_sweet_spot_score": 8.9,
-        "founder_fit_score": 9.4,
-        "weighted_total_score": 91.8
-      },
-      "evaluator_verdict": "Rank #2 Winner: Directly generates revenue for users on Day 1 (1 recovered change order = 10x monthly fee), $150 startup cost, and strong viral distribution among agencies.",
-      "rank": 2,
-      "is_top_3": true,
-      "approval_status": "Pending Review (Top 3)"
-    },
-    {
-      "idea_id": "idea-3-pausesave",
-      "idea_title": "PauseSave — Indie Stripe Dunning + WhatsApp/SMS & 1-Click Pause Flow",
-      "one_line_pitch": "Plug-and-play failed-payment recovery and subscription pause widget built specifically for $2k-$30k MRR micro-SaaS.",
-      "core_problem": "Indie SaaS founders lose up to 30% of involuntary churn because default Stripe emails go to spam and enterprise retention tools cost $250-$1,000+/mo.",
-      "target_customer": "Bootstrapped micro-SaaS founders and subscription digital product creators",
-      "source_platform": "curated",
-      "source_subreddit": "r/SaaS",
-      "source_reddit_title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
-      "source_reddit_url": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
-      "research": {
-        "competitors": [
-          {
-            "name": "Churnkey / ProfitWell Retain",
-            "pricing": "$250-$1,000+/mo",
-            "weakness_or_gap": "Priced for funded scale-ups; way too expensive for indie SaaS under $25k MRR."
-          },
-          {
-            "name": "Stripe Default Smart Retries",
-            "pricing": "Included in Stripe Billing (0.5%-0.8% of volume)",
-            "weakness_or_gap": "Generic plain-text emails land in spam; no SMS/WhatsApp nudge or 1-click pause modal."
-          }
-        ],
-        "competitive_wedge": "Flat $29/mo indie-friendly Stripe webhook app with branded pause-instead-of-cancel modal and SMS card-update links.",
-        "estimated_startup_cost_usd": 120.0,
-        "startup_cost_breakdown": "$12 domain + $20/mo hosting + $38/mo SMS/email API credits + $50 Stripe test environment.",
-        "tam": {
-          "target_buyer_segment": "Bootstrapped SaaS & subscription businesses ($2k-$30k MRR)",
-          "estimated_target_users": 75000,
-          "monthly_price_usd": 29.0,
-          "annual_price_usd": 348.0,
-          "bottom_up_tam_usd": 26100000.0,
-          "customers_for_10k_mrr": 345,
-          "tam_formula_explanation": "75,000 indie Stripe SaaS businesses × $348/yr ($29/mo) = $26.1M/yr Bottom-Up TAM (345 customers needed for $10k MRR)."
-        }
-      },
-      "founder_fit": {
-        "founder_fit_score": 8.8,
-        "fit_verdict": "Strong Fit",
-        "strengths": [
-          "Founders deeply understand indie SaaS tooling, APIs, and webhook automation.",
-          "Near-zero support burden once Stripe webhooks are connected."
-        ],
-        "blind_spots": [
-          "Requires Stripe App Marketplace review and high trust around billing permissions."
-        ],
-        "fit_rationale": "Strong Fit (8.8/10): Easy to build and market organically on r/SaaS and IndieHackers within a 20 hr/wk lifestyle schedule."
-      },
-      "scores": {
-        "pain_severity_score": 8.6,
-        "low_startup_cost_score": 9.5,
-        "competition_gap_score": 8.2,
-        "tam_sweet_spot_score": 8.4,
-        "founder_fit_score": 8.8,
-        "weighted_total_score": 87.4
-      },
-      "evaluator_verdict": "Rank #3 Winner: Ultra-lean micro-SaaS ($120 startup cost) with clear ROI for indie founders priced out of $250+/mo retention tools.",
-      "rank": 3,
-      "is_top_3": true,
-      "approval_status": "Pending Review (Top 3)"
-    },
-    {
-      "idea_id": "idea-4-nightbook",
-      "idea_title": "NightBook AI — After-Hours IG/Google Maps DM Concierge for Clinics",
-      "one_line_pitch": "Menu-grounded after-hours DM responder and consult booker for local MedSpas and dental practices.",
-      "core_problem": "Local MedSpas and dental clinics spend $3k+/mo on ads but lose overnight IG/Google Maps inquiries because tools like Podium cost $500+/mo.",
-      "target_customer": "Independent MedSpas, cosmetic dental clinics, and boutique wellness studios",
-      "source_platform": "curated",
-      "source_subreddit": "r/entrepreneur",
-      "source_reddit_title": "Local MedSpas and dental clinics are terrible at replying to Instagram/Google Maps DMs after 5pm",
-      "source_reddit_url": "https://www.reddit.com/r/entrepreneur/comments/medspa_after_hours_dm_booking",
-      "research": {
-        "competitors": [
-          {
-            "name": "Podium / Weave",
-            "pricing": "$400-$650/mo (12-month lock-in)",
-            "weakness_or_gap": "Predatory annual contracts and high pricing frustrate single-location clinics."
-          },
-          {
-            "name": "Generic ManyChat Templates",
-            "pricing": "$15-$45/mo",
-            "weakness_or_gap": "Brittle decision trees that fail when patients ask specific treatment pricing or contraindictions."
-          }
-        ],
-        "competitive_wedge": "No-contract $79/mo after-hours AI receptionist grounded strictly in the clinic's exact service menu PDF.",
-        "estimated_startup_cost_usd": 250.0,
-        "startup_cost_breakdown": "$12 domain + $30/mo hosting + $50/mo Meta/Google API + LLM tokens + $158 local clinic demo setup.",
-        "tam": {
-          "target_buyer_segment": "Independent US/CA/UK MedSpas, cosmetic dentists, and aesthetic clinics",
-          "estimated_target_users": 65000,
+          "target_buyer_segment": "Small to medium-sized professional services firms (e.g., legal, financial advisory, consulting) in the US",
+          "estimated_target_users": 100000,
           "monthly_price_usd": 79.0,
           "annual_price_usd": 948.0,
-          "bottom_up_tam_usd": 61620000.0,
+          "bottom_up_tam_usd": 94800000.0,
           "customers_for_10k_mrr": 127,
-          "tam_formula_explanation": "65,000 aesthetic/dental clinics × $948/yr ($79/mo) = $61.62M/yr Bottom-Up TAM (127 clinics needed for $10k MRR)."
+          "tam_formula_explanation": "Bottom-Up TAM is calculated as 100,000 estimated reachable small to medium-sized professional services firms in the US (a conservative estimate based on the number of small law firms, financial advisors, and consulting practices) multiplied by an annual price of $948 per customer ($79/month). To reach a lifestyle goal of $10,000 MRR, approximately 127 customers would be needed."
         }
       },
       "founder_fit": {
-        "founder_fit_score": 7.6,
-        "fit_verdict": "Moderate Fit",
+        "founder_fit_score": 8.7,
+        "fit_verdict": "Strong Fit",
         "strengths": [
-          "Strong technical fit for building the menu-grounded AI responder."
+          "The founder's deep technical skills in modern web stacks, AI, and workflow automation are perfectly aligned to build a robust and intelligent solution for streamlining information requests.",
+          "Their understanding of B2B/prosumer productivity bottlenecks and organic growth strategies positions them well to reach and serve businesses needing this type of efficiency tool.",
+          "The project's estimated cost and maintenance align perfectly with the founder's lifestyle business constraints and time commitment."
         ],
         "blind_spots": [
-          "Selling to local brick-and-mortar clinics requires more outbound calls/demos than pure self-serve SaaS."
+          "While the founder has organic growth skills, reaching specific regulated niches like finance or legal might require tailored distribution strategies beyond general indie hacker communities.",
+          "Ensuring compliance and data security for sensitive customer information, especially in finance/legal sectors, will be critical and might require specific expertise or careful platform choices."
         ],
-        "fit_rationale": "Moderate-to-Strong Fit (7.6/10): Technically straightforward, though local clinic GTM is slightly more sales-heavy."
+        "fit_rationale": "This idea is a strong fit for the founder's profile, leveraging their technical prowess in AI and workflow automation to solve a clear B2B productivity bottleneck. The project aligns well with their lifestyle business constraints regarding cost, build time, and maintenance, while their organic growth skills are suitable for reaching the target customer segment."
+      },
+      "scores": {
+        "pain_severity_score": 9.0,
+        "low_startup_cost_score": 9.5,
+        "competition_gap_score": 8.5,
+        "tam_sweet_spot_score": 9.0,
+        "founder_fit_score": 8.7,
+        "weighted_total_score": 89.8
+      },
+      "evaluator_verdict": "Formstep presents a highly compelling lifestyle business opportunity. It addresses a clear, acute pain point for professional services firms struggling with inefficient customer information collection, offering a direct solution to save time and money. The low estimated startup cost ($350) and quick MVP feasibility are exceptional, aligning perfectly with the founder's budget and the lifestyle business model. The competitive wedge is strong, leveraging AI for intelligent validation and automated follow-ups to differentiate from generic form builders and broad document management tools. The bottom-up TAM of nearly $95M is in the sweet spot for a lifestyle business, large enough for significant MRR but small enough to avoid tech giants. Finally, the founder's technical skills in AI and workflow automation, coupled with their understanding of B2B productivity, provide a strong founder-market fit. This combination of factors makes Formstep a top-tier candidate.",
+      "rank": 1,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)",
+      "discussion_url": "https://news.ycombinator.com/item?id=50261285"
+    },
+    {
+      "idea_id": "instance-gamemaker-reimplementation",
+      "idea_title": "Instance: GameMaker 8.1 Reimplementation",
+      "one_line_pitch": "An open-source, clean-room reimplementation of GameMaker 8.1 in Rust, allowing old GMK/GM81 projects to run on modern platforms and in browsers.",
+      "core_problem": "Old GameMaker 8.1 projects are difficult to run on modern systems due to limitations of the original engine (interpreter efficiency, platform support, specific quirks).",
+      "target_customer": "Game developers and hobbyists who used GameMaker 8.1 and want to revive or continue working on old projects, or new users looking for a retro game development experience.",
+      "source_platform": "Hacker News",
+      "source_subreddit": "Hacker News",
+      "source_reddit_title": "Show HN: Instance \u2013 A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "source_reddit_url": "https://github.com/groverburger/instance",
+      "research": {
+        "competitors": [
+          {
+            "name": "Original GameMaker 8.1 (YoYo Games)",
+            "pricing": "Discontinued, effectively free if owned",
+            "weakness_or_gap": "Unsupported, no modern platform compatibility (Windows 32-bit only), inefficient interpreter, specific quirks make it hard to run on modern OS."
+          },
+          {
+            "name": "GameMaker Studio (YoYo Games)",
+            "pricing": "Free tier, Creator ($4.99/mo), Developer ($19.99/mo), Enterprise",
+            "weakness_or_gap": "Not directly compatible with GM8.1 projects, requires significant manual porting, different GML syntax/features, not focused on retro preservation or exact GM8.1 behavior."
+          },
+          {
+            "name": "Godot Engine / L\u00d6VE2D / Pygame",
+            "pricing": "Free, open-source",
+            "weakness_or_gap": "Requires complete project rewrite, steep learning curve for GM8.1 users, no direct import of GMK/GM81 assets or logic, different development philosophy."
+          },
+          {
+            "name": "Manual Porting / Emulation / Virtual Machines",
+            "pricing": "Free (time cost)",
+            "weakness_or_gap": "Extremely time-consuming, requires deep technical knowledge, often results in incomplete or buggy ports, emulation can be resource-intensive and unreliable for specific GM8.1 quirks."
+          }
+        ],
+        "competitive_wedge": "Our wedge is hyper-focused on providing exact, clean-room GameMaker 8.1 compatibility and project preservation on modern platforms (desktop, web) through an open-source Rust reimplementation. This directly addresses the pain points of developers who want to revive old projects without manual porting or dealing with outdated environments, a niche not served by modern GameMaker Studio or generic open-source engines.",
+        "estimated_startup_cost_usd": 175.0,
+        "startup_cost_breakdown": "Domain & Hosting: ~$20/year for domain, $0-$25/month for Vercel/Render/Supabase for project website and web-based runtime demos (total ~$95 for 3 months). LLM / Third-Party API Costs: Minimal, ~$10/month for minor dev tools or CI/CD services (total ~$30 for 3 months). Legal / Stripe Incorporation: $0 for sole proprietorship initially. Initial GTM / Distribution Budget: $0 for organic outreach (Reddit, indie game forums, dev blogs), potentially $50 for minor community tools or targeted ads. Total estimated initial cost for MVP launch and 3-month runway is approximately $175.",
+        "tam": {
+          "target_buyer_segment": "Nostalgic GameMaker 8.1 developers and hobbyists seeking to revive or preserve old projects on modern platforms.",
+          "estimated_target_users": 7500,
+          "monthly_price_usd": 19.0,
+          "annual_price_usd": 228.0,
+          "bottom_up_tam_usd": 1710000.0,
+          "customers_for_10k_mrr": 527,
+          "tam_formula_explanation": "Based on an estimated 7,500 highly dedicated GameMaker 8.1 users globally who would pay for a modern, compatible solution. This segment is a niche within the broader retro game development community. We assume an annual price of $228 ($19/month) for premium features like cloud hosting, advanced tooling, or priority support for the open-source project. Bottom-Up TAM = 7,500 target buyers * $228/year = $1,710,000. To reach $10,000 MRR, approximately 527 customers would be needed."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 4.3,
+        "fit_verdict": "Poor Fit",
+        "strengths": [
+          "The estimated startup cost of $175 is well within the founder's budget limit of $2500.",
+          "The founders' skills in organic community growth (Reddit, indie hacker communities) could be effective for reaching the niche target audience of retro game developers.",
+          "As a digital tool, the product could potentially achieve the desired high gross margins."
+        ],
+        "blind_spots": [
+          "Reimplementing a game engine like GameMaker 8.1 requires specialized technical skills (e.g., low-level graphics, engine architecture) that are not aligned with the founders' stated expertise in Python, modern web stacks, AI agents, and workflow automation.",
+          "The ongoing maintenance, bug fixing, and community support for a game engine could significantly exceed the founders' target weekly time commitment of 20 hours, impacting their lifestyle business goals.",
+          "The founders' 'unfair advantages' in AI agent orchestration and business productivity offer no specific competitive edge in the niche of retro game engine development."
+        ],
+        "fit_rationale": "This idea presents a poor founder-market fit due to a significant mismatch in technical expertise; reimplementing a game engine is outside the founders' AI/web development stack. While the low startup cost and organic growth skills are positive, the core technical challenge and potential ongoing maintenance burden do not align with their strengths or lifestyle constraints. Their unique advantages offer no specific edge in this niche."
       },
       "scores": {
         "pain_severity_score": 8.5,
-        "low_startup_cost_score": 8.6,
-        "competition_gap_score": 7.8,
-        "tam_sweet_spot_score": 8.5,
-        "founder_fit_score": 7.6,
-        "weighted_total_score": 82.5
+        "low_startup_cost_score": 9.0,
+        "competition_gap_score": 8.5,
+        "tam_sweet_spot_score": 5.0,
+        "founder_fit_score": 4.3,
+        "weighted_total_score": 74.7
       },
-      "evaluator_verdict": "Rank #4 Runner-Up: Great unit economics ($79/mo) and clear pain, but slightly below Top 3 due to local clinic sales friction and Meta API approval steps.",
-      "rank": 4,
-      "is_top_3": false,
-      "approval_status": "Backlog"
-    },
-    {
-      "idea_id": "idea-5-airline",
-      "idea_title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
-      "one_line_pitch": "Capital-intensive airline concept that cannot be a bootstrapped software lifestyle business.",
-      "core_problem": "Why doesn't someone just lease 10 Boeing 737 jets and make all seats first class for $99 tickets? Seems like an easy startup idea.",
-      "target_customer": "Mass-market airline passengers",
-      "source_platform": "curated",
-      "source_subreddit": "r/smallbusiness",
-      "source_reddit_title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
-      "source_reddit_url": "https://www.reddit.com/r/smallbusiness/comments/airline_hardware_idea",
-      "research": {
-        "competitors": [
-          {
-            "name": "Legacy Incumbents",
-            "pricing": "$10,000+/mo",
-            "weakness_or_gap": "Capital-intensive industry requiring millions in regulatory and hardware investment."
-          }
-        ],
-        "competitive_wedge": "None compatible with a bootstrapped lifestyle business.",
-        "estimated_startup_cost_usd": 5000000.0,
-        "startup_cost_breakdown": "Requires FAA certification, aircraft leasing, and millions in capital.",
-        "tam": {
-          "target_buyer_segment": "Mass market airline passengers",
-          "estimated_target_users": 1000000,
-          "monthly_price_usd": 99.0,
-          "annual_price_usd": 1188.0,
-          "bottom_up_tam_usd": 1188000000.0,
-          "customers_for_10k_mrr": 102,
-          "tam_formula_explanation": "Capital-intensive physical operation; incompatible with bootstrapped software lifestyle model."
-        }
-      },
-      "founder_fit": {
-        "founder_fit_score": 1.5,
-        "fit_verdict": "Poor Fit",
-        "strengths": [
-          "None — violates the configured lifestyle budget constraint."
-        ],
-        "blind_spots": [
-          "Requires capital or operating scope beyond this founder profile."
-        ],
-        "fit_rationale": "Disqualified: startup cost $5,000,000 exceeds the founder's $2,500 max startup cost."
-      },
-      "scores": {
-        "pain_severity_score": 3.0,
-        "low_startup_cost_score": 1.0,
-        "competition_gap_score": 2.0,
-        "tam_sweet_spot_score": 4.0,
-        "founder_fit_score": 1.5,
-        "weighted_total_score": 22.2
-      },
-      "evaluator_verdict": "Disqualified: Violates lifestyle business budget and asset-light constraints.",
-      "rank": 5,
-      "is_top_3": false,
-      "approval_status": "Disqualified (Over Budget/Scope)"
+      "evaluator_verdict": "This idea presents a compelling solution to a specific, acute pain point for nostalgic GameMaker 8.1 developers, offering modern compatibility and project preservation. The estimated startup cost is exceptionally low, and the competitive wedge is clear, targeting an underserved niche. However, the founder-market fit is a significant concern; reimplementing a game engine requires specialized technical skills outside the founder's stated expertise in Python, modern web stacks, and AI agents. This mismatch in core technical capabilities and the potential for high ongoing maintenance could undermine the lifestyle business goals. The TAM is also on the lower end of the ideal range. While the pain, cost, and competition scores are strong, the founder fit significantly pulls down the overall viability for *this* founder.",
+      "rank": 2,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)",
+      "discussion_url": "https://news.ycombinator.com/item?id=50261794"
     }
   ],
   "google_sheets_rows": [
@@ -504,161 +297,58 @@
       "Rank": 1,
       "Is_Top_3": "YES (Top 3)",
       "Approval_Status": "Pending Review (Top 3)",
-      "Idea_ID": "idea-1-certping",
-      "Idea_Title": "CertPing AI — Automated Subcontractor COI Compliance Tracker",
-      "One_Line_Pitch": "Zero-bloat PDF Certificate of Insurance parser and automated SMS/email expiry chaser for small contractors.",
-      "Core_Problem": "Small general contractors and property managers waste 5-6 hours/week chasing subcontractors for expiring Certificates of Insurance (COIs) because enterprise tools like Procore cost $600+/mo.",
-      "Target_Customer": "Independent general contractors, property managers, and construction SMBs (5-50 employees)",
-      "Total_Score_100": 93.2,
-      "Bottom_Up_TAM_USD": "$82,320,000/yr",
-      "TAM_Formula": "140,000 small GCs/property managers × $588/yr ($49/mo) = $82.32M/yr Bottom-Up TAM (Only 205 customers needed for $10k MRR).",
-      "Customers_For_10k_MRR": 205,
-      "Startup_Cost_USD": "$180",
-      "Startup_Cost_Breakdown": "$12/yr domain + $20/mo cloud hosting + $30/mo Gemini Vision PDF OCR API + $18/mo Twilio SMS + $100 initial outreach tooling.",
-      "Competitors": "Procore Compliance ($600+/mo (Annual Enterprise Contract)), myCOI / Jones ($350-$500+/mo), Excel + Calendar Reminders (Free (6 hrs/wk manual labor))",
-      "Competitive_Wedge": "Self-serve $49/mo AI PDF parser + automated SMS/email vendor chaser with zero ERP migration.",
-      "Founder_Fit_Score_10": 9.4,
+      "Idea_ID": "formstep-customer-info-requests",
+      "Idea_Title": "Formstep: Streamlined Customer Information Requests",
+      "One_Line_Pitch": "A tool to simplify requesting information, documents, and confirmations from customers, integrating with workflows and AI to eliminate back-and-forth communication.",
+      "Core_Problem": "Businesses face inefficiency and constant back-and-forth communication when collecting necessary information, documents, or corrections from customers, especially when forms are filled incorrectly or incompletely.",
+      "Target_Customer": "Businesses (e.g., in finance, legal, onboarding) that need to collect specific information and documents from their customers and want to automate and streamline this process.",
+      "Total_Score_100": 89.8,
+      "Bottom_Up_TAM_USD": "$94,800,000/yr",
+      "TAM_Formula": "Bottom-Up TAM is calculated as 100,000 estimated reachable small to medium-sized professional services firms in the US (a conservative estimate based on the number of small law firms, financial advisors, and consulting practices) multiplied by an annual price of $948 per customer ($79/month). To reach a lifestyle goal of $10,000 MRR, approximately 127 customers would be needed.",
+      "Customers_For_10k_MRR": 127,
+      "Startup_Cost_USD": "$350",
+      "Startup_Cost_Breakdown": "Domain & Hosting: $15 (domain) + $75 (Vercel/Render/Supabase free tier with buffer for initial scaling, over 3 months) = $90. LLM / Third-Party API Costs: $150 (Gemini API for initial AI features, over 3 months) + $60 (SendGrid/Postmark for transactional emails, over 3 months) = $210. Legal / Stripe Incorporation: $0 (initial sole proprietorship setup, Stripe account is free). Initial GTM / Distribution Budget: $50 (for minor tooling or initial ad tests, primarily organic outreach). Total: $350 USD, comfortably within a <$500 bootstrapped budget.",
+      "Competitors": "Typeform/Jotform/Google Forms (Free to $99+/month (Typeform Business)), DocuSign/PandaDoc ($10-$60+/user/month), Custom Email/Spreadsheet Workflows (Free (high time cost))",
+      "Competitive_Wedge": "Formstep will differentiate by focusing specifically on 'streamlined customer information requests' with integrated AI for intelligent validation, pre-filling, and automated follow-ups. This eliminates the tedious back-and-forth common with generic forms and provides a more focused, intelligent solution than broad document management tools, targeting small to medium-sized professional services firms that value efficiency and accuracy in client intake.",
+      "Founder_Fit_Score_10": 8.7,
       "Founder_Fit_Verdict": "Strong Fit",
-      "Founder_Fit_Rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile.",
-      "Evaluator_Verdict": "Rank #1 Winner: High-urgency B2B compliance pain (6 hrs/wk wasted + legal liability risk), massive price gap under $500/mo incumbents, $180 startup cost, and $82M niche TAM.",
-      "Source_Platform": "curated",
-      "Source_Subreddit": "r/smallbusiness",
-      "Source_Reddit_Title": "Spending 6 hours every Friday chasing subcontractors for updated COI (Certificate of Insurance) PDFs",
-      "Source_Reddit_URL": "https://www.reddit.com/r/smallbusiness/comments/coi_tracking_pain",
+      "Founder_Fit_Rationale": "This idea is a strong fit for the founder's profile, leveraging their technical prowess in AI and workflow automation to solve a clear B2B productivity bottleneck. The project aligns well with their lifestyle business constraints regarding cost, build time, and maintenance, while their organic growth skills are suitable for reaching the target customer segment.",
+      "Evaluator_Verdict": "Formstep presents a highly compelling lifestyle business opportunity. It addresses a clear, acute pain point for professional services firms struggling with inefficient customer information collection, offering a direct solution to save time and money. The low estimated startup cost ($350) and quick MVP feasibility are exceptional, aligning perfectly with the founder's budget and the lifestyle business model. The competitive wedge is strong, leveraging AI for intelligent validation and automated follow-ups to differentiate from generic form builders and broad document management tools. The bottom-up TAM of nearly $95M is in the sweet spot for a lifestyle business, large enough for significant MRR but small enough to avoid tech giants. Finally, the founder's technical skills in AI and workflow automation, coupled with their understanding of B2B productivity, provide a strong founder-market fit. This combination of factors makes Formstep a top-tier candidate.",
+      "Source_Platform": "Hacker News",
+      "Source_Subreddit": "Hacker News",
+      "Source_Reddit_Title": "Show HN: Formstep, Request information from customers without the back-and-forth",
+      "Source_Reddit_URL": "https://formstep.io",
       "Google_Doc_PRD_URL": ""
     },
     {
       "Rank": 2,
       "Is_Top_3": "YES (Top 3)",
       "Approval_Status": "Pending Review (Top 3)",
-      "Idea_ID": "idea-2-scopeguard",
-      "Idea_Title": "ScopeGuard — 1-Click Slack/Email to Micro-Change-Order Bot",
-      "One_Line_Pitch": "Turn client 'quick asks' in Slack and email into polite, SOW-backed micro-change orders with 1-click Stripe approval.",
-      "Core_Problem": "Freelancers and boutique agencies lose 15-20% of project revenue to unbilled scope creep buried in Slack and email threads.",
-      "Target_Customer": "Boutique digital agencies, web dev shops, and B2B freelancers",
-      "Total_Score_100": 91.8,
-      "Bottom_Up_TAM_USD": "$84,240,000/yr",
-      "TAM_Formula": "180,000 boutique agencies/freelancers × $468/yr ($39/mo) = $84.24M/yr Bottom-Up TAM (257 customers needed for $10k MRR).",
-      "Customers_For_10k_MRR": 257,
-      "Startup_Cost_USD": "$150",
-      "Startup_Cost_Breakdown": "$12/yr domain + $20/mo hosting + $25/mo Gemini API + $0 Stripe Connect + $93 launch assets.",
-      "Competitors": "Bonsai / HoneyBook ($39-$79/mo), Scoro / Kantata ($200-$500+/mo)",
-      "Competitive_Wedge": "Lightweight Slack bot & email forwarder that compares client requests to the SOW PDF and generates a 1-click $250+ Stripe change-order link.",
-      "Founder_Fit_Score_10": 9.4,
-      "Founder_Fit_Verdict": "Strong Fit",
-      "Founder_Fit_Rationale": "Exceptional Founder-Market Fit (9.4/10): Combines AI document extraction + automated workflow triggers—the exact sweet spot of the founder profile.",
-      "Evaluator_Verdict": "Rank #2 Winner: Directly generates revenue for users on Day 1 (1 recovered change order = 10x monthly fee), $150 startup cost, and strong viral distribution among agencies.",
-      "Source_Platform": "curated",
-      "Source_Subreddit": "r/freelance",
-      "Source_Reddit_Title": "Why is there no lightweight scope-creep tracker that turns Slack/email 'quick asks' into 1-click change orders?",
-      "Source_Reddit_URL": "https://www.reddit.com/r/freelance/comments/scope_creep_change_orders",
-      "Google_Doc_PRD_URL": ""
-    },
-    {
-      "Rank": 3,
-      "Is_Top_3": "YES (Top 3)",
-      "Approval_Status": "Pending Review (Top 3)",
-      "Idea_ID": "idea-3-pausesave",
-      "Idea_Title": "PauseSave — Indie Stripe Dunning + WhatsApp/SMS & 1-Click Pause Flow",
-      "One_Line_Pitch": "Plug-and-play failed-payment recovery and subscription pause widget built specifically for $2k-$30k MRR micro-SaaS.",
-      "Core_Problem": "Indie SaaS founders lose up to 30% of involuntary churn because default Stripe emails go to spam and enterprise retention tools cost $250-$1,000+/mo.",
-      "Target_Customer": "Bootstrapped micro-SaaS founders and subscription digital product creators",
-      "Total_Score_100": 87.4,
-      "Bottom_Up_TAM_USD": "$26,100,000/yr",
-      "TAM_Formula": "75,000 indie Stripe SaaS businesses × $348/yr ($29/mo) = $26.1M/yr Bottom-Up TAM (345 customers needed for $10k MRR).",
-      "Customers_For_10k_MRR": 345,
-      "Startup_Cost_USD": "$120",
-      "Startup_Cost_Breakdown": "$12 domain + $20/mo hosting + $38/mo SMS/email API credits + $50 Stripe test environment.",
-      "Competitors": "Churnkey / ProfitWell Retain ($250-$1,000+/mo), Stripe Default Smart Retries (Included in Stripe Billing (0.5%-0.8% of volume))",
-      "Competitive_Wedge": "Flat $29/mo indie-friendly Stripe webhook app with branded pause-instead-of-cancel modal and SMS card-update links.",
-      "Founder_Fit_Score_10": 8.8,
-      "Founder_Fit_Verdict": "Strong Fit",
-      "Founder_Fit_Rationale": "Strong Fit (8.8/10): Easy to build and market organically on r/SaaS and IndieHackers within a 20 hr/wk lifestyle schedule.",
-      "Evaluator_Verdict": "Rank #3 Winner: Ultra-lean micro-SaaS ($120 startup cost) with clear ROI for indie founders priced out of $250+/mo retention tools.",
-      "Source_Platform": "curated",
-      "Source_Subreddit": "r/SaaS",
-      "Source_Reddit_Title": "We lose 30% of failed-payment customers because Stripe dunning emails look like spam and don't offer a pause option",
-      "Source_Reddit_URL": "https://www.reddit.com/r/SaaS/comments/indie_dunning_pause_flow",
-      "Google_Doc_PRD_URL": ""
-    },
-    {
-      "Rank": 4,
-      "Is_Top_3": "No",
-      "Approval_Status": "Backlog",
-      "Idea_ID": "idea-4-nightbook",
-      "Idea_Title": "NightBook AI — After-Hours IG/Google Maps DM Concierge for Clinics",
-      "One_Line_Pitch": "Menu-grounded after-hours DM responder and consult booker for local MedSpas and dental practices.",
-      "Core_Problem": "Local MedSpas and dental clinics spend $3k+/mo on ads but lose overnight IG/Google Maps inquiries because tools like Podium cost $500+/mo.",
-      "Target_Customer": "Independent MedSpas, cosmetic dental clinics, and boutique wellness studios",
-      "Total_Score_100": 82.5,
-      "Bottom_Up_TAM_USD": "$61,620,000/yr",
-      "TAM_Formula": "65,000 aesthetic/dental clinics × $948/yr ($79/mo) = $61.62M/yr Bottom-Up TAM (127 clinics needed for $10k MRR).",
-      "Customers_For_10k_MRR": 127,
-      "Startup_Cost_USD": "$250",
-      "Startup_Cost_Breakdown": "$12 domain + $30/mo hosting + $50/mo Meta/Google API + LLM tokens + $158 local clinic demo setup.",
-      "Competitors": "Podium / Weave ($400-$650/mo (12-month lock-in)), Generic ManyChat Templates ($15-$45/mo)",
-      "Competitive_Wedge": "No-contract $79/mo after-hours AI receptionist grounded strictly in the clinic's exact service menu PDF.",
-      "Founder_Fit_Score_10": 7.6,
-      "Founder_Fit_Verdict": "Moderate Fit",
-      "Founder_Fit_Rationale": "Moderate-to-Strong Fit (7.6/10): Technically straightforward, though local clinic GTM is slightly more sales-heavy.",
-      "Evaluator_Verdict": "Rank #4 Runner-Up: Great unit economics ($79/mo) and clear pain, but slightly below Top 3 due to local clinic sales friction and Meta API approval steps.",
-      "Source_Platform": "curated",
-      "Source_Subreddit": "r/entrepreneur",
-      "Source_Reddit_Title": "Local MedSpas and dental clinics are terrible at replying to Instagram/Google Maps DMs after 5pm",
-      "Source_Reddit_URL": "https://www.reddit.com/r/entrepreneur/comments/medspa_after_hours_dm_booking",
-      "Google_Doc_PRD_URL": ""
-    },
-    {
-      "Rank": 5,
-      "Is_Top_3": "No",
-      "Approval_Status": "Disqualified (Over Budget/Scope)",
-      "Idea_ID": "idea-5-airline",
-      "Idea_Title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
-      "One_Line_Pitch": "Capital-intensive airline concept that cannot be a bootstrapped software lifestyle business.",
-      "Core_Problem": "Why doesn't someone just lease 10 Boeing 737 jets and make all seats first class for $99 tickets? Seems like an easy startup idea.",
-      "Target_Customer": "Mass-market airline passengers",
-      "Total_Score_100": 22.2,
-      "Bottom_Up_TAM_USD": "$1,188,000,000/yr",
-      "TAM_Formula": "Capital-intensive physical operation; incompatible with bootstrapped software lifestyle model.",
-      "Customers_For_10k_MRR": 102,
-      "Startup_Cost_USD": "$5,000,000",
-      "Startup_Cost_Breakdown": "Requires FAA certification, aircraft leasing, and millions in capital.",
-      "Competitors": "Legacy Incumbents ($10,000+/mo)",
-      "Competitive_Wedge": "None compatible with a bootstrapped lifestyle business.",
-      "Founder_Fit_Score_10": 1.5,
+      "Idea_ID": "instance-gamemaker-reimplementation",
+      "Idea_Title": "Instance: GameMaker 8.1 Reimplementation",
+      "One_Line_Pitch": "An open-source, clean-room reimplementation of GameMaker 8.1 in Rust, allowing old GMK/GM81 projects to run on modern platforms and in browsers.",
+      "Core_Problem": "Old GameMaker 8.1 projects are difficult to run on modern systems due to limitations of the original engine (interpreter efficiency, platform support, specific quirks).",
+      "Target_Customer": "Game developers and hobbyists who used GameMaker 8.1 and want to revive or continue working on old projects, or new users looking for a retro game development experience.",
+      "Total_Score_100": 74.7,
+      "Bottom_Up_TAM_USD": "$1,710,000/yr",
+      "TAM_Formula": "Based on an estimated 7,500 highly dedicated GameMaker 8.1 users globally who would pay for a modern, compatible solution. This segment is a niche within the broader retro game development community. We assume an annual price of $228 ($19/month) for premium features like cloud hosting, advanced tooling, or priority support for the open-source project. Bottom-Up TAM = 7,500 target buyers * $228/year = $1,710,000. To reach $10,000 MRR, approximately 527 customers would be needed.",
+      "Customers_For_10k_MRR": 527,
+      "Startup_Cost_USD": "$175",
+      "Startup_Cost_Breakdown": "Domain & Hosting: ~$20/year for domain, $0-$25/month for Vercel/Render/Supabase for project website and web-based runtime demos (total ~$95 for 3 months). LLM / Third-Party API Costs: Minimal, ~$10/month for minor dev tools or CI/CD services (total ~$30 for 3 months). Legal / Stripe Incorporation: $0 for sole proprietorship initially. Initial GTM / Distribution Budget: $0 for organic outreach (Reddit, indie game forums, dev blogs), potentially $50 for minor community tools or targeted ads. Total estimated initial cost for MVP launch and 3-month runway is approximately $175.",
+      "Competitors": "Original GameMaker 8.1 (YoYo Games) (Discontinued, effectively free if owned), GameMaker Studio (YoYo Games) (Free tier, Creator ($4.99/mo), Developer ($19.99/mo), Enterprise), Godot Engine / L\u00d6VE2D / Pygame (Free, open-source), Manual Porting / Emulation / Virtual Machines (Free (time cost))",
+      "Competitive_Wedge": "Our wedge is hyper-focused on providing exact, clean-room GameMaker 8.1 compatibility and project preservation on modern platforms (desktop, web) through an open-source Rust reimplementation. This directly addresses the pain points of developers who want to revive old projects without manual porting or dealing with outdated environments, a niche not served by modern GameMaker Studio or generic open-source engines.",
+      "Founder_Fit_Score_10": 4.3,
       "Founder_Fit_Verdict": "Poor Fit",
-      "Founder_Fit_Rationale": "Disqualified: startup cost $5,000,000 exceeds the founder's $2,500 max startup cost.",
-      "Evaluator_Verdict": "Disqualified: Violates lifestyle business budget and asset-light constraints.",
-      "Source_Platform": "curated",
-      "Source_Subreddit": "r/smallbusiness",
-      "Source_Reddit_Title": "I want to start a new nationwide airline with $500 budget because flights are too cramped",
-      "Source_Reddit_URL": "https://www.reddit.com/r/smallbusiness/comments/airline_hardware_idea",
+      "Founder_Fit_Rationale": "This idea presents a poor founder-market fit due to a significant mismatch in technical expertise; reimplementing a game engine is outside the founders' AI/web development stack. While the low startup cost and organic growth skills are positive, the core technical challenge and potential ongoing maintenance burden do not align with their strengths or lifestyle constraints. Their unique advantages offer no specific edge in this niche.",
+      "Evaluator_Verdict": "This idea presents a compelling solution to a specific, acute pain point for nostalgic GameMaker 8.1 developers, offering modern compatibility and project preservation. The estimated startup cost is exceptionally low, and the competitive wedge is clear, targeting an underserved niche. However, the founder-market fit is a significant concern; reimplementing a game engine requires specialized technical skills outside the founder's stated expertise in Python, modern web stacks, and AI agents. This mismatch in core technical capabilities and the potential for high ongoing maintenance could undermine the lifestyle business goals. The TAM is also on the lower end of the ideal range. While the pain, cost, and competition scores are strong, the founder fit significantly pulls down the overall viability for *this* founder.",
+      "Source_Platform": "Hacker News",
+      "Source_Subreddit": "Hacker News",
+      "Source_Reddit_Title": "Show HN: Instance \u2013 A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "Source_Reddit_URL": "https://github.com/groverburger/instance",
       "Google_Doc_PRD_URL": ""
     }
   ],
-  "agent_mode": "fallback",
-  "source_used": "curated",
-  "node_errors": [
-    "extract_ideas: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
-    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
-    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
-    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
-    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
-    "competitive_and_tam_research: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "founder_market_fit: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback.",
-    "startup_evaluator: RuntimeError: GEMINI_API_KEY not set; using structured deterministic agent fallback."
-  ]
+  "agent_mode": "gemini",
+  "source_used": "provided",
+  "node_errors": []
 }
