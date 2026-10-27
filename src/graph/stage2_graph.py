@@ -27,6 +27,11 @@ from src.skill_loader import SKILLS_DIR, get_skill_prompt, load_founder_profile
 from src.tools.search import invoke_structured_llm, live_web_search
 
 logger = logging.getLogger(__name__)
+
+
+def _progress(message: str) -> None:
+    print(f"[pipeline] {message}", flush=True)
+    logger.info("%s", message)
 PRD_TEMPLATE_PATH = SKILLS_DIR / "pm-strategist" / "references" / "prd_template.md"
 
 
@@ -82,6 +87,7 @@ def _is_certping(req: Stage2PRDRequest) -> bool:
 def deep_research_node(state: Stage2GraphState) -> Dict[str, Any]:
     """Deep-dive market & competitor analysis for the approved idea."""
     req = state["request"]
+    _progress(f"Writing the plan for {req.idea_title}: market research.")
     researcher_skill = get_skill_prompt("competitive-market-researcher")
     web_ctx = live_web_search(f"{req.idea_title} {req.target_customer} competitors pricing alternatives")
     errors = list(state.get("node_errors") or [])
@@ -128,6 +134,7 @@ def pm_strategist_node(state: Stage2GraphState) -> Dict[str, Any]:
     Authors Problem Statement, Value Prop, <30-day MVP Scope, GTM, and Kano Model Feature Prioritization.
     """
     req = state["request"]
+    _progress(f"Writing the plan for {req.idea_title}: product and go-to-market.")
     pm_skill = get_skill_prompt("pm-strategist", include_references=False)
     errors = list(state.get("node_errors") or [])
     fallback_used = bool(state.get("fallback_used"))
@@ -162,6 +169,7 @@ def risk_analyst_node(state: Stage2GraphState) -> Dict[str, Any]:
     Generates the 5-Category Lifestyle Risk Matrix + Open Questions & 48-Hour Validation Plan.
     """
     req = state["request"]
+    _progress(f"Writing the plan for {req.idea_title}: risks.")
     risk_skill = get_skill_prompt("risk-analyst")
     pm_out = state["pm_output"]
     errors = list(state.get("node_errors") or [])
