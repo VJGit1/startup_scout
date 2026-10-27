@@ -4,7 +4,13 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from src.board import archive_stage1, is_live_article_url, source_html, update_founder_profile
+from src.board import (
+    archive_stage1,
+    is_live_article_url,
+    score_gap_line,
+    source_html,
+    update_founder_profile,
+)
 from src.graph.stage1_graph import run_stage1_pipeline
 from src.main import app
 from src.models import Stage1EvaluateRequest
@@ -31,6 +37,15 @@ def test_sample_reddit_links_are_not_clickable_and_hn_links_are():
     assert "Hacker News thread" in article
 
 
+def test_score_gap_names_the_part_where_rank_one_leads():
+    ideas = [
+        {"scores": {"pain_severity_score": 9.5, "low_startup_cost_score": 9.0, "competition_gap_score": 8.0, "tam_sweet_spot_score": 7.0, "founder_fit_score": 8.0}},
+        {"scores": {"pain_severity_score": 8.0, "low_startup_cost_score": 9.0, "competition_gap_score": 7.0, "tam_sweet_spot_score": 7.0, "founder_fit_score": 8.0}},
+    ]
+    assert score_gap_line(ideas) == "Largest gap versus #2: Pain 1.5"
+    assert score_gap_line(ideas[:1]) == ""
+
+
 def test_results_page_shows_score_parts_and_approve_writes_a_plan(monkeypatch, tmp_path: Path):
     monkeypatch.setenv("OUTPUT_DIR", str(tmp_path))
     response = run_stage1_pipeline(
@@ -47,6 +62,9 @@ def test_results_page_shows_score_parts_and_approve_writes_a_plan(monkeypatch, t
     assert page.status_code == 200
     assert "Pain" in page.text
     assert "Founder fit" in page.text
+    assert "How this run was scored" in page.text
+    assert "Extract" in page.text
+    assert "Largest gap versus #2:" in page.text
     assert response.top_3_ideas[0].idea_title in page.text
     assert saved.name[:-5] in page.text
 
