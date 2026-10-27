@@ -13,9 +13,10 @@ import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
+from src.board import archive_stage1, prd_path, stage2_request_from_idea
 from src.graph.stage1_graph import run_stage1_pipeline
 from src.graph.stage2_graph import run_stage2_pipeline
-from src.models import RedditPostInput, Stage1EvaluateRequest, Stage2PRDRequest
+from src.models import RedditPostInput, Stage1EvaluateRequest
 from src.skill_loader import load_all_skills
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "outputs"
@@ -55,7 +56,9 @@ def main(argv: list[str] | None = None) -> None:
 
     # Save Stage 1 JSON & Google Sheets CSV preview
     stage1_json_path = OUTPUT_DIR / "stage1_evaluated_ideas.json"
-    stage1_json_path.write_text(stage1_res.model_dump_json(indent=2), encoding="utf-8")
+    stage1_payload = stage1_res.model_dump_json(indent=2)
+    stage1_json_path.write_text(stage1_payload, encoding="utf-8")
+    archive_stage1(OUTPUT_DIR, stage1_payload)
 
     csv_path = OUTPUT_DIR / "google_sheets_evaluated_ideas.csv"
     if stage1_res.google_sheets_rows:
@@ -90,34 +93,13 @@ def main(argv: list[str] | None = None) -> None:
     # STAGE 2: Simulate Human Approval of #1 Idea in Google Sheets -> Build PRD
     # -------------------------------------------------------------------------
     winner = stage1_res.top_3_ideas[0]
-    print(f"[Stage 2] Simulating Google Sheets human approval ('Approved') for #{winner.rank}: {winner.idea_title}...")
-    stage2_req = Stage2PRDRequest(
-        idea_id=winner.idea_id,
-        idea_title=winner.idea_title,
-        one_line_pitch=winner.one_line_pitch,
-        core_problem=winner.core_problem,
-        target_customer=winner.target_customer,
-        source_subreddit=winner.source_subreddit,
-        source_reddit_title=winner.source_reddit_title,
-        source_reddit_url=winner.source_reddit_url,
-        bottom_up_tam_summary=winner.research.tam.tam_formula_explanation,
-        startup_cost_summary=winner.research.startup_cost_breakdown,
-        competitors_summary=", ".join(f"{c.name} ({c.pricing})" for c in winner.research.competitors),
-        competitive_wedge=winner.research.competitive_wedge,
-        founder_fit_summary=winner.founder_fit.fit_rationale,
-        total_score=winner.scores.weighted_total_score,
-        founder_fit_score=winner.founder_fit.founder_fit_score,
-        founder_fit_verdict=winner.founder_fit.fit_verdict,
-        target_buyer_count=winner.research.tam.estimated_target_users,
-        annual_price_usd=winner.research.tam.annual_price_usd,
-        bottom_up_tam_usd=winner.research.tam.bottom_up_tam_usd,
-        customers_for_10k_mrr=winner.research.tam.customers_for_10k_mrr,
-        startup_cost_usd=winner.research.estimated_startup_cost_usd,
-    )
-    stage2_res = run_stage2_pipeline(stage2_req)
+    print(f"[Stage 2] Writing the plan for #{winner.rank}: {winner.idea_title}...")
+    stage2_res = run_stage2_pipeline(stage2_request_from_idea(winner))
 
-    prd_md_path = OUTPUT_DIR / "google_doc_prd_top1.md"
+    prd_md_path = prd_path(OUTPUT_DIR, winner.idea_id)
+    prd_md_path.parent.mkdir(parents=True, exist_ok=True)
     prd_md_path.write_text(stage2_res.google_doc_markdown, encoding="utf-8")
+    (OUTPUT_DIR / "google_doc_prd_top1.md").write_text(stage2_res.google_doc_markdown, encoding="utf-8")
     print(
         f"  -> Generated full Google Doc PRD at: {prd_md_path} "
         f"(agent_mode={stage2_res.agent_mode})"
