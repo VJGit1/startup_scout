@@ -12,9 +12,25 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, List
 from dotenv import load_dotenv
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse, JSONResponse
+from pydantic import BaseModel
 
+from src.board import (
+    find_idea,
+    founder_form_values,
+    founder_profile_path,
+    list_runs,
+    load_run,
+    output_dir,
+    prd_path,
+    render_board,
+    render_founder_form,
+    save_stage1,
+    stage2_request_from_idea,
+    update_founder_profile,
+)
+from src.tools.search import fetch_hacker_news_pain_points
 from src.graph.stage1_graph import run_stage1_pipeline
 from src.graph.stage2_graph import run_stage2_pipeline
 from src.models import (
@@ -48,6 +64,82 @@ async def require_api_key(request, call_next):
         if provided != expected:
             return JSONResponse(status_code=401, content={"detail": "Invalid or missing API key"})
     return await call_next(request)
+
+
+class ApproveBody(BaseModel):
+    idea_id: str
+    run: str = ""
+
+
+class FounderBody(BaseModel):
+    name: str = ""
+    max_cost: int = 2500
+    weekly_hours: int = 20
+    technical_skills: str = ""
+
+
+@app.get("/", response_class=HTMLResponse)
+def results_page(run: str = "") -> str:
+    directory = output_dir()
+    payload = load_run(directory, run or None)
+    names = [path.name for path in list_runs(directory)]
+    return render_board(payload, run_name=run, runs=names)
+
+
+@app.post("/fetch-hn")
+def fetch_hacker_news() -> Dict[str, Any]:
+    """Score two live Hacker News posts and replace the page's latest run."""
+    posts = fetch_hacker_news_pain_points(max_posts=2)
+    if not posts:
+        raise HTTPException(status_code=503, detail="Hacker News returned no posts")
+    result = run_stage1_pipeline(
+        Stage1EvaluateRequest(posts=posts, source="hn", fetch_live=False)
+    )
+    directory = output_dir()
+    save_stage1(directory, result.model_dump_json(indent=2), result.google_sheets_rows)
+    return {
+        "ok": True,
+        "agent_mode": result.agent_mode,
+        "count": result.total_posts_analyzed,
+        "urls": [idea.source_reddit_url for idea in result.top_3_ideas],
+    }
+
+
+@app.post("/approve")
+def approve_idea(body: ApproveBody) -> Dict[str, Any]:
+    directory = output_dir()
+    payload = load_run(directory, body.run or None)
+    if payload is None:
+        raise HTTPException(status_code=404, detail="No scored run to approve")
+    idea = find_idea(payload, body.idea_id)
+    if idea is None:
+        raise HTTPException(status_code=404, detail="Idea not found in this run")
+    result = run_stage2_pipeline(stage2_request_from_idea(idea))
+    path = prd_path(directory, idea.idea_id)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(result.google_doc_markdown, encoding="utf-8")
+    if idea.rank == 1:
+        (directory / "google_doc_prd_top1.md").write_text(result.google_doc_markdown, encoding="utf-8")
+    return {"ok": True, "agent_mode": result.agent_mode, "path": str(path)}
+
+
+@app.get("/founder", response_class=HTMLResponse)
+def founder_page() -> str:
+    return render_founder_form(founder_form_values(founder_profile_path()))
+
+
+@app.post("/founder")
+def save_founder(body: FounderBody) -> Dict[str, Any]:
+    skills = [line.strip() for line in body.technical_skills.splitlines() if line.strip()]
+    path = founder_profile_path()
+    update_founder_profile(
+        path,
+        name=body.name.strip() or "Founder",
+        max_cost=body.max_cost,
+        weekly_hours=body.weekly_hours,
+        technical_skills=skills,
+    )
+    return {"ok": True}
 
 
 @app.get("/health")
