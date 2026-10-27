@@ -1,0 +1,320 @@
+{
+  "total_posts_analyzed": 2,
+  "top_3_ideas": [
+    {
+      "idea_id": "idea-1-software",
+      "idea_title": "Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in ",
+      "one_line_pitch": "A focused software tool for people dealing with: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "core_problem": "I used GameMaker 8.1 a ton in late elementary and middle school, and GML was the first programming language I wrote. I still think it's a fun engine to use because it has so many batteries included. So I built an open-source reimplementation of it in Rust which I'm calling Instance. It opens existing .gmk and .gm81 projects and runs them on Windows, macOS and in the browser, with a more efficient ",
+      "target_customer": "People asking for a tool in Ask HN",
+      "source_platform": "Hacker News",
+      "source_subreddit": "Ask HN",
+      "source_reddit_title": "Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "source_reddit_url": "https://news.ycombinator.com/item?id=50261794",
+      "research": {
+        "competitors": [
+          {
+            "name": "Spreadsheets and manual workarounds",
+            "pricing": "Free plus weekly labor",
+            "weakness_or_gap": "The workaround still consumes the hours the buyer is trying to get back."
+          },
+          {
+            "name": "Horizontal suites",
+            "pricing": "$50-$300/mo",
+            "weakness_or_gap": "Broader products bury this one workflow inside a suite the buyer does not want to migrate to."
+          }
+        ],
+        "competitive_wedge": "A single-purpose micro-SaaS for People asking for a tool in Ask HN aimed at: I used GameMaker 8.1 a ton in late elementary and middle school, and GML was the first programming language I wrote. I still think it's a fun engine to use beca",
+        "estimated_startup_cost_usd": 400.0,
+        "startup_cost_breakdown": "Domain, hosting, and model/API credits sized to stay under the founder's $2,500 budget.",
+        "tam": {
+          "target_buyer_segment": "People asking for a tool in Ask HN",
+          "estimated_target_users": 20000,
+          "monthly_price_usd": 29.0,
+          "annual_price_usd": 348.0,
+          "bottom_up_tam_usd": 6960000.0,
+          "customers_for_10k_mrr": 345,
+          "tam_formula_explanation": "20,000 reachable buyers x $348/yr ($29/mo) = $6,960,000/yr bottom-up TAM. 345 customers reach $10k MRR."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 7.2,
+        "fit_verdict": "Moderate Fit",
+        "strengths": [
+          "Startup cost stays within the $2,500 founder budget.",
+          "The workflow can be prototyped as a narrow software MVP."
+        ],
+        "blind_spots": [
+          "Buyer willingness to pay still needs a direct conversation with people who wrote the source post."
+        ],
+        "fit_rationale": "Moderate Fit (7.2/10): Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in  is a software workflow inside the founder budget, with distribution still unproven."
+      },
+      "scores": {
+        "pain_severity_score": 5.0,
+        "low_startup_cost_score": 8.5,
+        "competition_gap_score": 6.0,
+        "tam_sweet_spot_score": 6.0,
+        "founder_fit_score": 7.2,
+        "weighted_total_score": 65.5
+      },
+      "evaluator_verdict": "Heuristic score for Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in : pain phrases=0, startup cost $400 vs $2,500 budget, upvotes=2.",
+      "rank": 1,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    },
+    {
+      "idea_id": "idea-2-software",
+      "idea_title": "Micro-SaaS: Show HN: Formstep, Request information from customers without the back",
+      "one_line_pitch": "A focused software tool for people dealing with: Show HN: Formstep, Request information from customers without the back-and-forth",
+      "core_problem": "I built Formstep: https://formstep.io The idea came from a problem I kept running into while working on loan applications. A workflow could automate a large part of the process, but eventually it would need something only the customer could provide: a document, a correction, a signature, an explanation, or confirmation of some information. At that point, workflow automation basically did not work.",
+      "target_customer": "People asking for a tool in Ask HN",
+      "source_platform": "Hacker News",
+      "source_subreddit": "Ask HN",
+      "source_reddit_title": "Show HN: Formstep, Request information from customers without the back-and-forth",
+      "source_reddit_url": "https://news.ycombinator.com/item?id=50261285",
+      "research": {
+        "competitors": [
+          {
+            "name": "Spreadsheets and manual workarounds",
+            "pricing": "Free plus weekly labor",
+            "weakness_or_gap": "The workaround still consumes the hours the buyer is trying to get back."
+          },
+          {
+            "name": "Horizontal suites",
+            "pricing": "$50-$300/mo",
+            "weakness_or_gap": "Broader products bury this one workflow inside a suite the buyer does not want to migrate to."
+          }
+        ],
+        "competitive_wedge": "A single-purpose micro-SaaS for People asking for a tool in Ask HN aimed at: I built Formstep: https://formstep.io The idea came from a problem I kept running into while working on loan applications. A workflow could automate a large par",
+        "estimated_startup_cost_usd": 400.0,
+        "startup_cost_breakdown": "Domain, hosting, and model/API credits sized to stay under the founder's $2,500 budget.",
+        "tam": {
+          "target_buyer_segment": "People asking for a tool in Ask HN",
+          "estimated_target_users": 20000,
+          "monthly_price_usd": 29.0,
+          "annual_price_usd": 348.0,
+          "bottom_up_tam_usd": 6960000.0,
+          "customers_for_10k_mrr": 345,
+          "tam_formula_explanation": "20,000 reachable buyers x $348/yr ($29/mo) = $6,960,000/yr bottom-up TAM. 345 customers reach $10k MRR."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 7.2,
+        "fit_verdict": "Moderate Fit",
+        "strengths": [
+          "Startup cost stays within the $2,500 founder budget.",
+          "The workflow can be prototyped as a narrow software MVP."
+        ],
+        "blind_spots": [
+          "Buyer willingness to pay still needs a direct conversation with people who wrote the source post."
+        ],
+        "fit_rationale": "Moderate Fit (7.2/10): Micro-SaaS: Show HN: Formstep, Request information from customers without the back is a software workflow inside the founder budget, with distribution still unproven."
+      },
+      "scores": {
+        "pain_severity_score": 5.0,
+        "low_startup_cost_score": 8.5,
+        "competition_gap_score": 6.0,
+        "tam_sweet_spot_score": 6.0,
+        "founder_fit_score": 7.2,
+        "weighted_total_score": 65.5
+      },
+      "evaluator_verdict": "Heuristic score for Micro-SaaS: Show HN: Formstep, Request information from customers without the back: pain phrases=0, startup cost $400 vs $2,500 budget, upvotes=3.",
+      "rank": 2,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    }
+  ],
+  "all_evaluated_ideas": [
+    {
+      "idea_id": "idea-1-software",
+      "idea_title": "Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in ",
+      "one_line_pitch": "A focused software tool for people dealing with: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "core_problem": "I used GameMaker 8.1 a ton in late elementary and middle school, and GML was the first programming language I wrote. I still think it's a fun engine to use because it has so many batteries included. So I built an open-source reimplementation of it in Rust which I'm calling Instance. It opens existing .gmk and .gm81 projects and runs them on Windows, macOS and in the browser, with a more efficient ",
+      "target_customer": "People asking for a tool in Ask HN",
+      "source_platform": "Hacker News",
+      "source_subreddit": "Ask HN",
+      "source_reddit_title": "Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "source_reddit_url": "https://news.ycombinator.com/item?id=50261794",
+      "research": {
+        "competitors": [
+          {
+            "name": "Spreadsheets and manual workarounds",
+            "pricing": "Free plus weekly labor",
+            "weakness_or_gap": "The workaround still consumes the hours the buyer is trying to get back."
+          },
+          {
+            "name": "Horizontal suites",
+            "pricing": "$50-$300/mo",
+            "weakness_or_gap": "Broader products bury this one workflow inside a suite the buyer does not want to migrate to."
+          }
+        ],
+        "competitive_wedge": "A single-purpose micro-SaaS for People asking for a tool in Ask HN aimed at: I used GameMaker 8.1 a ton in late elementary and middle school, and GML was the first programming language I wrote. I still think it's a fun engine to use beca",
+        "estimated_startup_cost_usd": 400.0,
+        "startup_cost_breakdown": "Domain, hosting, and model/API credits sized to stay under the founder's $2,500 budget.",
+        "tam": {
+          "target_buyer_segment": "People asking for a tool in Ask HN",
+          "estimated_target_users": 20000,
+          "monthly_price_usd": 29.0,
+          "annual_price_usd": 348.0,
+          "bottom_up_tam_usd": 6960000.0,
+          "customers_for_10k_mrr": 345,
+          "tam_formula_explanation": "20,000 reachable buyers x $348/yr ($29/mo) = $6,960,000/yr bottom-up TAM. 345 customers reach $10k MRR."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 7.2,
+        "fit_verdict": "Moderate Fit",
+        "strengths": [
+          "Startup cost stays within the $2,500 founder budget.",
+          "The workflow can be prototyped as a narrow software MVP."
+        ],
+        "blind_spots": [
+          "Buyer willingness to pay still needs a direct conversation with people who wrote the source post."
+        ],
+        "fit_rationale": "Moderate Fit (7.2/10): Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in  is a software workflow inside the founder budget, with distribution still unproven."
+      },
+      "scores": {
+        "pain_severity_score": 5.0,
+        "low_startup_cost_score": 8.5,
+        "competition_gap_score": 6.0,
+        "tam_sweet_spot_score": 6.0,
+        "founder_fit_score": 7.2,
+        "weighted_total_score": 65.5
+      },
+      "evaluator_verdict": "Heuristic score for Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in : pain phrases=0, startup cost $400 vs $2,500 budget, upvotes=2.",
+      "rank": 1,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    },
+    {
+      "idea_id": "idea-2-software",
+      "idea_title": "Micro-SaaS: Show HN: Formstep, Request information from customers without the back",
+      "one_line_pitch": "A focused software tool for people dealing with: Show HN: Formstep, Request information from customers without the back-and-forth",
+      "core_problem": "I built Formstep: https://formstep.io The idea came from a problem I kept running into while working on loan applications. A workflow could automate a large part of the process, but eventually it would need something only the customer could provide: a document, a correction, a signature, an explanation, or confirmation of some information. At that point, workflow automation basically did not work.",
+      "target_customer": "People asking for a tool in Ask HN",
+      "source_platform": "Hacker News",
+      "source_subreddit": "Ask HN",
+      "source_reddit_title": "Show HN: Formstep, Request information from customers without the back-and-forth",
+      "source_reddit_url": "https://news.ycombinator.com/item?id=50261285",
+      "research": {
+        "competitors": [
+          {
+            "name": "Spreadsheets and manual workarounds",
+            "pricing": "Free plus weekly labor",
+            "weakness_or_gap": "The workaround still consumes the hours the buyer is trying to get back."
+          },
+          {
+            "name": "Horizontal suites",
+            "pricing": "$50-$300/mo",
+            "weakness_or_gap": "Broader products bury this one workflow inside a suite the buyer does not want to migrate to."
+          }
+        ],
+        "competitive_wedge": "A single-purpose micro-SaaS for People asking for a tool in Ask HN aimed at: I built Formstep: https://formstep.io The idea came from a problem I kept running into while working on loan applications. A workflow could automate a large par",
+        "estimated_startup_cost_usd": 400.0,
+        "startup_cost_breakdown": "Domain, hosting, and model/API credits sized to stay under the founder's $2,500 budget.",
+        "tam": {
+          "target_buyer_segment": "People asking for a tool in Ask HN",
+          "estimated_target_users": 20000,
+          "monthly_price_usd": 29.0,
+          "annual_price_usd": 348.0,
+          "bottom_up_tam_usd": 6960000.0,
+          "customers_for_10k_mrr": 345,
+          "tam_formula_explanation": "20,000 reachable buyers x $348/yr ($29/mo) = $6,960,000/yr bottom-up TAM. 345 customers reach $10k MRR."
+        }
+      },
+      "founder_fit": {
+        "founder_fit_score": 7.2,
+        "fit_verdict": "Moderate Fit",
+        "strengths": [
+          "Startup cost stays within the $2,500 founder budget.",
+          "The workflow can be prototyped as a narrow software MVP."
+        ],
+        "blind_spots": [
+          "Buyer willingness to pay still needs a direct conversation with people who wrote the source post."
+        ],
+        "fit_rationale": "Moderate Fit (7.2/10): Micro-SaaS: Show HN: Formstep, Request information from customers without the back is a software workflow inside the founder budget, with distribution still unproven."
+      },
+      "scores": {
+        "pain_severity_score": 5.0,
+        "low_startup_cost_score": 8.5,
+        "competition_gap_score": 6.0,
+        "tam_sweet_spot_score": 6.0,
+        "founder_fit_score": 7.2,
+        "weighted_total_score": 65.5
+      },
+      "evaluator_verdict": "Heuristic score for Micro-SaaS: Show HN: Formstep, Request information from customers without the back: pain phrases=0, startup cost $400 vs $2,500 budget, upvotes=3.",
+      "rank": 2,
+      "is_top_3": true,
+      "approval_status": "Pending Review (Top 3)"
+    }
+  ],
+  "google_sheets_rows": [
+    {
+      "Rank": 1,
+      "Is_Top_3": "YES (Top 3)",
+      "Approval_Status": "Pending Review (Top 3)",
+      "Idea_ID": "idea-1-software",
+      "Idea_Title": "Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in ",
+      "One_Line_Pitch": "A focused software tool for people dealing with: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "Core_Problem": "I used GameMaker 8.1 a ton in late elementary and middle school, and GML was the first programming language I wrote. I still think it's a fun engine to use because it has so many batteries included. So I built an open-source reimplementation of it in Rust which I'm calling Instance. It opens existing .gmk and .gm81 projects and runs them on Windows, macOS and in the browser, with a more efficient ",
+      "Target_Customer": "People asking for a tool in Ask HN",
+      "Total_Score_100": 65.5,
+      "Bottom_Up_TAM_USD": "$6,960,000/yr",
+      "TAM_Formula": "20,000 reachable buyers x $348/yr ($29/mo) = $6,960,000/yr bottom-up TAM. 345 customers reach $10k MRR.",
+      "Customers_For_10k_MRR": 345,
+      "Startup_Cost_USD": "$400",
+      "Startup_Cost_Breakdown": "Domain, hosting, and model/API credits sized to stay under the founder's $2,500 budget.",
+      "Competitors": "Spreadsheets and manual workarounds (Free plus weekly labor), Horizontal suites ($50-$300/mo)",
+      "Competitive_Wedge": "A single-purpose micro-SaaS for People asking for a tool in Ask HN aimed at: I used GameMaker 8.1 a ton in late elementary and middle school, and GML was the first programming language I wrote. I still think it's a fun engine to use beca",
+      "Founder_Fit_Score_10": 7.2,
+      "Founder_Fit_Verdict": "Moderate Fit",
+      "Founder_Fit_Rationale": "Moderate Fit (7.2/10): Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in  is a software workflow inside the founder budget, with distribution still unproven.",
+      "Evaluator_Verdict": "Heuristic score for Micro-SaaS: Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in : pain phrases=0, startup cost $400 vs $2,500 budget, upvotes=2.",
+      "Source_Platform": "Hacker News",
+      "Source_Subreddit": "Ask HN",
+      "Source_Reddit_Title": "Show HN: Instance – A clean-room reimplementation of GameMaker 8.1 in Rust",
+      "Source_Reddit_URL": "https://news.ycombinator.com/item?id=50261794",
+      "Google_Doc_PRD_URL": ""
+    },
+    {
+      "Rank": 2,
+      "Is_Top_3": "YES (Top 3)",
+      "Approval_Status": "Pending Review (Top 3)",
+      "Idea_ID": "idea-2-software",
+      "Idea_Title": "Micro-SaaS: Show HN: Formstep, Request information from customers without the back",
+      "One_Line_Pitch": "A focused software tool for people dealing with: Show HN: Formstep, Request information from customers without the back-and-forth",
+      "Core_Problem": "I built Formstep: https://formstep.io The idea came from a problem I kept running into while working on loan applications. A workflow could automate a large part of the process, but eventually it would need something only the customer could provide: a document, a correction, a signature, an explanation, or confirmation of some information. At that point, workflow automation basically did not work.",
+      "Target_Customer": "People asking for a tool in Ask HN",
+      "Total_Score_100": 65.5,
+      "Bottom_Up_TAM_USD": "$6,960,000/yr",
+      "TAM_Formula": "20,000 reachable buyers x $348/yr ($29/mo) = $6,960,000/yr bottom-up TAM. 345 customers reach $10k MRR.",
+      "Customers_For_10k_MRR": 345,
+      "Startup_Cost_USD": "$400",
+      "Startup_Cost_Breakdown": "Domain, hosting, and model/API credits sized to stay under the founder's $2,500 budget.",
+      "Competitors": "Spreadsheets and manual workarounds (Free plus weekly labor), Horizontal suites ($50-$300/mo)",
+      "Competitive_Wedge": "A single-purpose micro-SaaS for People asking for a tool in Ask HN aimed at: I built Formstep: https://formstep.io The idea came from a problem I kept running into while working on loan applications. A workflow could automate a large par",
+      "Founder_Fit_Score_10": 7.2,
+      "Founder_Fit_Verdict": "Moderate Fit",
+      "Founder_Fit_Rationale": "Moderate Fit (7.2/10): Micro-SaaS: Show HN: Formstep, Request information from customers without the back is a software workflow inside the founder budget, with distribution still unproven.",
+      "Evaluator_Verdict": "Heuristic score for Micro-SaaS: Show HN: Formstep, Request information from customers without the back: pain phrases=0, startup cost $400 vs $2,500 budget, upvotes=3.",
+      "Source_Platform": "Hacker News",
+      "Source_Subreddit": "Ask HN",
+      "Source_Reddit_Title": "Show HN: Formstep, Request information from customers without the back-and-forth",
+      "Source_Reddit_URL": "https://news.ycombinator.com/item?id=50261285",
+      "Google_Doc_PRD_URL": ""
+    }
+  ],
+  "agent_mode": "fallback",
+  "source_used": "provided",
+  "node_errors": [
+    "extract_ideas: ModuleNotFoundError: No module named 'langchain_google_genai'",
+    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
+    "competitive_and_tam_research: ModuleNotFoundError: No module named 'langchain_google_genai'",
+    "competitive_and_tam_research: Web search fallback mode (ModuleNotFoundError: No module named 'duckduckgo_search')",
+    "competitive_and_tam_research: ModuleNotFoundError: No module named 'langchain_google_genai'",
+    "founder_market_fit: ModuleNotFoundError: No module named 'langchain_google_genai'",
+    "founder_market_fit: ModuleNotFoundError: No module named 'langchain_google_genai'",
+    "startup_evaluator: ModuleNotFoundError: No module named 'langchain_google_genai'",
+    "startup_evaluator: ModuleNotFoundError: No module named 'langchain_google_genai'"
+  ]
+}
