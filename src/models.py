@@ -16,7 +16,8 @@ class RedditPostInput(BaseModel):
     subreddit: str = Field(default="Ask HN", description="Subreddit, forum category, or HN story name")
     title: str = Field(..., description="Title of the discussion or story")
     selftext: str = Field(default="", description="Body text or comment content")
-    url: str = Field(default="", description="Permalink URL to the discussion")
+    url: str = Field(default="", description="Article or discussion URL that the card should open")
+    discussion_url: str = Field(default="", description="Hacker News thread for this post, when it differs from url")
     upvotes: int = Field(default=0, description="Upvotes or HN points")
     num_comments: int = Field(default=0, description="Number of comments")
 
@@ -82,7 +83,8 @@ class EvaluatedStartupIdea(BaseModel):
     source_platform: str = Field(default="unknown", description="Platform that produced the source post")
     source_subreddit: str = Field(..., description="Source subreddit")
     source_reddit_title: str = Field(..., description="Original Reddit thread title")
-    source_reddit_url: str = Field(..., description="Original Reddit thread URL")
+    source_reddit_url: str = Field(..., description="Original article or discussion URL")
+    discussion_url: str = Field(default="", description="Hacker News thread, when the article URL is separate")
     research: CompetitiveResearchSummary
     founder_fit: FounderMarketFitResult
     scores: LifestyleRubricScores
