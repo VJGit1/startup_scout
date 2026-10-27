@@ -37,6 +37,11 @@ from src.tools.search import (
 
 logger = logging.getLogger(__name__)
 
+
+def _progress(message: str) -> None:
+    print(f"[pipeline] {message}", flush=True)
+    logger.info("%s", message)
+
 PAIN_PHRASES = (
     "manual",
     "wish",
@@ -61,6 +66,7 @@ class CandidateIdeaDraft(BaseModel):
     source_subreddit: str
     source_reddit_title: str
     source_reddit_url: str
+    discussion_url: str = ""
     upvotes: int = 0
 
 
@@ -150,15 +156,25 @@ def _overlay_post_metadata(
     candidates: List[CandidateIdeaDraft],
     posts: List[RedditPostInput],
 ) -> List[CandidateIdeaDraft]:
+    """Keep the article URL that was fetched. The model must not replace it."""
     by_url = {post.url: post for post in posts if post.url}
-    for candidate in candidates:
+    by_title: Dict[str, RedditPostInput] = {}
+    for post in posts:
+        by_title.setdefault(post.title.strip().lower(), post)
+    for index, candidate in enumerate(candidates):
         post = by_url.get(candidate.source_reddit_url)
         if post is None:
+            post = by_title.get(candidate.source_reddit_title.strip().lower())
+        if post is None and len(candidates) == len(posts):
+            post = posts[index]
+        if post is None:
             continue
-        if candidate.source_platform in ("", "unknown"):
-            candidate.source_platform = post.source_platform
-        if not candidate.upvotes:
-            candidate.upvotes = post.upvotes
+        candidate.source_platform = post.source_platform or candidate.source_platform
+        candidate.source_subreddit = post.subreddit or candidate.source_subreddit
+        candidate.source_reddit_title = post.title
+        candidate.source_reddit_url = post.url
+        candidate.discussion_url = post.discussion_url
+        candidate.upvotes = post.upvotes
     return candidates
 
 
@@ -179,6 +195,7 @@ def supervisor_init_node(state: Stage1GraphState) -> Dict[str, Any]:
     elif not source_used:
         source_used = "provided"
     founder_profile = state.get("founder_profile") or load_founder_profile()
+    _progress(f"Stage 1 starting with {len(posts)} posts from {source_used or 'unknown'}.")
     return {
         "posts": posts,
         "founder_profile": founder_profile,
@@ -194,6 +211,7 @@ def supervisor_init_node(state: Stage1GraphState) -> Dict[str, Any]:
 def extract_ideas_node(state: Stage1GraphState) -> Dict[str, Any]:
     """Extract candidate startup ideas from Reddit posts."""
     posts = state["posts"]
+    _progress(f"Extracting ideas from {len(posts)} posts.")
     supervisor_skill = get_skill_prompt("supervisor-orchestrator")
     if not posts:
         logs = list(state.get("supervisor_log", []))
@@ -207,14 +225,17 @@ def extract_ideas_node(state: Stage1GraphState) -> Dict[str, Any]:
 
     try:
         posts_text = "\n\n".join(
-            f"[{i+1}] ({p.subreddit}) Title: {p.title}\nURL: {p.url}\nBody: {p.selftext}"
+            f"[{i+1}] ({p.subreddit}) Title: {p.title}\nURL: {p.url}\n"
+            f"Discussion: {p.discussion_url}\nBody: {p.selftext}"
             for i, p in enumerate(posts)
         )
         res = invoke_structured_llm(
             system_prompt=supervisor_skill,
             user_prompt=(
                 "Extract one concrete startup idea per post below so it can be evaluated by the "
-                "Lifestyle Business Evaluator. Copy source_platform from the post when present.\n\n" + posts_text
+                "Lifestyle Business Evaluator. Copy source_platform, source_reddit_title, and "
+                "source_reddit_url from that post exactly. Do not invent or shorten the URL.\n\n"
+                + posts_text
             ),
             schema=CandidateIdeaList,
         )
@@ -245,7 +266,9 @@ def competitive_and_tam_research_node(state: Stage1GraphState) -> Dict[str, Any]
     fallback_used = bool(state.get("fallback_used"))
     founder_profile = state.get("founder_profile") or {}
 
-    for idea in state["candidate_ideas"]:
+    ideas = list(state["candidate_ideas"])
+    for index, idea in enumerate(ideas, 1):
+        _progress(f"Researching {index} of {len(ideas)}: {idea.idea_title}")
         search_snippets = live_web_search(f"{idea.idea_title} {idea.target_customer} software pricing competitors")
         if search_snippets.startswith("Web search fallback"):
             errors.append(f"competitive_and_tam_research: {search_snippets}")
@@ -286,7 +309,9 @@ def founder_market_fit_node(state: Stage1GraphState) -> Dict[str, Any]:
     errors = list(state.get("node_errors") or [])
     fallback_used = bool(state.get("fallback_used"))
 
-    for idea in state["candidate_ideas"]:
+    ideas = list(state["candidate_ideas"])
+    for index, idea in enumerate(ideas, 1):
+        _progress(f"Scoring founder fit {index} of {len(ideas)}: {idea.idea_title}")
         research = research_by_id[idea.idea_id]
         try:
             res = invoke_structured_llm(
@@ -330,7 +355,9 @@ def startup_evaluator_node(state: Stage1GraphState) -> Dict[str, Any]:
     errors = list(state.get("node_errors") or [])
     fallback_used = bool(state.get("fallback_used"))
 
-    for idea in state["candidate_ideas"]:
+    ideas = list(state["candidate_ideas"])
+    _progress(f"Ranking {len(ideas)} ideas.")
+    for idea in ideas:
         research = state["research_by_id"][idea.idea_id]
         fmf = state["founder_fit_by_id"][idea.idea_id]
         try:
@@ -373,6 +400,7 @@ def startup_evaluator_node(state: Stage1GraphState) -> Dict[str, Any]:
                 source_subreddit=idea.source_subreddit,
                 source_reddit_title=idea.source_reddit_title,
                 source_reddit_url=idea.source_reddit_url,
+                discussion_url=idea.discussion_url,
                 research=research,
                 founder_fit=fmf,
                 scores=scores,
@@ -482,6 +510,7 @@ def _post_fields(post: RedditPostInput) -> Dict[str, Any]:
         "source_subreddit": post.subreddit,
         "source_reddit_title": post.title,
         "source_reddit_url": post.url,
+        "discussion_url": post.discussion_url,
         "upvotes": post.upvotes,
     }
 
