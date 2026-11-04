@@ -166,23 +166,31 @@ def resolve_stage1_posts(
     return [], source, errors
 
 
+def _claim_post(candidate: CandidateIdeaDraft, posts: List[RedditPostInput]) -> RedditPostInput | None:
+    """Match a fetched post by its URL or its exact title. Position is not a match."""
+    for post in posts:
+        if post.url and post.url == candidate.source_reddit_url:
+            return post
+    title = candidate.source_reddit_title.strip().lower()
+    if not title:
+        return None
+    for post in posts:
+        if post.title.strip().lower() == title:
+            return post
+    return None
+
+
 def _overlay_post_metadata(
     candidates: List[CandidateIdeaDraft],
     posts: List[RedditPostInput],
 ) -> List[CandidateIdeaDraft]:
     """Keep the article URL that was fetched. The model must not replace it."""
-    by_url = {post.url: post for post in posts if post.url}
-    by_title: Dict[str, RedditPostInput] = {}
-    for post in posts:
-        by_title.setdefault(post.title.strip().lower(), post)
-    for index, candidate in enumerate(candidates):
-        post = by_url.get(candidate.source_reddit_url)
-        if post is None:
-            post = by_title.get(candidate.source_reddit_title.strip().lower())
-        if post is None and len(candidates) == len(posts):
-            post = posts[index]
+    unused = list(posts)
+    for candidate in candidates:
+        post = _claim_post(candidate, unused)
         if post is None:
             continue
+        unused.remove(post)
         candidate.source_platform = post.source_platform or candidate.source_platform
         candidate.source_subreddit = post.subreddit or candidate.source_subreddit
         candidate.source_reddit_title = post.title
