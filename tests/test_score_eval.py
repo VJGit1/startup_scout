@@ -75,3 +75,46 @@ def test_eval_fetched_article_url_replaces_model_url():
     fixed = _overlay_post_metadata([draft], [post])
     assert fixed[0].source_reddit_url == case["article_url"]
     assert fixed[0].discussion_url == case["discussion_url"]
+
+
+def _draft(title: str, url: str) -> CandidateIdeaDraft:
+    return CandidateIdeaDraft(
+        idea_id=title.lower().replace(" ", "-"),
+        idea_title=title,
+        one_line_pitch="A tool.",
+        core_problem="The old workflow is slow.",
+        target_customer="Builders",
+        source_subreddit="Ask HN",
+        source_reddit_title=title,
+        source_reddit_url=url,
+    )
+
+
+def test_eval_reordered_ideas_keep_their_own_article():
+    formstep = RedditPostInput(
+        source_platform="Hacker News",
+        title="Show HN: Formstep",
+        url="https://formstep.io",
+        discussion_url="https://news.ycombinator.com/item?id=1",
+    )
+    instance = RedditPostInput(
+        source_platform="Hacker News",
+        title="Show HN: Instance",
+        url="https://github.com/groverburger/instance",
+        discussion_url="https://news.ycombinator.com/item?id=2",
+    )
+    swapped = [
+        _draft("Show HN: Instance", "https://not-a-real-article.example/instance"),
+        _draft("Show HN: Formstep", "https://not-a-real-article.example/formstep"),
+    ]
+    fixed = _overlay_post_metadata(swapped, [formstep, instance])
+    assert fixed[0].source_reddit_url == "https://github.com/groverburger/instance"
+    assert fixed[1].source_reddit_url == "https://formstep.io"
+
+    rewritten = [
+        _draft("A game engine", "https://not-a-real-article.example/engine"),
+        _draft("A form tool", "https://not-a-real-article.example/form"),
+    ]
+    untouched = _overlay_post_metadata(rewritten, [formstep, instance])
+    assert untouched[0].source_reddit_url == "https://not-a-real-article.example/engine"
+    assert untouched[1].source_reddit_url == "https://not-a-real-article.example/form"
