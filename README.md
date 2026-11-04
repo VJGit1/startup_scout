@@ -51,7 +51,7 @@ One sample run is about 19 Gemini calls. The free daily limit is about 20. Run i
 python cli.py --source hn
 ```
 
-This downloads at most 3 Hacker News stories, scores them, and rewrites the same three files. Links should start with `https://news.ycombinator.com/item?id=`. If the terminal says `source=curated`, the download failed and you are looking at the sample posts again.
+This downloads at most 3 Hacker News stories, scores them, and rewrites the same three files. A story that links to an article opens that article, and the Hacker News discussion is the second link. A text post opens the Hacker News item. If the download returns nothing, the terminal says `source=hn` and `Analyzed 0 posts`. The sample posts are used only when you run `--source curated`.
 
 ## Google Sheets approval
 
