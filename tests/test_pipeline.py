@@ -9,6 +9,7 @@ from pathlib import Path
 import httpx
 import pytest
 
+from cli import _build_stage1_request
 from src.graph.stage1_graph import run_stage1_pipeline
 from src.graph.stage2_graph import run_stage2_pipeline
 from src.models import RedditPostInput, Stage1EvaluateRequest, Stage2PRDRequest
@@ -32,6 +33,17 @@ RSS_FEED = """<?xml version="1.0" encoding="UTF-8"?>
   </entry>
 </feed>
 """
+
+
+def test_posts_file_accepts_a_powershell_bom(tmp_path: Path):
+    path = tmp_path / "one_post.json"
+    path.write_text(
+        '[{"title": "Ask HN: invoice tool", "url": "https://news.ycombinator.com/item?id=1"}]',
+        encoding="utf-8-sig",
+    )
+    request = _build_stage1_request("hn", path)
+    assert request.fetch_live is False
+    assert request.posts[0].title == "Ask HN: invoice tool"
 
 
 def test_hacker_news_fetcher_requests_newest_stories():
