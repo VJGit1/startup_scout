@@ -25,7 +25,7 @@ SOURCES = ("curated", "hn", "reddit_rss", "all")
 
 def _build_stage1_request(source: str, posts_file: Path | None) -> Stage1EvaluateRequest:
     if posts_file is not None:
-        raw = json.loads(posts_file.read_text(encoding="utf-8"))
+        raw = json.loads(posts_file.read_text(encoding="utf-8-sig"))
         posts = [RedditPostInput.model_validate(item) for item in raw]
         return Stage1EvaluateRequest(posts=posts, source=source, fetch_live=False)
     return Stage1EvaluateRequest(posts=[], source=source, fetch_live=source != "curated")
